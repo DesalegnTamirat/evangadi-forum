@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import dbConnection from "../db/dbconfig";
+import dbConnection from "../db/db.config.js";
 
 async function getAnswers(req, res) {
     const { question_id } = req.params;
@@ -10,36 +10,42 @@ async function getAnswers(req, res) {
     return res.status(StatusCodes.BAD_REQUEST).json({
         message: "Invalid question_id",
     });
-}
+    }
 
-try {
+    try {
     // Check if question exists
     const [question] = await dbConnection.query(
-        "SELECT question_id FROM question WHERE question_id = ?",
+        "SELECT questionid FROM questions WHERE questionid = ?",
         [questionIdNum]
     );
-    // if question is not found
+
     if (question.length === 0) {
         return res.status(StatusCodes.NOT_FOUND).json({
         message: "Question not found",
-    });
+        });
     }
 
-    // Get answers for the question
+    // Get answers with username (based on your DB schema)
     const [answers] = await dbConnection.query(
-      "SELECT * FROM answer WHERE question_id = ?",
+        `SELECT 
+            a.answerid AS answer_id,
+            a.answer AS content,
+            u.username AS user_name
+        FROM answers a
+        JOIN users u ON a.userid = u.userid
+        WHERE a.questionid = ?`,
         [questionIdNum]
     );
 
-    res.status(StatusCodes.OK).json({
+    return res.status(StatusCodes.OK).json({
         answers,
     });
-} catch (error) {
+    } catch (error) {
     console.error("Error getting answers:", error);
-    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
         message: "Internal server error",
     });
-}
+    }
 }
 
 export { getAnswers };
