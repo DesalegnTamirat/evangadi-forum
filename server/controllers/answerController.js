@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import dbConnection from "../db/db.config.js";
+import dbConnection from "../DB/dbconfig";
 
 async function getAnswers(req, res) {
     const { question_id } = req.params;
