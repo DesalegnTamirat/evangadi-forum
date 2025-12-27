@@ -14,11 +14,6 @@ app.post('/api/users/register', (req, res) => {
     res.send('User registered successfully');
 });
 
-// GET route for testing register endpoint in browser
-app.get('/api/users/register', (req, res) => {
-    res.send('Register endpoint is working!');
-});
-
 // login route
 app.post('/api/users/login', (req, res) => {
     res.send('User login is working');
