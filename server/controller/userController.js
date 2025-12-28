@@ -105,5 +105,14 @@ const register = async (req, res) => {
     });
   }
 };
+async function checkUser(req, res) {
+  const { username, userid } = req.user;
 
-export { login, register };
+  res.status(StatusCodes.OK).json({
+    msg: "valid user",
+    username,
+    userid: userid,
+  });
+}
+
+export { login, register, checkUser };
