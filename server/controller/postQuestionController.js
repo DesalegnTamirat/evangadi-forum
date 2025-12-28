@@ -24,10 +24,19 @@ const postQuestion = async (req, res) => {
         const sanitizedTag = tag ? xss(tag) : null;
 
         const [result] = await dbconnection.query(
-            "INSERT INTO question(title, description, tag, userid)"
-        )
+            "INSERT INTO question(title, description, tag, userid)  VALUES (? , ? , ? , ?)",
+            [sanitizedTitle, sanitizedDescription, sanitizedTag, userId]
+        );
+        res.status(StatusCodes.CREATED).json({
+            message: "Question Posted Successfully!",
+            questionId: result.insertId,     
 
-        
+        });      
+    }catch(error){
+        res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            message: "Error posting question",
+            error: error.message,
+        });
     }
 }
-
+export default postQuestion;
