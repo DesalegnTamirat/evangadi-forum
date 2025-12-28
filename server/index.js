@@ -14,6 +14,9 @@ app.use("/api/question", questionRoutes);
 
 const PORT = process.env.PORT || 3000;
 
+//json packing middleware
+app.use(express.json());
+
 //userRoutes middleware
 app.use('/api',userRoutes)
 
