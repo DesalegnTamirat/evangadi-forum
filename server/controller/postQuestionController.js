@@ -6,6 +6,9 @@ const postQuestion = async (req, res) => {
     try{
         const {title , description , tag } = req.body;
         const userId = req.user?.userid;
+        // for testing purpose hardcoding userId
+        // const userId = req.body.userid;
+        // console.log("Incoming userId:", userId);
 //validate required fields 
         if(!title || !description || !userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({
@@ -24,7 +27,7 @@ const postQuestion = async (req, res) => {
         const sanitizedTag = tag ? xss(tag) : null;
 
         const [result] = await dbconnection.query(
-            "INSERT INTO question(title, description, tag, userid)  VALUES (? , ? , ? , ?)",
+            "INSERT INTO questions(title, description, tag, userid)  VALUES (? , ? , ? , ?)",
             [sanitizedTitle, sanitizedDescription, sanitizedTag, userId]
         );
         res.status(StatusCodes.CREATED).json({

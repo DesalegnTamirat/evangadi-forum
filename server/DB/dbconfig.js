@@ -16,17 +16,5 @@ try {
   console.log("Database connection failed: ", err.message);
 }
 
-const port = 10000;
-app.get("/", (req, res) => {
-  res.send("DB Config is running...");
-});
-app.listen(port, () => {
-  console.log(`DB Config running on port ${port}  http://localhost:${port}`);
-}); 
-
-
-
-
-
 
 export default dbconnection;
