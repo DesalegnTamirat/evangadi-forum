@@ -1,7 +1,6 @@
 import {StatusCodes} from 'http-status-codes';
 import dbconnection from '../DB/dbconfig.js';
 import xss from 'xss'
-import {v4 as uuidv4} from 'uuid'
 
 const postQuestion = async (req, res) => {
     try{
@@ -20,6 +19,14 @@ const postQuestion = async (req, res) => {
             }); 
         }
         // Sanitize inputs to prevent XSS
+        const sanitizedTitle = xss(title);
+        const sanitizedDescription = xss(description);
+        const sanitizedTag = tag ? xss(tag) : null;
+
+        const [result] = await dbconnection.query(
+            "INSERT INTO question(title, description, tag, userid)"
+        )
+
         
     }
 }
