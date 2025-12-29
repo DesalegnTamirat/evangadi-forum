@@ -19,6 +19,10 @@ app.use("/api/question", questionRoutes);
 // Mount the user routes
 app.use("/api/user", userRoutes);
 
+import answerRoutes from "./routes/answerRoute.js";
+
+app.use("/api/answer", answerRoutes);
+
 app.listen(PORT, () => {
   console.log(`Server is running on port: http://localhost:${PORT}`);
 });
