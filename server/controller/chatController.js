@@ -1,6 +1,5 @@
 import dotenv from "dotenv";
 import OpenAI from "openai";
-import userRoutes from "./routes/userRoutes.js";
 
 dotenv.config();
 
