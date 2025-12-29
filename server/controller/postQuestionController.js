@@ -7,8 +7,9 @@ const postQuestion = async (req, res) => {
         const {title , description , tag } = req.body;
         const userId = req.user?.userid;
         // for testing purpose hardcoding userId
-        // const userId = req.body.userid;
-        // console.log("Incoming userId:", userId);
+        // const userId = req.body.userid;         
+       // console.log("Incoming userId:", userId);
+
 //validate required fields 
         if(!title || !description || !userId) {
             return res.status(StatusCodes.BAD_REQUEST).json({
@@ -33,7 +34,7 @@ const postQuestion = async (req, res) => {
         res.status(StatusCodes.CREATED).json({
             message: "Question Posted Successfully!",
             questionId: result.insertId,     
-
+            
         });      
     }catch(error){
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
