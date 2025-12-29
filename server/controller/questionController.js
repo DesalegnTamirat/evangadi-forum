@@ -11,14 +11,14 @@ async function getAllQuestions(req, res) {
         q.title,
         q.description,
         q.tag,
-        q.createdat,
+        q.created_at,
         q.userid,
         u.username,
         u.firstname,
         u.lastname
       FROM questions q 
       JOIN users u ON q.userid = u.userid 
-      ORDER BY q.createdat DESC`
+      ORDER BY q.created_at DESC`
     );
 
     // Check if the questions array is empty
