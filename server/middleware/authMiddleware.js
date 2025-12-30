@@ -1,6 +1,8 @@
 import { StatusCodes } from "http-status-codes";
 import { verify } from "jsonwebtoken";
 
+import {jwt} from "jsonwebtoken";
+
 async function authMiddleware(req, res, next) {
   const authHeader = req.headers.authorization;
 
