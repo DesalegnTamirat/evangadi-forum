@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import answerRoutes from "./routes/answerRoute.js";
 import userRoutes from "./routes/userRoutes.js";
 import questionRoutes from "./routes/questionRoute.js";
+import authMiddleware from "./middleware/authMiddleware.js";
+import dbconnection from "./DB/dbconfig.js";
 
 const app = express();
 app.use(express.json());
@@ -13,23 +15,24 @@ const PORT = process.env.PORT || 5500;
 //json packing middleware
 app.use(express.json());
 
-const userRoutes = require("./routes/userRoute");
-const questionRoutes = require("./routes/questionRoute");
-app.use("/api", authMiddleware, questionRoutes);
-//userRoutes middleware
-app.use("/api", userRoutes);
-
-
-// question routes midware
-app.use("/api/question", questionRoutes);
-
+// questinRoutes middleware
+app.use("/api/question", authMiddleware, questionRoutes);
 
 //userRoutes middleware
-app.use('/api',userRoutes)
-app.use("/api", answerRoutes);
+app.use("/api/user", userRoutes);
 
+// answerRoutes middlware
+app.use("/api/answer", authMiddleware, answerRoutes);
 
+async function startServer() {
+  try {
+    await dbconnection.execute("SELECT 'test'");
+    console.log("Database connected...");
+    app.listen(PORT);
+    console.log(`Server running on: http://localhost:${PORT}`);
+  } catch (error) {
+    console.log("Database connection failed: ", error.message);
+  }
+}
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port: http://localhost:${PORT}`);
-});
+startServer();

@@ -7,11 +7,4 @@ const dbconnection = mysql.createPool({
   connectionLimit: 11,
 });
 
-try {
-  await dbconnection.execute("SELECT 'test'");
-  console.log("Database connected...");
-} catch (err) {
-  console.log("Database connection failed: ", err.message);
-}
-
 export default dbconnection;
