@@ -1,4 +1,4 @@
-import { Minus } from "lucide-react"; // Minus looks cleaner for minimizing
+import { Minus } from "lucide-react"; 
 import styles from "./ChatHeader.module.css";
 
 function ChatHeader({ isBotTyping, onClose }) {
@@ -21,7 +21,6 @@ function ChatHeader({ isBotTyping, onClose }) {
         <p>{isBotTyping ? "Generating answer..." : "Online & Ready to help"}</p>
       </div>
 
-      {/* New Close/Minimize Button */}
       <button
         className={styles.closeBtn}
         onClick={onClose}

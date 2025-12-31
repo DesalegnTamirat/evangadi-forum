@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  background-color: #ffffff; /* Explicitly set main chat background to white */
+  background-color: #ffffff;
 }
 
 .messageRow {
@@ -50,22 +50,20 @@
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
-/* USER BUBBLE: Blue Background, White Text */
 .userBubble {
   background-color: #4b6bfb; 
   color: #ffffff;
   border-bottom-right-radius: 2px;
 }
 
-/* BOT BUBBLE: White/Light-Gray Background, Dark Text */
+
 .botBubble {
-  background-color: #f1f5f9; /* Light Slate/Gray like the forum cards */
-  color: #1e293b; /* Dark Slate text for readability */
+  background-color: #f1f5f9; 
+  color: #1e293b; 
   border: 1px solid #e2e8f0;
   border-bottom-left-radius: 2px;
 }
 
-/* Fix for ReactMarkdown internal text colors */
 .botBubble p, 
 .botBubble li, 
 .botBubble code {

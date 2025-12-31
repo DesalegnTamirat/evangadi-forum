@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ArrowUp } from "lucide-react";
 import styles from "./ChatInput.module.css";
 
@@ -19,7 +19,6 @@ function ChatInput({ onSubmit, isBotTyping }) {
   const handleSend = (e) => {
     if (e) e.preventDefault();
 
-    // Only send if there is text and bot isn't currently busy
     if (prompt.trim() && !isBotTyping) {
       onSubmit(prompt.trim());
       setPrompt("");

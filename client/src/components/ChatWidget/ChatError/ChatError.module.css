@@ -10,7 +10,7 @@
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background-color: #fee2e2; /* Light red/pink */
+  background-color: #fee2e2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -20,7 +20,7 @@
 }
 
 .icon {
-  color: #ef4444; /* Alert red */
+  color: #ef4444; 
 }
 
 .contentWrapper {
@@ -32,11 +32,11 @@
 
 .messageBubble {
   padding: 0.75rem 1rem;
-  background-color: #fff1f2; /* Very soft pink */
+  background-color: #fff1f2; 
   border: 1px solid #ffe4e6;
   border-radius: 16px;
   border-top-left-radius: 2px;
-  color: #991b1b; /* Dark red for readability */
+  color: #991b1b; 
   font-size: 0.875rem;
   line-height: 1.5;
 }
@@ -46,7 +46,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.75rem;
-  color: #64748b; /* Gray */
+  color: #64748b; 
   background: none;
   border: none;
   padding: 0.25rem 0.5rem;
@@ -56,7 +56,7 @@
 }
 
 .retryButton:hover {
-  color: #1e293b; /* Darker slate */
+  color: #1e293b; 
 }
 
 .retryButton:hover .refreshIcon {

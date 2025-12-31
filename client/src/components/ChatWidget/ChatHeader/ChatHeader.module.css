@@ -28,9 +28,9 @@
   transition: all 0.5s ease;
 }
 
-/* Matching your "Ask Question" blue and a standard online green */
+
 .idle {
-  background-color: #4b6bfb; /* Indigo/Blue accent */
+  background-color: #4b6bfb; 
   box-shadow: 0 0 8px rgba(75, 107, 251, 0.3);
 }
 
@@ -70,24 +70,23 @@
   font-weight: 400;
 }
 
-/* Updated Close Button Styling */
 .closeBtn {
-  margin-left: auto; /* This pushes the button to the far right */
+  margin-left: auto; 
   background: none;
   border: none;
-  color: #94a3b8; /* Slate-400 */
+  color: #94a3b8; 
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 6px;
-  border-radius: 50%; /* Rounded hover effect */
+  border-radius: 50%; 
   transition: all 0.2s ease;
 }
 
 .closeBtn:hover {
   background-color: #f1f5f9;
-  color: #4b6bfb; /* Changes to blue on hover */
+  color: #4b6bfb; 
 }
 
 @keyframes ping {

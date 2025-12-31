@@ -17,9 +17,9 @@ function ChatBot({ onClose }) {
     retryLastMessage,
   } = useChatbot();
 
+  
+  // >=> Auto-scroll to bottom whenever messages or typing state changes
   const scrollRef = useRef(null);
-
-  // Auto-scroll to bottom whenever messages or typing state changes
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
@@ -29,9 +29,8 @@ function ChatBot({ onClose }) {
   return (
     <div className={styles.pageWrapper}>
       <div className={styles.mainCard}>
-        {/* Pass isBotTyping to show the "Thinking" status in header */}
         <ChatHeader isBotTyping={isBotTyping} onClose={onClose} />
-
+        
         <div ref={scrollRef} className={styles.chatBody}>
           {isLoadingHistory ? (
             <div className={styles.loadingContainer}>
@@ -42,7 +41,7 @@ function ChatBot({ onClose }) {
             <>
               <ChatMessages messages={messages} />
 
-              {/* Show error with the retry logic we built */}
+              {/* Show error with the retry logic */}
               {error && <ChatError onRetry={retryLastMessage} />}
 
               {/* Show typing dots while waiting for API */}
