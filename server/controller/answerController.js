@@ -85,10 +85,22 @@ const getAnswerSummary = async (req, res) => {
           }
 
            // 2. Prepare the payload for AI
-    const allAnswersText = answers
+    // Prepare answers payload for AI summarization
+           const allAnswersText = answers
     .map((a, i) => Answer ${i + 1}: ${a.answer})
     .join("\n\n");
 
+    const prompt = `
+    You are an expert forum moderator. Below is a question and a list of answers.
+    Summarize the main solutions provided by the community. 
+    Keep it under 3 sentences and use a helpful tone.
+
+    Question: ${question[0].title}
+    Description: ${question[0].description}
+
+    Answers:
+    ${allAnswersText}
+`;
 
 
 const postAnswer = async (req, res) => {
