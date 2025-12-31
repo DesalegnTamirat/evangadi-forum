@@ -75,6 +75,11 @@ const getAnswerSummary = async (req, res) => {
               .status(StatusCodes.NOT_FOUND)
               .json({ message: "Question not found" });
           }
+          if (answers.length === 0) {
+            return res
+              .status(StatusCodes.OK)
+              .json({ summary: "No answers yet to summarize." });
+          }
 
 
 const postAnswer = async (req, res) => {
