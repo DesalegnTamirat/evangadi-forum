@@ -108,6 +108,10 @@ const getAnswerSummary = async (req, res) => {
     temperature: 0.3, // Lower temperature for more factual summaries
   });
 
+  const summaryText = completion.choices[0].message.content;
+
+  
+
 
 const postAnswer = async (req, res) => {
 const { question_id, answer } = req.body;
