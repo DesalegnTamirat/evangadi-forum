@@ -7,12 +7,12 @@ dotenv.config();
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  //validate request
 
+  //validating email and password
   if (!email || !password) {
     return res
       .status(StatusCodes.BAD_REQUEST)
-      .json({ msg: "Please provide all required values." });
+      .json({ msg: "Please provide all required information." });
   }
   try {
     const [users] = await dbconnection.query(
@@ -40,15 +40,15 @@ const login = async (req, res) => {
     // generate token
     const username = user.username;
     const userid = user.userid;
-    const secret = process.env.JWT_SECRET;
     const token = jwt.sign({ username, userid }, process.env.JWT_SECRET, {
       expiresIn: "1d",
-    }); //creating token which expires in 1day
+    });
 
     //success response
     return res.status(StatusCodes.OK).json({
       msg: "User login successful",
       token,
+      user,
     });
   } catch (error) {
     console.log("Login error:", error.message);
@@ -73,10 +73,11 @@ const register = async (req, res) => {
       "SELECT userid FROM users WHERE email = ? OR username = ?",
       [email, username]
     );
+    //checck passwork length
     if (password.length < 8) {
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ msg: "Password too short: should be at least 8 characters" });
+        .json({ msg: "Password should be at least 8 characters" });
     }
 
     if (existingUser.length > 0) {
@@ -84,8 +85,6 @@ const register = async (req, res) => {
         msg: "User already exists with this email or username",
       });
     }
-    //checck passwork length
-
     // 3. Hash password
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
