@@ -1,5 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import dbConnection from "../DB/dbconfig.js";
+import OpenAI from "openai";
+import dotenv from "dotenv";
 
 const getAnswers = async (req, res) => {
 const { question_id } = req.params;
@@ -63,7 +65,10 @@ const getAnswerSummary = async (req, res) => {
           [question_id]
         );
 
-
+        const [answers] = await dbConnection.query(
+            "SELECT answer FROM answers WHERE questionid = ?",
+            [question_id]
+          );
 
 const postAnswer = async (req, res) => {
 const { question_id, answer } = req.body;
