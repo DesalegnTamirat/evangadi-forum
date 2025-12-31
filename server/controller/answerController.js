@@ -62,12 +62,12 @@ const getAnswerSummary = async (req, res) => {
     try {
         // Fetch Question details and its Answers from question asked by question id
         const [question] = await dbConnection.query(
-          "SELECT title, description FROM questions WHERE question_id = ?",
+          "SELECT title, description FROM questions WHERE questionid = ?",
           [question_id]
         );
 // Fetch answer from answers
         const [answers] = await dbConnection.query(
-            "SELECT answer FROM answers WHERE question_id = ?",
+            "SELECT answer FROM answers WHERE questionid = ?",
             [question_id]
           );
         //   insert error response if question not found
