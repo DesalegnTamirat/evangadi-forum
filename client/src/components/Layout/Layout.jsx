@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Header from "../Header/Header"; // Adjust path if needed
@@ -19,3 +20,19 @@ function Layout() {
 }
 
 export default Layout;
+=======
+import React from 'react'
+import { Route, Routes } from "react-router-dom";
+
+function Layout() {
+  return (
+    <Routes>
+
+
+
+    </Routes>
+  )
+}
+
+export default Layout
+>>>>>>> main
