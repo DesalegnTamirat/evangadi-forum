@@ -1,0 +1,44 @@
+/* Full page container */
+.container {
+  width: 100%;
+  min-height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+  background-image: url("../../assets/bg.jpeg");
+  background-size: cover;
+  background-position: center;
+}
+
+/* Wrapper for slider + About */
+.containerContent {
+  max-width: 53rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+/* Slider container */
+.sliderContainer {
+  width: 100%;
+  overflow: hidden;
+}
+/* Slider wrapper (SignIn + SignUp) */
+.sliderWrapper {
+  display: flex;
+  width: 200%;
+  transition: transform 0.5s ease-in-out;
+}
+
+/* Each panel */
+.formPane {
+  width: 50%;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .containerContent {
+    grid-template-columns: 1fr;
+  }
+}

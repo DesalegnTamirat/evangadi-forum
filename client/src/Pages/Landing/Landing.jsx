@@ -1,10 +1,9 @@
-import React from 'react'
+import React from "react";
 import { useParams, Navigate } from "react-router-dom";
-import style from './Landing.module.css'
+import style from "./Landing.module.css";
 
 function Landing() {
-
-      const { mode } = useParams();
+  const { mode } = useParams();
 
   if (mode !== "signin" && mode !== "signup") {
     return <Navigate to="/auth/signin" replace />;
@@ -24,18 +23,18 @@ function Landing() {
           >
             <div className={style.formPane} aria-hidden={isSignup}>
               {/* <SignIn /> */}
+              signin
             </div>
             <div className={style.formPane} aria-hidden={!isSignup}>
               {/* <SignUp /> */}
+              signup
             </div>
           </div>
         </div>
-        <div className={style.about}>
-          {/* <About /> */}
-        </div>
+        <div className={style.about}>{/* <About /> */} about</div>
       </div>
     </section>
   );
 }
 
-export default Landing
+export default Landing;
