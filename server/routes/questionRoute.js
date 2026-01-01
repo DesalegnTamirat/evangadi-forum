@@ -5,13 +5,13 @@ const router = Router();
 import {
   getAllQuestions,
   getSingleQuestion,
-  postQuestion
+  postQuestion,
 } from "../controller/questionController.js";
 
 router.get("/", getAllQuestions);
 
 // get a single question
-router.post("/", postQuestion);
+router.post("/", authMiddleware, postQuestion);
 router.get("/:questionid", getSingleQuestion);
 
 export default router;
