@@ -1,8 +1,15 @@
 import React from 'react'
 import axios from '../../axiosConfig'
+import styles from './register.module.css'
+import { useState } from 'react';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 // import {useNavigate} from 'react-router-dom'
 import { useRef } from 'react';
 const Register = () => {
+const [passwordVisible, setPasswordVisible] = useState(false);
+
+
     const userNameDom = useRef();
     const firstNameDom = useRef();
     const lastNameDom = useRef();
@@ -41,34 +48,45 @@ const Register = () => {
         }
     };
   return (
-    <section>
-        <form action="" onSubmit={handleSubmit}>
+    <section className={styles.registerSection}>
+        
+        <form className={styles.form_container} onSubmit={handleSubmit}>
+            <h3>Join The Network</h3>
+            <p>Already have an account? <a href="/login">Sign in</a></p>
 <div>
-    <span>username : </span>
     <input type="text" placeholder='username' ref={userNameDom} />
 </div>
 <br />
+<div className={styles.first_last}>
 <div>
-    <span>First Name : </span>
     <input type="text" placeholder='first name' ref={firstNameDom}/>
 </div>
-<br />
 <div>
-    <span>Last Name : </span>
     <input type="text" placeholder='last name' ref={lastNameDom}/>
 </div>
+</div>
+
 <br />
 <div>
-    <span>Email : </span>
     <input type="email" placeholder='email' ref={emailDom}/>
 </div>
 <br />
 <div>
-    <span>Password : </span>
-    <input type="password" placeholder='password' ref={passwordDom}/>
+    <div className={styles.password}>
+    <input type={passwordVisible ? "text" : "password"} placeholder='password' ref={passwordDom} />
+    <div className={styles.password_toggle}
+        onClick={() => setPasswordVisible(!passwordVisible)}
+        style={{ cursor: "pointer" }}
+      >
+        {passwordVisible ? <VisibilityOffOutlinedIcon/> : <VisibilityOutlinedIcon/>}
+      </div>
+
 </div>
 
-<button type='submit'>Register</button>
+</div>
+<button className={styles.register_button} type='submit'>Agree and Join</button>
+<p>I agree to the <a href="">privacy policy</a> and <a href="">terms of service.</a></p>
+<p><a href="">Already have an account?</a></p>
         </form>
       
     </section>
