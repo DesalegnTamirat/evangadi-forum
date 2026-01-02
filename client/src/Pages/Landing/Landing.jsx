@@ -37,7 +37,7 @@ function Landing() {
           </div>
         </div>
         <div className={style.about}>
-          {/* <About/> */} about
+          {/* <About/> */} About
         </div>
       </div>
     </section>

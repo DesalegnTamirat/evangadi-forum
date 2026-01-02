@@ -9,12 +9,11 @@
   background-image: url("../../assets/bg.jpeg");
   background-size: cover;
   background-position: center;
-  box-sizing: border-box;
 }
 
 /* Wrapper for slider + About */
 .containerContent {
-  max-width: 53rem;
+  max-width: 55rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.5rem;
@@ -34,8 +33,6 @@
 /* Each panel */
 .formPane {
   width: 50%;
-  /* border-radius: 8px; */
-  /* box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); */
 }
 
 @media (max-width: 768px) {

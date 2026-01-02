@@ -3,18 +3,21 @@
     margin: 0;
 }
 .registerPage{
-    margin-top: 100px;
+
+  /* the background image is not needed here */
+  
+  margin-top: 2rem;
     /* background-image: url('../../assets/download.svg');
     background-repeat: no-repeat;  */
-    /* the background image is not needed here */
-    width: cover;
+  
+    /* width: cover; */
 }
 /* PAGE SECTION */
 .registerSection {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  /* padding-left: 80px; */ 
+  padding: 0.5rem; 
    /* pushes form from left like screenshot */
   /* background: linear-gradient(
     135deg,
