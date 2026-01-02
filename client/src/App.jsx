@@ -38,18 +38,18 @@ function App() {
 
   return (
     <AppState.Provider value={{ user, setUser }}>
-      <div>
-        <Header />
-        <Routes>
+      {/* <div> */}
+     <Layout/>
+        {/* <Routes> */}
           {/* Public Route */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Register />} />
+          {/* <Route path="/login" element={<Login />} /> */}
+          {/* <Route path="/signup" element={<Register />} /> */}
 
           {/* Protected Routes */}
-          <Route path="/*" element={<Layout />} />
-        </Routes>
-        <Footer />
-      </div>
+          {/* <Route path="/*" element={<Layout />} /> */}
+        {/* </Routes> */}
+      
+      {/* </div> */}
     </AppState.Provider>
   );
 }

@@ -5,6 +5,7 @@ import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 const Register = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState("");
@@ -55,7 +56,7 @@ const Register = () => {
           {error && <p className={styles.error}>{error}</p>}
           <h3>Join The Network</h3>
           <p>
-            Already have an account? <a href="/login">Sign in</a>
+            Already have an account? <Link to="/signin">Sign in</Link>
           </p>
           <div>
             <input type="text" placeholder="username" ref={userNameDom} />
@@ -103,7 +104,7 @@ const Register = () => {
             <a href="">terms of service.</a>
           </p>
           <p>
-            <a href="">Already have an account?</a>
+            <Link to="/signin">Already have an account?</Link>
           </p>
         </form>
       </section>
