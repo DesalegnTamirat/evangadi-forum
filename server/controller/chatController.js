@@ -3,6 +3,7 @@ import db from "../DB/dbconfig.js";
 import dotenv from "dotenv";
 
 dotenv.config();
+console.log("OpenAI API Key:", process.env.OPENAI_API_KEY);
 const client = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
   baseURL: "https://api.groq.com/openai/v1",
