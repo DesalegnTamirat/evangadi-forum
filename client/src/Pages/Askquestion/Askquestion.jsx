@@ -84,7 +84,6 @@ const Askquestion = () => {
       setDescription("");
       setTag("");
 
-
       // redirect to question detail page after  1.5 secconds
       setTimeout(() => {
         navigate(`/question/${response.data.questionId}`);
@@ -95,10 +94,9 @@ const Askquestion = () => {
         error.response?.data?.msg ||
         "Failed to post question, please try again.";
 
-        setError(errorMessage);
-        console.log("error postting question:", error);
-    }
-    finally{
+      setError(errorMessage);
+      console.log("error postting question:", error);
+    } finally {
       setIsSubmitting(false);
     }
   };
@@ -116,6 +114,70 @@ const Askquestion = () => {
           <li>Describe what you tried and what you expected to happen.</li>
           <li>Review your question and post it to the site.</li>
         </ul>
+      </div>
+
+      {/* Form for asking a question */}
+      <div className={classes.formCard}>
+        <h2 className={classes.formTitle}>Ask a public question</h2>
+
+        {/* Link to navigate back to questions list */}
+        <Link to="/" className={classes.backLink}>
+          Go to Question page
+        </Link>
+
+        {error && <div className={classes.errorMessage}>{error}</div>}
+
+        {success && <div className={classes.successMessage}>{success}</div>}
+
+        {/* question form */}
+
+        <form onSubmit={handleSubmit} className={classes.questionForm}>
+          <div className={classes.inputGroup}>
+            <input
+              type="text"
+              placeholder="Title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className={classes.titleInput}
+              maxLength={200} 
+              disabled={isSubmitting} // disable during submission
+            />
+          </div>
+
+          {/* description Textarea */}
+          <div className={classes.inputGroup}>
+            <textarea
+              placeholder="Question Description..."
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className={classes.descriptionInput}
+              rows={10} // set initial height
+              disabled={isSubmitting}
+            />
+          </div>
+
+          {/* Optional field for categorizing the question */}
+          <div className={classes.inputGroup}>
+            <input
+              type="text"
+              placeholder="Tag should be  max 20 characters)"
+              value={tag}
+              onChange={(e) => setTag(e.target.value)}
+              className={classes.tagInput}
+              maxLength={20} 
+              disabled={isSubmitting} 
+            />
+          </div>
+
+          {/* button to submit the question form */}
+          <button
+            type="submit"
+            className={classes.submitButton}
+            disabled={isSubmitting} // diisable during submission to prevent duplicates
+          >
+            {isSubmitting ? "Posting..." : "Post Your Question"}
+          </button>
+        </form>
       </div>
     </div>
   );
