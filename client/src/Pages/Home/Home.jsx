@@ -1,6 +1,6 @@
 // ===================== Desalegn Tsega — Implement Home Page Start =====================
 // React core hooks
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 // Global app context
 import { AppState } from "../../App";
@@ -116,11 +116,11 @@ const Home = () => {
       );
 
       // Show success message
-      setSuccessMessage(t("home.deleteSuccess"));
+      setSuccessMessage("Question deleted successfully!");
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch {
       // Show error message
-      setErrorMessage(t("home.deleteError"));
+      setErrorMessage("Failed to delete question. Please try again.");
       setTimeout(() => setErrorMessage(""), 3000);
     } finally {
       // Close confirmation dialog
@@ -135,11 +135,11 @@ const Home = () => {
         {/* Header section */}
         <div className={classes["welcome-section"]}>
           <Link to="/ask" className={classes["ask-question-btn"]}>
-            {t("home.askQuestion")}
+            Ask Question
           </Link>
 
           <div className={classes["welcome-message"]}>
-            {t("home.welcome")} :
+            Welcome :
             <span className={classes["username"]}> {user?.username}</span>
           </div>
         </div>
@@ -150,7 +150,7 @@ const Home = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={classes["search-input"]}
-            placeholder={t("home.searchPlaceholder")}
+            placeholder="Search questions or users..."
           />
         </div>
 
@@ -161,10 +161,10 @@ const Home = () => {
             onChange={(e) => setSortOption(e.target.value)}
             className={classes["sort-select"]}
           >
-            <option value="Most Recent">{t("home.mostRecent")}</option>
-            <option value="Most Popular">{t("home.mostPopular")}</option>
-            <option value="By Questions">{t("home.byQuestions")}</option>
-            <option value="By Date">{t("home.byDate")}</option>
+            <option value="Most Recent">Most Recent</option>
+            <option value="Most Popular">Most Popular</option>
+            <option value="By Questions">By Questions</option>
+            <option value="By Date">By Date</option>
           </select>
         </div>
 
@@ -179,15 +179,15 @@ const Home = () => {
         {/* Delete confirmation */}
         {confirmDeleteId !== null && (
           <div className={classes["confirmation-prompt"]}>
-            <p>{t("home.confirmDelete")}</p>
+            <p>Are you sure you want to delete this question?</p>
             <button className="btn btn-danger" onClick={handleConfirmDelete}>
-              {t("home.yesDelete")}
+              Yes, Delete
             </button>
             <button
               className="btn btn-secondary"
               onClick={() => setConfirmDeleteId(null)}
             >
-              {t("home.cancel")}
+              Cancel
             </button>
           </div>
         )}
@@ -237,7 +237,7 @@ const Home = () => {
             </div>
           ))
         ) : (
-          <p>{t("home.noQuestions")}</p>
+          <p>No questions found. Be the first to ask a question!</p>
         )}
       </div>
     </section>
