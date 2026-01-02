@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppState } from "../../App";
-import logo from "../../../public/EvangadiLogo.jpeg";
+import logo from "/EvangadiLogo.jpeg";
 import styles from "./header.module.css";
 
 const Header = () => {
