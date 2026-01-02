@@ -12,7 +12,7 @@ const app = express();
 
 // CORS configuration
 app.use(cors({
-  origin: ["http://localhost:3000", "http://localhost:5173", "http://localhost:4173"],
+  origin: ["http://localhost:3000", "http://localhost:5173", "http://localhost:4173", "http://localhost:5174"],
   credentials: true
 }));
 
@@ -22,7 +22,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5500;
 
 // question routes middleware
-app.use("/api/question", questionRoutes);
+app.use("/api/question", authMiddleware, questionRoutes);
 
 // userRoutes middleware
 app.use("/api/user", userRoutes);
