@@ -1,6 +1,8 @@
 import React from "react";
 import { useParams, Navigate } from "react-router-dom";
 import style from "./Landing.module.css";
+import Register from "../Register/Register";
+import Login from "../Login/Login";
 // import About from '../About/About'
 
 function Landing() {
@@ -23,12 +25,12 @@ function Landing() {
             }}
           >
             <div className={style.formPane} aria-hidden={isSignup}>
-              {/* <Login /> */}
-              signin
+              <Login />
+              
             </div>
             <div className={style.formPane} aria-hidden={!isSignup}>
-              {/* <Register /> */}
-              signup
+              <Register />
+              
             </div>
           </div>
         </div>

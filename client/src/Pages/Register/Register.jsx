@@ -55,7 +55,7 @@ const Register = () => {
           {error && <p className={styles.error}>{error}</p>}
           <h3>Join The Network</h3>
           <p>
-            Already have an account? <a href="/login">Sign in</a>
+            Already have an account? <a href="/signin">Sign in</a>
           </p>
           <div>
             <input type="text" placeholder="username" ref={userNameDom} />
