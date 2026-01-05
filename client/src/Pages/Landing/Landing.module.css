@@ -1,6 +1,6 @@
 /* Full page container */
 .container {
-  width: 100%;
+  width: auto;
   min-height: 90vh;
   display: flex;
   justify-content: center;
@@ -38,5 +38,6 @@
 @media (max-width: 768px) {
   .containerContent {
     grid-template-columns: 1fr;
+    width: auto;
   }
 }

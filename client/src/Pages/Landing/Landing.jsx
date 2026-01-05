@@ -11,7 +11,7 @@ function Landing() {
 
   if (mode !== "signin" && mode !== "signup") {
     return <Navigate to="/404" replace />;
-    // return <NotFound/>
+
   }
 
   const isSignup = mode === "signup";
