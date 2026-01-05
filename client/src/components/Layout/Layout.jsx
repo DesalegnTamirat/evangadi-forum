@@ -6,6 +6,7 @@ import Home from "../../Pages/Home/Home";
 import HowItWorks from "../../Pages/HowItWorks/HowItWorks";
 import NotFound from "../../Pages/NotFound/NotFound";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import Askquestion from "../../Pages/Askquestion/Askquestion.jsx";
 
 function Layout() {
   return (
@@ -27,6 +28,15 @@ function Layout() {
           element={
             <ProtectedRoute>
               <Home />
+            </ProtectedRoute>
+          }
+        />
+{/* protected route for ask question page */}
+        <Route
+          path="ask"
+          element={
+            <ProtectedRoute>
+              <Askquestion />
             </ProtectedRoute>
           }
         />
