@@ -7,6 +7,8 @@ import Login from "./Pages/Login/Login";
 import axios from "./Api/axiosConfig";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
+import Askquestion from "../src/Pages/Askquestion/Askquestion"
+
 
 export const AppState = createContext();
 function App() {
@@ -27,8 +29,8 @@ function App() {
       });
     } catch (error) {
       console.error(error.response);
-      localStorage.removeItem("token");
-      navigate("/login");
+      // localStorage.removeItem("token");
+      // navigate("/login");
     }
   }
 
@@ -44,9 +46,9 @@ function App() {
           {/* Public Route */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Register />} />
-
           {/* Protected Routes */}
           <Route path="/*" element={<Layout />} />
+          <Route path="/ask" element={<Askquestion />} />
         </Routes>
         <Footer />
       </div>
