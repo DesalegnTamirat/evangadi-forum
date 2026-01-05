@@ -1,14 +1,16 @@
-import React from 'react'
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import classes from "./about.module.css";
 
+const About = () => {
+  const navigate = useNavigate();
 
-function About() {
   return (
-    <section className={classes.about}>
-      <div className={classes.container}>
+    <section className={classes.container}>
+      <div className={classes.content}>
         <p className={classes.label}>About</p>
 
-        <h1 className={classes.title}>Evangadi Networks</h1>
+        <h1 className={classes.heading}>Evangadi Networks</h1>
 
         <p className={classes.text}>
           No matter what stage of life you are in, whether you’re just starting
@@ -23,9 +25,15 @@ function About() {
           network here.
         </p>
 
-        <button className={classes.button}>HOW IT WORKS</button>
+        <button
+          className={classes.button}
+          onClick={() => navigate("/how-it-works")}
+        >
+          HOW IT WORKS
+        </button>
       </div>
     </section>
   );
 };
-export default About
+
+export default About;
