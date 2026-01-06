@@ -82,7 +82,15 @@ useEffect(() => {
   };
 
   return (
-   
+    <div className={styles.container}>
+//       <h2>Answers</h2>
+
+//       {error && <p className={styles.error}>{error}</p>}
+//       {loading && <p>Loading...</p>}
+
+//       {answers?.length === 0 && !loading && (
+        <p className={styles.no_answers}>No answers yet. Be the first!</p>
+      )}
   )
 }
 
