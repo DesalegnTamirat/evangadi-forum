@@ -6,6 +6,8 @@ import styles from "./answer.module.css";
 function Answer() {
   // How React knows WHICH question to load
   const { question_id } = useParams();
+//   console.log("Question ID from URL:", question_id);
+
   // for use of redirecting
   const navigate = useNavigate();
   //
@@ -21,9 +23,9 @@ function Answer() {
   // Redirect if not logged in
   useEffect(() => {
     if (!token) {
-      navigate("/login", { state: { from: `/question/${question_id}` } });
+      navigate("/login", { state: { from: "/answer" } });
     }
-  }, [token, navigate, question_id]);
+  }, [token, navigate, answer]);
 //    // Fetch question, answers, and AI summary
   useEffect(() => {
     const fetchData = async () => {
@@ -31,21 +33,26 @@ function Answer() {
         setLoading(true);
 
         // 1. Fetch question
-        const resQuestion = await axios.get(`/question/${question_id}`, {
+        const Question = await axios.get(`/question/${question_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setQuestion(resQuestion.data);
+        setQuestion(Question.data);
         // 2. Fetch answers
-        const resAnswers = await axios.get(`/answer/${question_id}`, {
+        const Answers = await axios.get(`/answer/${question_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setAnswers(resAnswers.data.answers);
+        setAnswers(Answers.data.answers);
         // 3. Fetch AI summary
-        const resSummary = await axios.get(`/answer/summary/${question_id}`, {
+        const Summary = await axios.get(`/answer/summary/${question_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setAiSummary(resSummary.data.summary);
+        setAiSummary(Summary.data.summary);
         setError(null);
+
+        // Navigate to home or question page
+        //   navigate("/", { replace: true });
+        // Alternatively, navigate to the question detail page:
+        navigate(`/question/${response.data.questionId}`);
       } catch (err) {
         if (err.response?.status === 404) {
           setError("Question not found.");
@@ -85,7 +92,7 @@ function Answer() {
       );
 
       // Refresh answers and AI summary
-      const [resAnswers, resSummary] = await Promise.all([
+      const [Answers, Summary] = await Promise.all([
         axios.get(`/answer/${question_id}`, {
           headers: { Authorization: `Bearer ${token}` },
         }),
@@ -94,8 +101,8 @@ function Answer() {
         }),
       ]);
 
-      setAnswers(resAnswers.data.answers);
-      setAiSummary(resSummary.data.summary);
+      setAnswers(Answers.data.answers);
+      setAiSummary(Summary.data.summary);
       setAnswerText("");
       setError(null);
     } catch (err) {

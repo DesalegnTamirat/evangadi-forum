@@ -8,6 +8,7 @@ import axios from "./Api/axiosConfig";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import Askquestion from "../src/Pages/Askquestion/Askquestion";
+import Answer from "./Pages/Answer/Answer";
 
 export const AppState = createContext();
 
@@ -49,6 +50,7 @@ function App() {
           {/* Protected Routes */}
           <Route path="/*" element={<Layout />} />
           <Route path="/ask" element={<Askquestion />} />
+          <Route path="/answer" element={<Answer />} />
         </Routes>
         <Footer />
       </div>
