@@ -1,7 +1,7 @@
-import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Header from "../Header/Header"; // Adjust path if needed
-import Askquestion from "../../Pages/Askquestion/Askquestion.jsx"
+import Askquestion from "../../Pages/Askquestion/Askquestion.jsx";
+import Home from "../../Pages/Home/Home.jsx";
 
 function Layout() {
   return (
@@ -11,7 +11,7 @@ function Layout() {
 
       {/* Routes */}
       <Routes>
-        <Route path="/" element={<h1>Home Page</h1>} />
+        <Route path="/" element={<Home />} />
         <Route path="/login" element={<h1>Login Page</h1>} />
         <Route path="/how-it-works" element={<h1>How It Works</h1>} />
         <Route path="/question" element={<Askquestion />} />

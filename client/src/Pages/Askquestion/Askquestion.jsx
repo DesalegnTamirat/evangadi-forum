@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 import styles from "./ask.module.css";
 import axios from "../../Api/axiosConfig.js";
 import KeywordExtractor from "keyword-extractor";
@@ -72,8 +72,8 @@ function Askquestion() {
       errors.description = "Description is required";
     } else if (description.trim().length < 20) {
       errors.description = "Description must be at least 20 characters long";
-    } else if (description.trim().length > 5000) {
-      errors.description = "Description cannot exceed 5000 characters";
+    } else if (description.trim().length > 250) {
+      errors.description = "Description cannot exceed 250 characters";
     }
 
     setFormErrors(errors);
@@ -113,6 +113,7 @@ function Askquestion() {
 
       // Update questions state with the new question
       setQuestions((prev) => [response.data, ...prev]);
+      console.log("Posted question response:", response.data);
 
       // Show success message
       alert("Your question has been posted successfully!");
@@ -123,9 +124,9 @@ function Askquestion() {
       setTag("");
 
       // Navigate to home or question page
-      //   navigate("/", { replace: true });
+      navigate("/", { replace: true });
       // Alternatively, navigate to the question detail page:
-      navigate(`/question/${response.data.questionId}`);
+      //   navigate(`/question/${response.data.questionId}`);
     } catch (error) {
       console.error("Error posting question:", error);
 
@@ -178,7 +179,6 @@ function Askquestion() {
       setFormErrors((prev) => ({ ...prev, description: "" }));
     }
   };
-
   return (
     <div className={styles.container}>
       <div className={styles.steps_toFollow}>
@@ -220,7 +220,7 @@ function Askquestion() {
             <div className={styles.input_help}>
               {title.length > 0 && (
                 <span className={title.length < 10 ? styles.warning : ""}>
-                  {title.length}/200 characters
+                  {title.length}/50 characters
                 </span>
               )}
             </div>
@@ -245,7 +245,7 @@ function Askquestion() {
             <div className={styles.input_help}>
               {description.length > 0 && (
                 <span className={description.length < 20 ? styles.warning : ""}>
-                  {description.length}/5000 characters
+                  {description.length}/200 characters
                 </span>
               )}
             </div>
@@ -283,8 +283,7 @@ function Askquestion() {
             </button>
           </div>
         </form>
-
-        {questions.length > 0 && (
+        {/* {questions.length > 0 && (
           <div className={styles.recent_questions}>
             <h3>Your Recently Posted Questions</h3>
             {questions.map((question) => (
@@ -304,7 +303,16 @@ function Askquestion() {
               </div>
             ))}
           </div>
-        )}
+        )} */}
+        <div className="posted_questions">
+          {questions.map((question) => (
+            <div key={question.questionId}>
+              <h3>{question.title}</h3>
+              <p>{question.description}</p>
+              <p>{question.tag}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
