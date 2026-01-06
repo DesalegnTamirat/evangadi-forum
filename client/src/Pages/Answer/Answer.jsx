@@ -41,7 +41,7 @@ function Answer() {
     fetchAnswers();
   }, [question_id, token]);
 
-  //   2. Submit answer
+  //   2. Submit/post answer
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,7 +55,7 @@ function Answer() {
       await axios.post(
         "/answer",
         {
-          questionid: Number(question_id),
+          question_id: Number(question_id),
           answer: answerText.trim(),
         },
         {
@@ -89,7 +89,7 @@ function Answer() {
       {error && <p className={styles.error}>{error}</p>}
       {loading && <p>Loading...</p>}
 
-      {answers?.length === 0 && !loading && (
+      {!error && answers?.length === 0 && !loading && (
         <p className={styles.no_answers}>No answers yet. Be the first!</p>
       )}
       <div className={styles.answer_list}>
@@ -108,7 +108,9 @@ function Answer() {
         <textarea
           rows="6"
           value={answerText}
-          onChange={(e) => setAnswerText(e.target.value)}
+          onChange={(e) => {setAnswerText(e.target.value);
+            if (error) setError(null);
+          }}
           placeholder="Write your answer here..."
           disabled={loading}
         />
