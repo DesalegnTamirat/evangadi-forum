@@ -18,7 +18,7 @@ function Layout() {
         <Route path="/login" element={<h1>Login Page</h1>} />
         <Route path="/how-it-works" element={<h1>How It Works</h1>} />
         <Route path="/question" element={<Askquestion />} />
-        {/* <Route path="/question/:question_id" element={<Answer />} /> */}
+        <Route path="/question/:question_id" element={<Answer />} />
       </Routes>
     </>
   );
