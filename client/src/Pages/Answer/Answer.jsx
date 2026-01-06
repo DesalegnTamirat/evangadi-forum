@@ -91,6 +91,17 @@ useEffect(() => {
 //       {answers?.length === 0 && !loading && (
         <p className={styles.no_answers}>No answers yet. Be the first!</p>
       )}
+        <div className={styles.answer_list}>
+//         {answers?.map((ans) => (
+          <div key={ans.answer_id} className={styles.answer_card}>
+            <p className={styles.content}>{ans.content}</p>
+            <div className={styles.meta}>
+              <span>{ans.user_name}</span>
+              <span>{new Date(ans.created_at).toLocaleDateString()}</span>
+            </div>
+          </div>
+        ))}
+      </div>
   )
 }
 
@@ -98,13 +109,13 @@ export default Answer
 
 
 
-// import React, { useEffect, useState } from "react";
+{/* // import React, { useEffect, useState } from "react";
 // import styles from "./answer.module.css";
 // import axios from "../../Api/axiosConfig";
 // import { useParams, useNavigate } from "react-router-dom";
 
-// function Answer() {
-//   const { question_id } = useParams();
+// function Answer() { */}
+{/* //   const { question_id } = useParams();
 //   const navigate = useNavigate();
 //   const token = localStorage.getItem("token");
 
@@ -114,7 +125,7 @@ export default Answer
 //   const [error, setError] = useState(null);
 
 //   // Redirect if not logged in
-//   useEffect(() => {
+//   useEffect(() => { */}
 //     if (!token) {
 //       navigate("/login", { state: { from: `/question/${question_id}` } });
 //     }
