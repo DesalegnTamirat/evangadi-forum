@@ -71,3 +71,39 @@
     color: red;
   }
   
+
+   /* .container {
+    max-width: 900px;
+    margin: auto;
+    padding: 2rem;
+  }
+  
+  .answer_card {
+    background: #fff;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  }
+  
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: #777;
+  }
+  
+  .answer_form textarea {
+    width: 100%;
+    padding: 1rem;
+    margin-top: 0.5rem;
+  }
+  
+  button {
+    margin-top: 1rem;
+  }
+  
+  .error {
+    color: red;
+  }
+   */
