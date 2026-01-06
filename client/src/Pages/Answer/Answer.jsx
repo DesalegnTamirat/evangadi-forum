@@ -64,6 +64,22 @@ useEffect(() => {
         }
       );
 
+       // 3. Refresh answers
+      const res = await axios.get(`/answer/${question_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setAnswers(res.data.answers);
+      setAnswerText("");
+      setError(null);
+    } catch (err) {
+      setError("Failed to post answer. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
    
