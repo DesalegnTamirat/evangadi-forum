@@ -11,22 +11,41 @@ function Answer() {
   //
   const token = localStorage.getItem("token");
 
+  const [question, setQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [answerText, setAnswerText] = useState("");
   const [error, setError] = useState(null);
+  const [aiSummary, setAiSummary]= useState("");
 
-  //1. Fetch answers
+  // Redirect if not logged in
   useEffect(() => {
-    const fetchAnswers = async () => {
+    if (!token) {
+      navigate("/login", { state: { from: `/question/${question_id}` } });
+    }
+  }, [token, navigate, question_id]);
+//    // Fetch question, answers, and AI summary
+  useEffect(() => {
+    const fetchData = async () => {
       try {
         setLoading(true);
-        const res = await axios.get(`/answer/${question_id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+
+        // 1. Fetch question
+        const resQuestion = await axios.get(`/question/${question_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
         });
-        setAnswers(res.data.answers);
+        setQuestion(resQuestion.data);
+        // 2. Fetch answers
+        const resAnswers = await axios.get(`/answer/${question_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAnswers(resAnswers.data.answers);
+        // 3. Fetch AI summary
+        const resSummary = await axios.get(`/answer/summary/${question_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setAiSummary(resSummary.data.summary);
+        setError(null);
       } catch (err) {
         if (err.response?.status === 404) {
           setError("Question not found.");
@@ -38,7 +57,7 @@ function Answer() {
       }
     };
 
-    fetchAnswers();
+    fetchData();
   }, [question_id, token]);
 
   //   2. Submit/post answer
@@ -65,14 +84,18 @@ function Answer() {
         }
       );
 
-      // 3. Refresh answers
-      const res = await axios.get(`/answer/${question_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      // Refresh answers and AI summary
+      const [resAnswers, resSummary] = await Promise.all([
+        axios.get(`/answer/${question_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        axios.get(`/answer/summary/${question_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+      ]);
 
-      setAnswers(res.data.answers);
+      setAnswers(resAnswers.data.answers);
+      setAiSummary(resSummary.data.summary);
       setAnswerText("");
       setError(null);
     } catch (err) {
@@ -81,38 +104,55 @@ function Answer() {
       setLoading(false);
     }
   };
+  if (!question) return <p>Loading question...</p>;
 
   return (
     <div className={styles.container}>
-      <h2>Answers</h2>
+      {/* Question Section */}
+      <div className={styles.question_section}>
+        <span className={styles.tag}>{question.tag}</span>
+        <h2 className={styles.title}>{question.title}</h2>
+        <p className={styles.description}>{question.description}</p>
+      </div>
 
-      {error && <p className={styles.error}>{error}</p>}
-      {loading && <p>Loading...</p>}
-
-      {!error && answers?.length === 0 && !loading && (
-        <p className={styles.no_answers}>No answers yet. Be the first!</p>
+      {/* AI Summary */}
+      {aiSummary && (
+        <div className={styles.ai_summary}>
+          <h3>Summary of Answers</h3>
+          <p>{aiSummary}</p>
+        </div>
       )}
-      <div className={styles.answer_list}>
-        {answers?.map((ans) => (
+
+      {/* Answers List */}
+      <div className={styles.answers_section}>
+        <h3>Answer From The Community</h3>
+        {loading && <p>Loading answers...</p>}
+        {error && <p className={styles.error}>{error}</p>}
+        {!loading && answers.length === 0 && (
+          <p>No answers yet. Be the first!</p>
+        )}
+
+        {answers.map((ans) => (
           <div key={ans.answer_id} className={styles.answer_card}>
-            <p className={styles.content}>{ans.content}</p>
-            <div className={styles.meta}>
+            <div className={styles.user_info}>
+              <div className={styles.avatar}>👤</div>
               <span>{ans.user_name}</span>
-              <span>{new Date(ans.created_at).toLocaleDateString()}</span>
             </div>
+            <p className={styles.content}>{ans.content}</p>
           </div>
         ))}
       </div>
+
+      {/* Answer Form */}
       <form onSubmit={handleSubmit} className={styles.answer_form}>
-        <h3>Your Answer</h3>
         <textarea
-          rows="6"
+          placeholder="Your answer ..."
+          rows={6}
           value={answerText}
           onChange={(e) => {
             setAnswerText(e.target.value);
             if (error) setError(null);
           }}
-          placeholder="Write your answer here..."
           disabled={loading}
         />
         <button type="submit" disabled={loading}>
