@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import styles from "./ask.module.css";
-import axios from "../../Api/axiosConfig.js";
+import axios from "../../axiosConfig.js";
 import KeywordExtractor from "keyword-extractor";
 import { useNavigate } from "react-router-dom";
 
