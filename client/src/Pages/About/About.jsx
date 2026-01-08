@@ -26,7 +26,7 @@ const About = () => {
           network here.
         </p>
 
-        <Link to="/how-it-works">
+        <Link to="/howitworks">
           <button className={classes.button}>HOW IT WORKS</button>
         </Link>
       </div>
