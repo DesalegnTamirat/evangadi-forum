@@ -33,7 +33,7 @@ const Home_page = () => {
   // ===================== FETCH QUESTIONS =====================
   const fetchQuestions = async () => {
     try {
-      const { data } = await axios.get("http://localhost:5500/api/QuestionList_homepage", {
+      const { data } = await axios.get("/question", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setQuestions(data?.questions || []);
