@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import styles from "./ask.module.css";
 import axios from "../../axiosConfig.js";
 import KeywordExtractor from "keyword-extractor";
 import { useNavigate } from "react-router-dom";
+import QuestionList_homepage from "../Home/QuestionList_homepage";
+import { AppState } from "../../App";
 
 function Askquestion() {
+  const { user } = useContext(AppState);
   const token = localStorage.getItem("token");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -15,10 +18,24 @@ function Askquestion() {
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
 
-  // Check authentication on component mount
+  // Fetch questions from API
+  const fetchQuestions = async () => {
+    try {
+      const { data } = await axios.get("/question", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setQuestions(data?.questions || []);
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+    }
+  };
+
+  // Check authentication on component mount and fetch questions
   useEffect(() => {
     if (!token) {
       navigate("/login", { state: { from: "/ask" } });
+    } else {
+      fetchQuestions();
     }
   }, [token, navigate]);
 
@@ -111,8 +128,8 @@ function Askquestion() {
         }
       );
 
-      // Update questions state with the new question
-      setQuestions((prev) => [response.data, ...prev]);
+      // Refresh questions list to show the new question
+      await fetchQuestions();
 
       // Show success message
       alert("Your question has been posted successfully!");
@@ -282,27 +299,14 @@ function Askquestion() {
           </div>
         </form>
 
-        {questions.length > 0 && (
-          <div className={styles.recent_questions}>
-            <h3>Your Recently Posted Questions</h3>
-            {questions.map((question) => (
-              <div key={question.questionId} className={styles.question_card}>
-                <h4>{question.title}</h4>
-                <p className={styles.question_excerpt}>
-                  {question.description.length > 150
-                    ? `${question.description.substring(0, 150)}...`
-                    : question.description}
-                </p>
-                <div className={styles.question_meta}>
-                  <span className={styles.tag}>{question.tag}</span>
-                  <span className={styles.date}>
-                    {new Date(question.createdAt).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
+        {/* Display all questions using QuestionList_homepage component */}
+        <div className={styles.questions_section}>
+          <h3>Community Questions</h3>
+          <QuestionList_homepage
+            questions={questions}
+            user={user}
+          />
+        </div>
       </div>
     </div>
   );
