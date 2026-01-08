@@ -1,11 +1,11 @@
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import Landing from "../../Pages/Landing/Landing";
-import SharedLayout from "./SharedLayout";
-import Home_page from "../../Pages/Home/Home_page";
-import HowItWorks from "../../Pages/HowItWorks/HowItWorks";
-import NotFound from "../../Pages/NotFound/NotFound";
-import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
+import Landing from "../../Pages/Landing/Landing.jsx";
+import SharedLayout from "./SharedLayout.jsx";
+import Home from "../../Pages/Home/Home.jsx";
+import HowItWorks from "../../Pages/HowItWorks/HowItWorks.jsx";
+import NotFound from "../../Pages/NotFound/NotFound.jsx";
+import ProtectedRoute from "../ProtectedRoute/ProtectedRoute.jsx";
 import Askquestion from "../../Pages/Askquestion/Askquestion.jsx";
 
 function Layout() {
@@ -17,7 +17,7 @@ function Layout() {
           index
           element={
             <ProtectedRoute>
-              <Home_page />
+              <Home />
             </ProtectedRoute>
           }
         />
@@ -27,7 +27,7 @@ function Layout() {
           path="home"
           element={
             <ProtectedRoute>
-              <Home_page />
+              <Home />
             </ProtectedRoute>
           }
         />
