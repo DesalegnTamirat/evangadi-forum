@@ -17,7 +17,6 @@ function Answer() {
   const [loading, setLoading] = useState(false);
   const [answerText, setAnswerText] = useState("");
   const [error, setError] = useState(null);
-  const [aiSummary, setAiSummary] = useState("");
 
   // Redirect if not logged in
   useEffect(() => {
@@ -37,8 +36,6 @@ function Answer() {
           headers: { Authorization: `Bearer ${token}` },
         });
 
-        console.log("Question API response:", response.data);
-
         setQuestion(response.data.question);
 
         // 2. Fetch answers
@@ -46,18 +43,6 @@ function Answer() {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAnswers(responses.data.answers);
-
-        // // 3. Fetch AI summary
-        // const Summary = await axios.get(`/answer/summary/${question_id}`, {
-        //   headers: { Authorization: `Bearer ${token}` },
-        // });
-        // setAiSummary(Summary.data.summary);
-        // setError(null);
-
-        // // // Navigate to home or question page
-        // navigate("/", { replace: true });
-        // // // Alternatively, navigate to the question detail page:
-        // navigate(`/question/${response.data.questionId}`);
       } catch (err) {
         if (err.response?.status === 404) {
           setError("Question not found.");
@@ -127,14 +112,6 @@ function Answer() {
           <p className={styles.description}>{question.description}</p>
         </div>
       )}
-
-      {/* AI Summary
-      {aiSummary && (
-        <div className={styles.ai_summary}>
-          <h3>Summary of Answers</h3>
-          <p>{aiSummary}</p>
-        </div>
-      )} */}
 
       {/* Answers List */}
       <div className={styles.answers_section}>
