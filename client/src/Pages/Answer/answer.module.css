@@ -6,10 +6,11 @@
   font-family: "Inter", sans-serif;
 }
 .arrow {
-  margin-right: 5px; /* space between arrow and text */
-  color: #506bed; /* optional arrow color */
-  padding-left: 30px;
+  margin-right: 5px;
+  color: #506bed;
+  /* remove padding-left */
 }
+
 
 .text {
   border-bottom: 2px solid #677bdc; /* underline only under text */
@@ -22,13 +23,14 @@
   margin-top: 15px;
   color: black;
   font-size: 16px;
-  padding-left: 70px;
+  padding-left: 40px;
 }
 
 /* ANSWERS SECTION */
 .answers_section h3 {
   margin-bottom: 15px;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 26px;
 }
 
 .answer_card {
@@ -146,10 +148,14 @@
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   padding: 16px;
-  margin-left: 150px;
+  margin-left: 150px; /* <-- could break layout in flex */
 }
 
-/* Summary text (collapsed to 3 lines) */
+.big_title {
+  padding-bottom: 20px;
+  font-size: 26px;
+}
+/* Summary text (collapsed to 2 lines) */
 .summaryText {
   line-height: 1.6;
   color: black;
@@ -167,6 +173,7 @@
 .expanded {
   display: block;
 }
+
 
 .readMore {
   color: #506bed;
