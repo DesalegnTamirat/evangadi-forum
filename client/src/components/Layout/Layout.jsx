@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Landing from "../../Pages/Landing/Landing";
 import SharedLayout from "./SharedLayout";
-import Home from "../../Pages/Home/Home";
+import Home_page from "../../Pages/Home/Home_page";
 import HowItWorks from "../../Pages/HowItWorks/HowItWorks";
 import NotFound from "../../Pages/NotFound/NotFound";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
@@ -17,7 +17,7 @@ function Layout() {
           index
           element={
             <ProtectedRoute>
-              <Home />
+              <Home_page />
             </ProtectedRoute>
           }
         />
@@ -27,7 +27,7 @@ function Layout() {
           path="home"
           element={
             <ProtectedRoute>
-              <Home />
+              <Home_page />
             </ProtectedRoute>
           }
         />

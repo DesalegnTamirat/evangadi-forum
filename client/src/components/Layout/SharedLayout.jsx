@@ -5,7 +5,9 @@ function SharedLayout() {
   return (
     <div>
       <header>
-        <h1>Evangadi Forum</h1>
+        <div className="container">
+          <h1>Evangadi Forum</h1>
+        </div>
       </header>
       <main>
         <Outlet />
