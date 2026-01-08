@@ -8,8 +8,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@vitejs/plugin-react": "^5.1.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-scripts": "^5.0.1"
+  },
+  "devDependencies": {
+    "vite": "^7.3.1"
   }
 }
