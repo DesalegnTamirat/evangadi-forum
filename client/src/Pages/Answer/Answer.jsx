@@ -17,11 +17,12 @@ function Answer() {
   const [loading, setLoading] = useState(false);
   const [answerText, setAnswerText] = useState("");
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   // Redirect if not logged in
   useEffect(() => {
     if (!token) {
-      navigate("/login", { state: { from: "/answer" } });
+      navigate("/login", { state: { from: "/ans" } });
     }
   }, [token, navigate]);
 
@@ -81,16 +82,18 @@ function Answer() {
         }
       );
 
-      // Refresh answers and AI summary
-      const Answers = await axios.get(`/answer/${question_id}`, {
+      // Refresh answers
+      const responses = await axios.get(`/answer/${question_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       //   console.log("Answers response:", Answers.data);
 
-      setAnswers(Answers.data.answers);
+      setAnswers(responses.data.answers);
       setAnswerText("");
       setError(null);
+      setSuccess("Answer posted successfully ✅");
+      setTimeout(() => setSuccess(null), 3000);
     } catch (err) {
       setError("Failed to post answer. Please try again.");
     } finally {
@@ -117,7 +120,9 @@ function Answer() {
       <div className={styles.answers_section}>
         <h3>Answer From The Community</h3>
         {loading && <p>Loading answers...</p>}
+
         {error && <p className={styles.error}>{error}</p>}
+
         {!loading && answers.length === 0 && (
           <p>No answers yet. Be the first!</p>
         )}
@@ -132,7 +137,7 @@ function Answer() {
           </div>
         ))}
       </div>
-
+      {success && <p className={styles.success}>{success}</p>}
       {/* Answer Form */}
       <form onSubmit={handleSubmit} className={styles.answer_form}>
         <textarea
