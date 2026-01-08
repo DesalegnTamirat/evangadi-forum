@@ -9,7 +9,7 @@ import { AppState } from "../../App";
 import { Link, useNavigate } from "react-router-dom";
 
 // Axios instance
-import axios from "../../Api/axiosConfig";
+import axios from "../../axiosConfig";
 
 // CSS module
 import classes from "./home.module.css";
