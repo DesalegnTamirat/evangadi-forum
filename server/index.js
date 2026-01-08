@@ -11,10 +11,17 @@ import dbconnection from "./DB/dbconfig.js";
 const app = express();
 
 // CORS configuration
-app.use(cors({
-  origin: ["http://localhost:3000", "http://localhost:5173", "http://localhost:4173"],
-  credentials: true
-}));
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "http://localhost:5173",
+      "http://localhost:4173",
+      "http://localhost:5174",
+    ],
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 
@@ -22,7 +29,7 @@ dotenv.config();
 const PORT = process.env.PORT || 5500;
 
 // question routes middleware
-app.use("/api/question", questionRoutes);
+app.use("/api/question", authMiddleware, questionRoutes);
 
 // userRoutes middleware
 app.use("/api/user", userRoutes);

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* Global Styles */
 * {
   margin: 0;
@@ -108,3 +109,13 @@ li p {
     font-size: 1.5rem;
   }
 }
+=======
+*{
+    box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+}
+body {
+  font-family: "Poppins", sans-serif;
+}
+>>>>>>> 56ff55ab4453c3ba2de8a4ad51ad40bdba011632

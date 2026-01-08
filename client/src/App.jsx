@@ -2,7 +2,11 @@ import { createContext, useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Layout from "./components/Layout/Layout";
+<<<<<<< HEAD
 import axios from "./axiosConfig";
+=======
+import axios from "./Api/axiosConfig";
+>>>>>>> 56ff55ab4453c3ba2de8a4ad51ad40bdba011632
 
 export const AppState = createContext();
 
