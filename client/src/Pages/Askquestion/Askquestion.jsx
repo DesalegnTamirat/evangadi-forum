@@ -14,7 +14,7 @@ function Askquestion() {
   const [tag, setTag] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
-
+  const [stepsCollapsed, setStepsCollapsed] = useState(false);
   // Check authentication on component mount
   useEffect(() => {
     if (!token) {
@@ -54,6 +54,10 @@ function Askquestion() {
       console.error("Error generating tag:", error);
       return "general";
     }
+  };
+
+  const toggleSteps = () => {
+    setStepsCollapsed(!stepsCollapsed);
   };
 
   // Validate form inputs
@@ -181,7 +185,12 @@ function Askquestion() {
   };
   return (
     <div className={styles.container}>
-      <div className={styles.steps_toFollow}>
+      <div
+        className={`${styles.steps_toFollow} ${
+          stepsCollapsed ? styles.collapsed : ""
+        }`}
+        onClick={toggleSteps}
+      >
         <h2>Steps for writing a good question</h2>
         <ul>
           <li>Summarize your question in a one-line title.</li>
