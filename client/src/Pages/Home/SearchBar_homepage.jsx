@@ -1,5 +1,5 @@
 // Search input component
-import classes from "../home.module.css";
+import classes from "./home.module.css";
 
 const SearchBar_homepage = ({ value, onChange }) => {
   return (

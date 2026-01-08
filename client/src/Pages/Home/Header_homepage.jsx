@@ -1,6 +1,6 @@
 // Header section: Ask button + welcome message
 import { Link } from "react-router-dom";
-import classes from "../home.module.css";
+import classes from "./home.module.css";
 
 const Header_homepage = ({ user }) => {
   return (

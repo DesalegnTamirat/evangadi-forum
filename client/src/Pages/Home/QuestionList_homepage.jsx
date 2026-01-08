@@ -1,7 +1,7 @@
 // List of questions
-import QuestionItem from "./QuestionItem";
+import QuestionItem_homepage from "./QuestionItem_homepage";
 
-const QuestionList_homepage = ({ questions, user, onDelete }) => {
+const QuestionList_homepage = ({ questions, user }) => {
   if (!questions.length) {
     return <p>No questions found.</p>;
   }
@@ -9,11 +9,10 @@ const QuestionList_homepage = ({ questions, user, onDelete }) => {
   return (
     <>
       {questions.map((q) => (
-        <QuestionItem
+        <QuestionItem_homepage
           key={q.questionid}
-          questions={q}
+          question={q}
           user={user}
-          onDelete={onDelete}
         />
       ))}
     </>

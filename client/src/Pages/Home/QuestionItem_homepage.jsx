@@ -1,33 +1,33 @@
-// Single questions card
+// Single question card
 import { Link, useNavigate } from "react-router-dom";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoIosContact } from "react-icons/io";
-import classes from "../home.module.css";
+import classes from "./home.module.css";
 
-const questionsItem_homepage = ({ questions, user, onDelete }) => {
+const QuestionItem_homepage = ({ question, user }) => {
   const navigate = useNavigate();
 
   return (
-    <div className={classes.questionsItem}>
-      <Link to={`/questions/${questionss.questionsid}`}>
+    <div className={classes.questionItem}>
+      <Link to={`/question/${question.questionid}`}>
         <IoIosContact size={60} />
-        <p>{questionss.username}</p>
-        <h4>{questionss.title}</h4>
+        <p>{question.username}</p>
+        <h4>{question.title}</h4>
       </Link>
 
       {/* Show edit/delete only for owner */}
-      {user?.username === questionss.username && (
+      {user?.username === question.username && (
         <div className={classes.actions}>
           <MdEdit
             onClick={() =>
-              navigate(`/edit-questions/${questions.questionsid}`)
+              navigate(`/edit-question/${question.questionid}`)
             }
           />
-          <MdDelete onClick={() => onDelete(questions.questionsid)} />
+          <MdDelete onClick={() => console.log('Delete:', question.questionid)} />
         </div>
       )}
     </div>
   );
 };
 
-export default questionsItem_homepage;
+export default QuestionItem_homepage;

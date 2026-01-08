@@ -1,5 +1,5 @@
 // Sorting dropdown component
-import classes from "../home.module.css";
+import classes from "./home.module.css";
 
 const SortDropdown_homepage = ({ value, onChange }) => {
   return (
