@@ -8,6 +8,9 @@ import authMiddleware from "./middleware/authMiddleware.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import dbconnection from "./DB/dbconfig.js";
 
+// Load environment variables first
+dotenv.config();
+
 const app = express();
 
 // CORS configuration
@@ -26,8 +29,7 @@ app.use(
 
 app.use(express.json());
 
-dotenv.config();
-const PORT = process.env.PORT || 5500;
+const PORT = process.env.PORT || 5501;
 
 // question routes middleware
 app.use("/api/question", authMiddleware, questionRoutes);

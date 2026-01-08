@@ -7,7 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { AppState } from "../../App";
 
 // Axios instance
-import axios from "../../Api/axiosConfig";
+import axios from "../../axiosConfig";
 
 // CSS module
 import classes from "./home.module.css";

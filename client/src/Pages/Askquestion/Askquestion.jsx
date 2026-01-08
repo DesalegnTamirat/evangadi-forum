@@ -122,10 +122,8 @@ function Askquestion() {
       setDescription("");
       setTag("");
 
-      // Navigate to home or question page
-      //   navigate("/", { replace: true });
-      // Alternatively, navigate to the question detail page:
-      navigate(`/question/${response.data.questionId}`);
+      // Navigate to home page
+      navigate("/", { replace: true });
     } catch (error) {
       console.error("Error posting question:", error);
 
