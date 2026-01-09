@@ -125,7 +125,7 @@ function Answer() {
         <div className={styles.question_summary_wrapper}>
           {/* Question */}
           <div className={styles.question_section}>
-            <h2 className={styles.big_title}>QUESTION</h2>
+            <h3 className={styles.big_title}>QUESTION</h3>
             <h2 className={styles.question}>
               <span className={styles.arrow}>➤</span>
               <span className={styles.text}>{question.title}</span>
@@ -158,7 +158,7 @@ function Answer() {
 
       {/* Answers List */}
       <div className={styles.answers_section}>
-        <h3>Answer From The Community</h3>
+        <h3 className={styles.big_title}>Answer From The Community</h3>
         {answersLoading && <p>Loading answers...</p>}
 
         {error && <p className={styles.error}>{error}</p>}
@@ -178,7 +178,7 @@ function Answer() {
         ))}
       </div>
       {success && <p className={styles.success}>{success}</p>}
-      
+
       {/* Answer Form */}
       <form onSubmit={handleSubmit} className={styles.answer_form}>
         <textarea
