@@ -9,9 +9,9 @@ function SharedLayout() {
   return (
     <>
       <Header />
-      <ProtectedRoute>
+      {/* <ProtectedRoute>
         <ChatWidget />
-      </ProtectedRoute>
+      </ProtectedRoute> */}
       <Outlet />
       <Footer />
     </>

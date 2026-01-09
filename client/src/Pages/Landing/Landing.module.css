@@ -1,7 +1,7 @@
 /* Full page container */
 .container {
   width: 100%;
-  min-height: 80vh;
+  min-height: 80dvh;
   display: grid;
   place-items: center;
  background: url("../../assets/bg.jpeg") no-repeat center center fixed;
@@ -10,7 +10,7 @@
 
 /* Wrapper for slider + About */
 .containerContent {
-  max-width: 58rem;
+  max-width: 60rem;
   display: grid;
   place-items: center;
   grid-template-columns: 1fr 1fr;
