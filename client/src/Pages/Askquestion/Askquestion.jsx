@@ -3,6 +3,7 @@ import styles from "./ask.module.css";
 import axios from "../../Api/axiosConfig.js";
 import KeywordExtractor from "keyword-extractor";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Askquestion() {
@@ -15,7 +16,7 @@ function Askquestion() {
   const [tag, setTag] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const navigate = useNavigate();
-  const [stepsCollapsed, setStepsCollapsed] = useState(false);
+  const [stepsCollapsed, setStepsCollapsed] = useState(true);
 
   // Check authentication on component mount
   useEffect(() => {
@@ -77,8 +78,8 @@ function Askquestion() {
       errors.description = "Description is required";
     } else if (description.trim().length < 20) {
       errors.description = "Description must be at least 20 characters long";
-    } else if (description.trim().length > 5000) {
-      errors.description = "Description cannot exceed 5000 characters";
+    } else if (description.trim().length > 2000) {
+      errors.description = "Description cannot exceed 2000 characters";
     }
 
     setFormErrors(errors);
@@ -203,7 +204,7 @@ function Askquestion() {
 
       <div className={styles.question_form}>
         <div className={styles.question_title}>
-          <h2>Post Question</h2>
+          <h2>Post your Question</h2>
         </div>
 
         {error && (
@@ -255,7 +256,7 @@ function Askquestion() {
             <div className={styles.input_help}>
               {description.length > 0 && (
                 <span className={description.length < 20 ? styles.warning : ""}>
-                  {description.length}/5000 characters
+                  {description.length}/2000 characters
                 </span>
               )}
             </div>
