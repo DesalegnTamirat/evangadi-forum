@@ -1,16 +1,18 @@
-import React from 'react'
-import {Outlet} from 'react-router-dom'
-import Header from '../../components/Header/Header'
-import Footer from '../../components/Footer/Footer'
+import { Outlet } from "react-router-dom";
+import Header from "../../components/Header/Header";
+import Footer from "../../components/Footer/Footer";
+import ChatWidget from "../ChatWidget/ChatWidget";
 
 function SharedLayout() {
+  
   return (
     <>
-      <Header/>
+      <Header />
+      <ChatWidget />
       <Outlet />
-      <Footer/>
+      <Footer />
     </>
   );
 }
 
-export default SharedLayout
+export default SharedLayout;
