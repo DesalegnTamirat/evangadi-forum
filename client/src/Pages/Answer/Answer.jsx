@@ -15,13 +15,16 @@ function Answer() {
   const [question, setQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [summary, setSummary] = useState("");
-  const [summaryExpanded, setSummaryExpanded] = useState(false);
+  const [summaryExpanded, setSummaryExpanded] = useState(false); 
+  const [answerText, setAnswerText] = useState("");
+
+
   const [questionLoading, setQuestionLoading] = useState(true);
   const [answersLoading, setAnswersLoading] = useState(true);
   const [summaryLoading, setSummaryLoading] = useState(true);
   const [posting, setPosting] = useState(false);
 
-  const [answerText, setAnswerText] = useState("");
+
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
@@ -55,7 +58,7 @@ function Answer() {
         setQuestion(questionRes.data.question);
         setAnswers(answersRes.data.answers.reverse());
         setSummary(summaryRes.data.summary);
-        
+
       } catch (err) {
         setError("Failed to load data.");
       } finally {
@@ -114,13 +117,9 @@ function Answer() {
       setPosting(false);
     }
   };
-  if (!question) return <p>Loading question...</p>;
 
   return (
     <div className={styles.container}>
-      {/* Question Section */}
-
-      {/* {success && <div className={styles.toast}>✅ {success}</div>} */}
 
       {question && (
         <div className={styles.question_summary_wrapper}>
@@ -179,6 +178,7 @@ function Answer() {
         ))}
       </div>
       {success && <p className={styles.success}>{success}</p>}
+      
       {/* Answer Form */}
       <form onSubmit={handleSubmit} className={styles.answer_form}>
         <textarea
