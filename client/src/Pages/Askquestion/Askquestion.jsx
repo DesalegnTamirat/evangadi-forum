@@ -21,7 +21,7 @@ function Askquestion() {
   // Check authentication on component mount
   useEffect(() => {
     if (!token) {
-      navigate("/login", { state: { from: "/ask" } });
+      navigate("/login", { state: { from: "/askquestion" } });
     }
   }, [token, navigate]);
   // Toggle steps function - MOVED OUTSIDE generateTag

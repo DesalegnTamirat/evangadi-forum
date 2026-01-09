@@ -34,7 +34,7 @@ function Layout() {
         />
         {/* protected route for ask question page */}
         <Route
-          path="ask"
+          path="askquestion"
           element={
             <ProtectedRoute>
               <Askquestion />
