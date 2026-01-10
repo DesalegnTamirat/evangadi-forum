@@ -198,7 +198,7 @@ const Home = () => {
             <div className={classes["questions-list"]} key={q.questionid}>
               <div className={classes["question-item"]}>
                 <Link
-                  to={`/question/${q.questionid}`}
+                  to={`/answer/${q.questionid}`}
                   className={classes["question-link"]}
                 >
                   <div className={classes["user-info"]}>

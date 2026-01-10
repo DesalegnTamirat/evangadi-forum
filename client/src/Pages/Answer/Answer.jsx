@@ -15,15 +15,13 @@ function Answer() {
   const [question, setQuestion] = useState(null);
   const [answers, setAnswers] = useState([]);
   const [summary, setSummary] = useState("");
-  const [summaryExpanded, setSummaryExpanded] = useState(false); 
+  const [summaryExpanded, setSummaryExpanded] = useState(false);
   const [answerText, setAnswerText] = useState("");
-
 
   const [questionLoading, setQuestionLoading] = useState(true);
   const [answersLoading, setAnswersLoading] = useState(true);
   const [summaryLoading, setSummaryLoading] = useState(true);
   const [posting, setPosting] = useState(false);
-
 
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -58,7 +56,6 @@ function Answer() {
         setQuestion(questionRes.data.question);
         setAnswers(answersRes.data.answers.reverse());
         setSummary(summaryRes.data.summary);
-
       } catch (err) {
         setError("Failed to load data.");
       } finally {
@@ -173,15 +170,6 @@ function Answer() {
               <span>{ans.user_name}</span>
             </div>
             <p className={styles.content}>{ans.content}</p>
-            {/* PERMISSION CHECK */}
-            {/* {currentUser?.id === ans.user_id && (
-              <div className={styles.actions}>
-                <button onClick={() => handleEdit(ans)}>✏️ Edit</button>
-                <button onClick={() => handleDelete(ans.answer_id)}>
-                  🗑 Delete
-                </button>
-              </div>
-            )} */}
           </div>
         ))}
       </div>
