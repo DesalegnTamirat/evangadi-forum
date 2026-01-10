@@ -1,17 +1,28 @@
 import { Router } from "express";
 
 import authMiddleware from "../middleware/authMiddleware.js";
-const router = Router();
 import {
   getAllQuestions,
   getSingleQuestion,
   postQuestion,
+  editQuestion,
+  deleteQuestion,
 } from "../controller/questionController.js";
+const router = Router();
 
+// GET all questions
 router.get("/", getAllQuestions);
 
-// get a single question
+// POST a new question
 router.post("/", authMiddleware, postQuestion);
+
+// GET a single question
 router.get("/:questionid", getSingleQuestion);
+
+// EDIT a question
+router.put("/:questionid", authMiddleware, editQuestion);
+
+// DELETE a question
+router.delete("/:questionid", authMiddleware, deleteQuestion);
 
 export default router;
