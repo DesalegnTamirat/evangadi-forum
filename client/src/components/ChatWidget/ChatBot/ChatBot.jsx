@@ -15,9 +15,9 @@ function ChatBot({ onClose }) {
     error,
     sendMessage,
     retryLastMessage,
+    historyLoadingError,
   } = useChatbot();
 
-  
   // >=> Auto-scroll to bottom whenever messages or typing state changes
   const scrollRef = useRef(null);
   useEffect(() => {
@@ -30,12 +30,16 @@ function ChatBot({ onClose }) {
     <div className={styles.pageWrapper}>
       <div className={styles.mainCard}>
         <ChatHeader isBotTyping={isBotTyping} onClose={onClose} />
-        
+
         <div ref={scrollRef} className={styles.chatBody}>
           {isLoadingHistory ? (
             <div className={styles.loadingContainer}>
               <div className={styles.spinner}></div>
               <p>Restoring conversation...</p>
+            </div>
+          ) : historyLoadingError ? (
+            <div className={styles.historyErrorContainer}>
+              <p>⚠️ {historyLoadingError}</p>
             </div>
           ) : (
             <>
@@ -51,7 +55,7 @@ function ChatBot({ onClose }) {
         </div>
 
         {/* Input area handles sending and disabling itself while bot types */}
-        <ChatInput onSubmit={sendMessage} isBotTyping={isBotTyping} />
+        <ChatInput onSubmit={sendMessage} isBotTyping={isBotTyping || historyLoadingError} />
       </div>
     </div>
   );

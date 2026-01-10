@@ -13,6 +13,7 @@ export const useChatbot = () => {
   const [messages, setMessages] = useState([]);
   const [isBotTyping, setIsBotTyping] = useState(false);
   const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+  const [historyLoadingError, setHistoryLoadingError] = useState("");
   const [error, setError] = useState("");
 
 
@@ -31,6 +32,9 @@ export const useChatbot = () => {
         setMessages(data.history);
       } catch (err) {
         console.error("Could not load history", err.message);
+        const errorMessage =
+          err.response?.data?.message || err.message || "Something went wrong";
+        setHistoryLoadingError(errorMessage)
       } finally {
         setIsLoadingHistory(false);
       }
@@ -122,6 +126,7 @@ export const useChatbot = () => {
     messages,
     isLoadingHistory,
     isBotTyping,
+    historyLoadingError,
     error,
     sendMessage,
     retryLastMessage,

@@ -1,10 +1,11 @@
 import axios from "../../axiosConfig";
 import styles from "./register.module.css";
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import VisibilityOffOutlinedIcon from "@mui/icons-material/VisibilityOffOutlined";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { AppState } from "../../App";
 const Register = () => {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [error, setError] = useState("");
@@ -13,6 +14,7 @@ const Register = () => {
   const lastNameDom = useRef();
   const emailDom = useRef();
   const passwordDom = useRef();
+  const {setUser} = useContext(AppState);
 
   const navigate = useNavigate();
 
@@ -48,6 +50,13 @@ const Register = () => {
         email: emailValue,
         password: passwordValue,
       });
+
+      const res = await axios.get("/user/check", {
+        headers: {
+          Authorization: `Bearer ${data.token}`,
+        },
+      });
+      setUser(res.data);
       localStorage.setItem("token", data.token);
       navigate("/");
     } catch (error) {
