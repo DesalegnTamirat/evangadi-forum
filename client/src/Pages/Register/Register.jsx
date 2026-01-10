@@ -60,7 +60,6 @@ const Register = () => {
     <section className={styles.registerPage}>
       <section className={styles.registerSection}>
         <form className={styles.form_container} onSubmit={handleSubmit}>
-        
           {/* Error container preserves space */}
           <div className={styles.error_container}>
             {error && <p className={styles.error_text}>{error}</p>}
@@ -137,11 +136,19 @@ const Register = () => {
 
           <p className={styles.form_text}>
             I agree to the{" "}
-            <a className={styles.form_link} href="">
+            <a
+              className={styles.form_link}
+              href="https://www.evangadi.com/legal/privacy/"
+              target="_blank"
+            >
               privacy policy
             </a>{" "}
             and{" "}
-            <a className={styles.form_link} href="">
+            <a
+              className={styles.form_link}
+              href="https://www.evangadi.com/legal/privacy/"
+              target="_blank"
+            >
               terms of service.
             </a>
           </p>
