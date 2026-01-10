@@ -120,7 +120,7 @@ const Home = () => {
       setTimeout(() => setSuccessMessage(""), 3000);
     } catch {
       // Show error message
-      setErrorMessage(("home.deleteError"));
+      setErrorMessage("home.deleteError");
       setTimeout(() => setErrorMessage(""), 3000);
     } finally {
       // Close confirmation dialog
@@ -134,12 +134,12 @@ const Home = () => {
       <div className={classes["main-container"]}>
         {/* Header section */}
         <div className={classes["welcome-section"]}>
-          <Link to="/ask" className={classes["ask-question-btn"]}>
-            {("Ask Question")}
+          <Link to="/askquestion" className={classes["ask-question-btn"]}>
+            {"Ask Question"}
           </Link>
 
           <div className={classes["welcome-message"]}>
-            {("home.welcome")} :
+            {"home.welcome"} :
             <span className={classes["username"]}> {user?.username}</span>
           </div>
         </div>
@@ -150,7 +150,7 @@ const Home = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={classes["search-input"]}
-            placeholder={("home.searchPlaceholder")}
+            placeholder={"home.searchPlaceholder"}
           />
         </div>
 
@@ -161,10 +161,10 @@ const Home = () => {
             onChange={(e) => setSortOption(e.target.value)}
             className={classes["sort-select"]}
           >
-            <option value="Most Recent">{("home.mostRecent")}</option>
-            <option value="Most Popular">{("home.mostPopular")}</option>
-            <option value="By Questions">{("home.byQuestions")}</option>
-            <option value="By Date">{("home.byDate")}</option>
+            <option value="Most Recent">{"home.mostRecent"}</option>
+            <option value="Most Popular">{"home.mostPopular"}</option>
+            <option value="By Questions">{"home.byQuestions"}</option>
+            <option value="By Date">{"home.byDate"}</option>
           </select>
         </div>
 
@@ -179,15 +179,15 @@ const Home = () => {
         {/* Delete confirmation */}
         {confirmDeleteId !== null && (
           <div className={classes["confirmation-prompt"]}>
-            <p>{("home.confirmDelete")}</p>
+            <p>{"home.confirmDelete"}</p>
             <button className="btn btn-danger" onClick={handleConfirmDelete}>
-              {("home.yesDelete")}
+              {"home.yesDelete"}
             </button>
             <button
               className="btn btn-secondary"
               onClick={() => setConfirmDeleteId(null)}
             >
-              {("home.cancel")}
+              {"home.cancel"}
             </button>
           </div>
         )}
@@ -198,7 +198,7 @@ const Home = () => {
             <div className={classes["questions-list"]} key={q.questionid}>
               <div className={classes["question-item"]}>
                 <Link
-                  to={`/question/${q.questionid}`}
+                  to={`/answer/${q.questionid}`}
                   className={classes["question-link"]}
                 >
                   <div className={classes["user-info"]}>
@@ -237,7 +237,7 @@ const Home = () => {
             </div>
           ))
         ) : (
-          <p>{("home.noQuestions")}</p>
+          <p>{"home.noQuestions"}</p>
         )}
       </div>
     </section>
