@@ -31,13 +31,19 @@ const Home = () => {
   const [successMessage, setSuccessMessage] = useState(""); // Success alert
   const [errorMessage, setErrorMessage] = useState(""); // Error alert
   const [confirmDeleteId, setConfirmDeleteId] = useState(null); // Delete confirmation ID
+  const [loading, setLoading] = useState(true); // Loading state
 
   // Auth token
   const token = localStorage.getItem("token");
 
   // ===================== FETCH DATA =====================
-  // Fetch all questions from backend
+  // Fetch all questions from backend (only when logged in)
   const fetchData = async () => {
+    if (!token) {
+      setLoading(false);
+      return;
+    }
+
     try {
       const { data } = await axios.get("/questions/all-list-questions", {
         headers: { Authorization: `Bearer ${token}` },
@@ -48,13 +54,15 @@ const Home = () => {
       setSortedQuestions(data?.questions || []);
     } catch (error) {
       console.error("Error fetching questions:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Fetch questions on component mount
+  // Fetch questions on component mount and when user changes
   useEffect(() => {
-    if (token) fetchData();
-  }, [token]);
+    fetchData();
+  }, [token, user]);
 
   // ===================== SORTING =====================
   // Re-sort whenever questions or sort option changes
