@@ -81,14 +81,15 @@ const Home = () => {
       case "Most Recent":
         sortedData.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
         break;
-      case "Most Popular":
-        sortedData.sort((a, b) => (b.views || 0) - (a.views || 0));
-        break;
       case "By Questions":
         sortedData.sort((a, b) => a.title.localeCompare(b.title));
         break;
-      case "By Date":
-        sortedData.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      case "By Tag":
+        sortedData.sort((a, b) => {
+          const tagA = (a.tag || "").toLowerCase();
+          const tagB = (b.tag || "").toLowerCase();
+          return tagA.localeCompare(tagB);
+        });
         break;
       default:
         break;
@@ -164,7 +165,7 @@ const Home = () => {
         </div>
 
         {/* Sorting dropdown */}
-        {/* <div className={classes["sort-dropdown"]}>
+         <div className={classes["sort-dropdown"]}>
           <select
             value={sortOption}
             onChange={(e) => setSortOption(e.target.value)}
@@ -172,11 +173,11 @@ const Home = () => {
             aria-label="Sort questions by"
           >
             <option value="Most Recent">Most Recent</option>
-            <option value="Most Popular">Most Popular</option>
             <option value="By Questions">By Questions</option>
-            <option value="By Date">By Date</option>
+            <option value="By Tag">By Tag</option>
           </select>
-        </div> */}
+        </div> 
+        
 
         {/* Fetch Error with Retry */}
         {fetchError && (
@@ -247,6 +248,11 @@ const Home = () => {
                     </div>
                     {/* Question title */}
                     <div className={classes["question-text"]}>{q.title}</div>
+                  </div>
+                  <div className="question-tag">
+                    {
+                      q.tag
+                    }
                   </div>
                   
                   {/* Right Arrow */}

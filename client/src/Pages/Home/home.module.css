@@ -99,6 +99,7 @@ section {
 .sort-dropdown {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   margin-bottom: 20px;
 }
 
@@ -395,7 +396,7 @@ section {
   }
 
   .arrow {
-    font-size: 16px;
+    font-size: 20px;
   }
 }
 
@@ -513,7 +514,7 @@ section {
   color: #ff8f00;
   transition: all 0.3s ease;
   font-weight: bold;
-  font-size: 25px;
+  font-size: 64px;
 }
 
 .question-link:hover .arrow-container {
