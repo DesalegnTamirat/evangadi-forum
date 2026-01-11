@@ -82,50 +82,124 @@
 }
 
 /* ============================= */
-/* Responsive */
+/* Responsive Design */
+/* Tablets and smaller laptops (max-width: 1024px) */
+@media screen and (max-width: 1024px) {
+  .container {
+    padding: 10px 15px;
+  }
+
+  .evLogo__continer img {
+    width: 200px;
+    padding-left: 30px;
+  }
+
+  .nav__links {
+    padding-right: 50px;
+    gap: 25px;
+  }
+
+  .nav-link {
+    font-size: 18px;
+  }
+
+  .nav_butn {
+    padding: 8px 50px;
+  }
+}
+
+/* Tablets (max-width: 768px) */
 @media screen and (max-width: 768px) {
-.container {
+  .container {
     flex-wrap: wrap;
-}
+    padding: 10px 15px;
+  }
 
-.evLogo__continer img {
-    width: 120px;
-}
-.nav-link{
-    font-size: 19px;
+  .evLogo__continer img {
+    width: 150px;
+    padding-left: 0;
+  }
 
-}
-.nav__links {
+  .nav-link {
+    font-size: 18px;
+  }
+
+  .nav__links {
     display: none;
     flex-direction: column;
     width: 100%;
-    gap: 25px;
-    margin-top: 10px;
+    gap: 20px;
+    margin-top: 15px;
+    padding-right: 0;
     font-size: 16px;
     text-decoration: none;
-}
-
-.nav__links.open {
-    display: flex;
-}
-
-.hamburger {
-    display: flex;
-}
-
-.nav_butn {
-    text-align: center;
-    padding: 10px 20px;
-    font-size: 12px;
-    font-weight: 300;
-}
-.evLogo__continer img {
-width: 230px;
-padding-left: 100px;
+    padding-bottom: 15px;
   }
-.hamburger{
-    padding-right: 90px;
-    font-size: 20px;
+
+  .nav__links.open {
+    display: flex;
+  }
+
+  .hamburger {
+    display: flex;
+  }
+
+  .nav_butn {
+    text-align: center;
+    padding: 10px 30px;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+  }
 }
-  
+
+/* Mobile devices (max-width: 480px) */
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 8px 10px;
+  }
+
+  .evLogo__continer img {
+    width: 120px;
+  }
+
+  .nav-link {
+    font-size: 16px;
+  }
+
+  .nav__links {
+    gap: 15px;
+    margin-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .nav_butn {
+    padding: 8px 20px;
+    font-size: 13px;
+  }
+
+  .hamburger {
+    gap: 4px;
+  }
+
+  .hamburger .bar {
+    width: 22px;
+    height: 2.5px;
+  }
+}
+
+/* Very small mobile devices (max-width: 320px) */
+@media screen and (max-width: 320px) {
+  .evLogo__continer img {
+    width: 100px;
+  }
+
+  .nav-link {
+    font-size: 15px;
+  }
+
+  .nav_butn {
+    padding: 8px 15px;
+    font-size: 12px;
+  }
 }

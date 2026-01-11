@@ -12,14 +12,10 @@ function Layout() {
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
-        {/* Root route. redirect to home if logged in */}
+        {/* Root route - public home page */}
         <Route
           index
-          element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          }
+          element={<Home />}
         />
 
         {/* Protected route for Home */}

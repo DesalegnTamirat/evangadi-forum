@@ -15,7 +15,7 @@ function App() {
   
   async function checkUser() {
     if (!token) {
-      navigate("/signin");
+      // Don't redirect - allow public access to home page
       return;
     }
 
@@ -29,7 +29,7 @@ function App() {
     } catch (error) {
       console.error(error.response);
       localStorage.removeItem("token");
-      navigate("/signin");
+      // Don't redirect on error - allow public access
     }
   }
 
