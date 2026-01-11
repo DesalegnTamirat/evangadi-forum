@@ -28,8 +28,8 @@ app.use(express.json());
 dotenv.config();
 const PORT = process.env.PORT || 5500;
 
-// question routes middleware
-app.use("/api/question", authMiddleware, questionRoutes);
+// question routes middleware (auth applied selectively in route file)
+app.use("/api/question", questionRoutes);
 
 // userRoutes middleware
 app.use("/api/user", userRoutes);
