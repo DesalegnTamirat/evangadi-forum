@@ -32,7 +32,11 @@ const getAnswers = async (req, res) => {
       `SELECT 
         a.answerid AS answer_id,
         a.answer AS content,
-        u.username AS user_name
+        u.username AS user_name,
+        u.firstname,
+        u.lastname,
+        a.created_at,
+        a.userid
     FROM answers a
     JOIN users u ON a.userid = u.userid
     WHERE a.questionid = ?`,

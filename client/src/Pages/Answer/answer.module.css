@@ -1,1 +1,403 @@
+.container {
+  max-width: 1150px;
+  margin: 50px auto;
+  padding: 0 60px;
+  font-family: "Inter", sans-serif;
+  background-color: #fafafa;
+}
 
+.big_title {
+  font-weight: 700;
+  font-size: 30px;
+  padding: 15px 0;
+}
+
+.question_summary_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.question_section {
+  flex: 3;
+}
+
+.question {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.arrow {
+  margin-right: 5px;
+  color: #506bed;
+}
+
+.text {
+  font-size: 22px;
+  border-bottom: 2px solid #677bdc;
+  padding-bottom: 2px;
+}
+
+.description {
+  margin-top: 10px;
+  font-size: 18px;
+  color: #000;
+}
+
+.summary_section {
+  flex: 2;
+  background: #d88b39;
+  border-radius: 8px;
+  padding: 16px;
+  position: sticky;
+  top: 20px;
+}
+
+.summaryText {
+  line-height: 1.5;
+}
+
+.collapsed {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.expanded {
+  display: block;
+}
+
+.readMore {
+  color: #506bed;
+  cursor: pointer;
+  font-weight: 500;
+  margin-top: 6px;
+  display: inline-block;
+}
+
+.answers_section {
+  margin-top: 20px;
+}
+
+.answer_card {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  gap: 12px;
+}
+
+.user_info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-start;
+}
+
+.user_info span {
+  font-size: 14px;
+  color: #555;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px;
+}
+
+.avatar {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
+.content {
+  width: 100%;
+  font-size: 16px;
+  color: #333;
+  text-align: left;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
+}
+
+.answer_footer {
+  display: flex;
+  justify-content: flex-end;
+  /* align-self: flex-end; */
+  /* align-items: center; */
+  width: 100%;
+  gap: 10px;
+}
+
+.action_icons > * {
+  transition: 0.2s ease;
+}
+
+.action_icons > :first-child:hover {
+  color: #0c0c8f;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.action_icons > :last-child:hover {
+  color: #ad1414;
+  transform: scale(1.2);
+  cursor: pointer;
+}
+
+.answer_form {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.answer_form textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  resize: none;
+}
+
+.answer_form button {
+  width: 120px;
+  padding: 8px 0;
+  background-color: #516cf0;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease-in-out;
+}
+
+.answer_form button:hover {
+  background-color: #3b50d4;
+}
+
+.answer_form button:disabled {
+  background-color: #93c5fd;
+  cursor: not-allowed;
+}
+
+.error {
+  color: #dc2626;
+  margin-bottom: 10px;
+}
+
+.success {
+  color: #2e7d32;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.confirm_box {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+}
+
+.confirm_box button {
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.confirm_box button:first-child {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.confirm_box button:last-child {
+  background: #bdc3c7;
+  color: #2c3e50;
+}
+
+/* Responsive Design */
+/* Tablets and smaller laptops (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .container {
+    padding: 0 40px;
+    margin: 40px auto;
+  }
+
+  .question_summary_wrapper {
+    gap: 15px;
+  }
+}
+
+/* Tablets (max-width: 768px) */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 30px;
+    margin: 30px auto;
+  }
+
+  .big_title {
+    font-size: 24px;
+  }
+
+  .question_summary_wrapper {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .question {
+    font-size: 16px;
+  }
+
+  .text {
+    font-size: 18px;
+  }
+
+  .description {
+    font-size: 16px;
+  }
+
+  .summary_section {
+    position: static;
+  }
+
+  .answer_card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding: 15px;
+  }
+
+  .user_info {
+    align-self: flex-start;
+  }
+
+  .content {
+    width: 100%;
+  }
+
+  .answer_footer {
+    width: 100%;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+/* Mobile devices (max-width: 480px) */
+@media (max-width: 480px) {
+  .container {
+    padding: 0 15px;
+    margin: 20px auto;
+  }
+
+  .big_title {
+    font-size: 20px;
+    padding: 10px 0;
+  }
+
+  .question {
+    font-size: 14px;
+  }
+
+  .text {
+    font-size: 16px;
+  }
+
+  .description {
+    font-size: 14px;
+  }
+
+  .summary_section {
+    padding: 12px;
+  }
+
+  .summaryText {
+    font-size: 14px;
+  }
+
+  .answer_card {
+    padding: 12px;
+    gap: 12px;
+  }
+
+  .avatar {
+    width: 45px;
+    height: 45px;
+    font-size: 16px;
+  }
+
+  .user_info span {
+    font-size: 13px;
+  }
+
+  .content {
+    font-size: 14px;
+  }
+
+  .answer_footer {
+    font-size: 12px;
+  }
+
+  .answer_form textarea {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  .answer_form button {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .confirm_box {
+    padding: 1.5rem;
+    max-width: 90%;
+  }
+
+  .confirm_box p {
+    font-size: 14px;
+  }
+
+  .confirm_box button {
+    padding: 0.4rem 0.8rem;
+    font-size: 13px;
+  }
+}
+
+/* Very small mobile devices (max-width: 320px) */
+@media (max-width: 320px) {
+  .big_title {
+    font-size: 18px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+    font-size: 14px;
+  }
+}
