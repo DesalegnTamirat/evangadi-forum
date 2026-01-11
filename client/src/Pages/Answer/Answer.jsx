@@ -51,7 +51,7 @@ function Answer() {
       try {
         setAnswersLoading(true);
 
-        const [qRes, aRes, sRes] = await Promise.all([
+        const [questionRes, answerRes, summaryRes] = await Promise.all([
           axios.get(`/question/${question_id}`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
@@ -63,9 +63,9 @@ function Answer() {
           }),
         ]);
 
-        setQuestion(qRes.data.question);
-        setAnswers(aRes.data.answers.reverse());
-        setSummary(sRes.data.summary || "");
+        setQuestion(questionRes.data.question);
+        setAnswers(answerRes.data.answers.reverse());
+        setSummary(summaryRes.data.summary || "");
         setSummaryExpanded(false);
       } catch {
         setError("Failed to load data.");
@@ -97,7 +97,6 @@ function Answer() {
       });
 
       setAnswers(res.data.answers.reverse());
-
       setSummaryExpanded(false);
       setAnswerText("");
       setError(null);
@@ -196,7 +195,11 @@ function Answer() {
 
             <div className={styles.answer_footer}>
               <span className={styles.timestamp}>
-                {new Date(ans.created_at).toLocaleDateString()}
+                {new Date(ans.created_at).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "short",
+                  day: "numeric",
+                })}
               </span>
 
               {user?.userid === ans.userid && (
