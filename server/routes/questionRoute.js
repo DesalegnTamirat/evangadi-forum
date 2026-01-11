@@ -8,10 +8,13 @@ import {
   postQuestion,
 } from "../controller/questionController.js";
 
+// GET all questions (public)
 router.get("/", getAllQuestions);
 
-// get a single question
+// POST a new question (requires auth)
 router.post("/", authMiddleware, postQuestion);
+
+// GET a single question (public)
 router.get("/:questionid", getSingleQuestion);
 
 export default router;
