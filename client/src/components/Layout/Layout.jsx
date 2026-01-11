@@ -10,6 +10,8 @@ import Askquestion from "../../Pages/Askquestion/Askquestion.jsx";
 import Answer from "../../Pages/Answer/Answer.jsx";
 import EditQuestion from "../../Pages/Askquestion/EditQuestion.jsx";
 import EditAnswer from "../../Pages/Answer/EditAnswer.jsx";
+import ForgotPassword from "../../Pages/ForgotPassword/ForgotPassword.jsx";
+import ResetPassword from "../../Pages/ResetPassword/ResetPassword.jsx";
 
 function Layout() {
   return (
@@ -57,9 +59,14 @@ function Layout() {
 
         {/* Public page */}
         <Route path="howitworks" element={<HowItWorks />} />
+        {/* forgot password  */}
+        <Route path="forgot-password" element={<ForgotPassword />} />
+
         {/* catch-all redirect for any unknown route */}
         <Route path="*" element={<Navigate to="/404" replace />} />
       </Route>
+      {/* reset password route */}
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
       <Route
         path="/edit-question/:id"
         element={
@@ -67,7 +74,7 @@ function Layout() {
             <EditQuestion />
           </ProtectedRoute>
         }
-      />{" "}
+      />
       <Route
         path="/edit-answer/:answerid"
         element={
@@ -75,7 +82,7 @@ function Layout() {
             <EditAnswer />
           </ProtectedRoute>
         }
-      />{" "}
+      />
       {/* THIS */}
       <Route path="/404" element={<NotFound />} />
     </Routes>
