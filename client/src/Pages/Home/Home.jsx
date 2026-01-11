@@ -6,6 +6,7 @@ import axios from "../../Api/axiosConfig"; // Axios instance for API calls
 import classes from "./home.module.css"; // CSS module
 import { MdEdit, MdDelete } from "react-icons/md"; // Edit/Delete icons
 import { IoIosContact } from "react-icons/io"; // User avatar icon
+import ChevronRightIcon from "@mui/icons-material/ChevronRight"; // Arrow icon
 
 const Home = () => {
   const { user } = useContext(AppState); // Logged-in user
@@ -246,6 +247,11 @@ const Home = () => {
                     </div>
                     {/* Question title */}
                     <div className={classes["question-text"]}>{q.title}</div>
+                  </div>
+                  
+                  {/* Right Arrow */}
+                  <div className={classes["arrow-container"]}>
+                    <ChevronRightIcon className={classes["arrow"]} />
                   </div>
                 </Link>
 
