@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom"; // Routing
 import axios from "../../Api/axiosConfig"; // Axios instance for API calls
 import classes from "./home.module.css"; // CSS module
 import { MdEdit, MdDelete } from "react-icons/md"; // Edit/Delete icons
-import { IoIosContact } from "react-icons/io"; // User avatar icon
+// import { IoIosContact } from "react-icons/io"; // User avatar icon
 import ChevronRightIcon from "@mui/icons-material/ChevronRight"; // Arrow icon
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -267,7 +267,10 @@ const Home = () => {
                           className={classes["user-avatar-img"]}
                         />
                       ) : (
-                        <IoIosContact size={80} aria-hidden="true" />
+                        <div className={classes.avatar}>
+                          {q?.firstname[0].toUpperCase()}
+                          {q?.lastname[0].toUpperCase()}
+                        </div>
                       )}
                       <p>{q.username}</p>
                     </div>
