@@ -1,0 +1,137 @@
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  min-height: 80vh;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  font-size: 18px;
+  color: #666;
+}
+
+.question_form {
+  background: #fff;
+  border-radius: 8px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.question_title {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.question_title h2 {
+  color: #333;
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.error_message {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
+.form_group {
+  margin-bottom: 20px;
+}
+
+.form_group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #333;
+}
+
+.form_group input,
+.form_group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.form_group input:focus,
+.form_group textarea:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+.error_input {
+  border-color: #dc3545 !important;
+}
+
+.error_text {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 5px;
+  display: block;
+}
+
+.input_help {
+  font-size: 12px;
+  color: #666;
+  margin-top: 5px;
+}
+
+.warning {
+  color: #ff6b35 !important;
+}
+
+.tag_input {
+  background-color: #f8f9fa;
+}
+
+.form_actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.form_actions button {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.form_actions button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+}
+
+.form_actions button[type="submit"]:hover:not(:disabled) {
+  background-color: #0056b3;
+}
+
+.loading_button {
+  background-color: #6c757d !important;
+  cursor: not-allowed !important;
+}
+
+.cancel_button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.cancel_button:hover:not(:disabled) {
+  background-color: #545b62;
+}
+
+.form_actions button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

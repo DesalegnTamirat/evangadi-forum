@@ -8,7 +8,8 @@ import NotFound from "../../Pages/NotFound/NotFound";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 import Askquestion from "../../Pages/Askquestion/Askquestion.jsx";
 import Answer from "../../Pages/Answer/Answer.jsx";
-import EditQuestion from "../../Pages/Askquestion/EditQuestion.jsx";
+import EditQuestion from "../../Pages/EditQuestion/EditQuestion.jsx";
+import Profile from "../../Pages/Profile/Profile.jsx";
 import EditAnswer from "../../Pages/Answer/EditAnswer.jsx";
 import ForgotPassword from "../../Pages/ForgotPassword/ForgotPassword.jsx";
 import ResetPassword from "../../Pages/ResetPassword/ResetPassword.jsx";
@@ -41,6 +42,24 @@ function Layout() {
           element={
             <ProtectedRoute>
               <Answer />
+            </ProtectedRoute>
+          }
+        />
+        {/* protected route for edit question page */}
+        <Route
+          path="edit-question/:questionid"
+          element={
+            <ProtectedRoute>
+              <EditQuestion />
+            </ProtectedRoute>
+          }
+        />
+        {/* protected route for profile page */}
+        <Route
+          path="profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
             </ProtectedRoute>
           }
         />
