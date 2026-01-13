@@ -4,7 +4,6 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Link } from "react-router-dom";
 
 function QuestionCard({ Questions }) {
-  console.log(Questions);
   const { title, description, username, questionid } = Questions;
   return (
     <div>

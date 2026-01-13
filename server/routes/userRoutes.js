@@ -9,6 +9,7 @@ import {
   removeProfilePicture,
   forgotPassword,
   resetPassword,
+  getProfilePicture,
 } from "../controller/userController.js";
 import {} from "../controller/userController.js";
 
@@ -23,6 +24,7 @@ router.post(
   upload.single("profilePicture"),
   uploadProfilePicture
 );
+router.get("/profile-picture", authMiddleware, getProfilePicture)
 router.delete("/remove-profile-picture", authMiddleware, removeProfilePicture);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);

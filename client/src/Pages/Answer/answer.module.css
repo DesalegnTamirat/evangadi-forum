@@ -181,6 +181,7 @@
 .answer_form button {
   width: 120px;
   padding: 8px 0;
+  margin-right: 15px;
   background-color: #516cf0;
   color: #fff;
   border: none;

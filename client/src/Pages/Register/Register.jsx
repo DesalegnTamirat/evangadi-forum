@@ -51,12 +51,6 @@ const Register = () => {
         password: passwordValue,
       });
 
-      const res = await axios.get("/user/check", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      });
-      setUser(res.data);
       localStorage.setItem("token", data.token);
       navigate("/");
     } catch (error) {
