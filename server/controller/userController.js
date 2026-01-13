@@ -197,6 +197,32 @@ const uploadProfilePicture = async (req, res) => {
   }
 };
 
+const getProfilePicture = async (req, res) => {
+  try {
+    const userid = req.user.userid;
+
+    const [users] = await dbConnection.query(
+      "SELECT profile_picture FROM users WHERE userid = ?",
+      [userid]
+    );
+
+    if (users.length === 0) {
+      return res.status(StatusCodes.NOT_FOUND).json({
+        message: "User not found",
+      });
+    }
+
+    res.status(StatusCodes.OK).json({
+      profilePicture: users[0].profile_picture || null,
+    });
+  } catch (error) {
+    console.error("Error fetching profile picture:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Error fetching profile picture",
+    });
+  }
+};
+
 // Remove profile picture
 const removeProfilePicture = async (req, res) => {
   try {
@@ -338,6 +364,7 @@ export {
   forgotPassword,
   resetPassword,
   uploadProfilePicture,
+  getProfilePicture,
   removeProfilePicture,
   upload,
 };

@@ -162,6 +162,7 @@
 .answer_form button {
   width: 120px;
   padding: 8px 0;
+  margin-right: 15px;
   background-color: #516cf0;
   color: #fff;
   border: none;
@@ -269,5 +270,52 @@
   .question_summary_wrapper {
     flex-direction: column;
     gap: 15px;
+  }
+}
+
+@media (max-width: 620px) {
+  .container {
+    padding: 0 15px;
+  }
+
+  .description {
+    padding-left: 0;
+    font-size: 16px;
+  }
+
+  .big_title {
+    font-size: 24px;
+  }
+
+  .question {
+    font-size: 20px;
+  }
+
+  .summary_section {
+    position: relative;
+    top: auto;
+  }
+
+  .answer_card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .answer_footer {
+    justify-content: flex-start;
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .form_actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .answer_form button {
+    width: 100%;
   }
 }

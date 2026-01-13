@@ -1,4 +1,3 @@
-// ===================== Desalegn Tsega — Home Page =====================
 import React, {
   useContext,
   useEffect,
@@ -6,38 +5,34 @@ import React, {
   useMemo,
   useCallback,
 } from "react";
-import { AppState } from "../../App"; // Global app context for logged-in user
-import { Link, useNavigate } from "react-router-dom"; // Routing
-import axios from "../../Api/axiosConfig"; // Axios instance for API calls
-import classes from "./home.module.css"; // CSS module
-import { MdEdit, MdDelete } from "react-icons/md"; // Edit/Delete icons
-// import { IoIosContact } from "react-icons/io"; // User avatar icon
-import ChevronRightIcon from "@mui/icons-material/ChevronRight"; // Arrow icon
+import { AppState } from "../../App";
+import { Link, useNavigate } from "react-router-dom"; 
+import axios from "../../Api/axiosConfig"; 
+import classes from "./home.module.css";
+import { MdEdit, MdDelete } from "react-icons/md";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight"; 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const Home = () => {
-  const { user } = useContext(AppState); // Logged-in user
-  const navigate = useNavigate(); // Navigate programmatically
+  const { user } = useContext(AppState); 
+  const navigate = useNavigate(); 
 
-  // ===================== STATE =====================
-  const [questions, setQuestions] = useState([]); // All questions from backend
-  const [sortedQuestions, setSortedQuestions] = useState([]); // Sorted questions
-  const [searchQuery, setSearchQuery] = useState(""); // Search input
+  const [questions, setQuestions] = useState([]); 
+  const [sortedQuestions, setSortedQuestions] = useState([]); 
+  const [searchQuery, setSearchQuery] = useState(""); 
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(""); // Debounced for performance
-  const [sortOption, setSortOption] = useState("Most Recent"); // Sort option
-  const [successMessage, setSuccessMessage] = useState(""); // Success alert
-  const [errorMessage, setErrorMessage] = useState(""); // Error alert
-  const [fetchError, setFetchError] = useState(""); // Specific fetch error
-  const [confirmDeleteId, setConfirmDeleteId] = useState(null); // ID for delete confirmation
-  const [loading, setLoading] = useState(true); // Loading state for fetch
+  const [sortOption, setSortOption] = useState("Most Recent"); 
+  const [successMessage, setSuccessMessage] = useState(""); 
+  const [errorMessage, setErrorMessage] = useState(""); 
+  const [fetchError, setFetchError] = useState(""); 
+  const [confirmDeleteId, setConfirmDeleteId] = useState(null); 
+  const [loading, setLoading] = useState(true);
 
-  const token = localStorage.getItem("token"); // Auth token from localStorage
+  const token = localStorage.getItem("token");
 
-  // ===================== FETCH DATA =====================
   // Fetch questions from backend API (memoized)
   const fetchData = useCallback(async () => {
-    console.log("Token:", token); // Debug log
     if (!token) {
       setFetchError("No authentication token found. Please log in.");
       setLoading(false);
@@ -46,13 +41,11 @@ const Home = () => {
     setLoading(true);
     setFetchError("");
     try {
-      console.log("Fetching questions..."); // Debug log
       const { data } = await axios.get("/question", {
         headers: { Authorization: `Bearer ${token}` },
       });
-      console.log("Response data:", data); // Debug log
+      
       const fetchedQuestions = data?.questions || data || []; // Fallback if direct array
-      console.log("Fetched questions:", fetchedQuestions); // Debug log
       setQuestions(fetchedQuestions);
       setSortedQuestions(fetchedQuestions);
     } catch (error) {
@@ -74,7 +67,6 @@ const Home = () => {
     fetchData();
   }, [fetchData]);
 
-  // ===================== DEBOUNCE SEARCH =====================
   // Debounce search input to reduce re-filters (300ms delay)
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearchQuery(searchQuery), 300);

@@ -31,12 +31,6 @@ function Login() {
       });
       localStorage.setItem("token", data.token);
       
-      const res = await axios.get("/user/check", {
-        headers: {
-          Authorization: `Bearer ${data.token}`,
-        },
-      });
-      setUser(res.data);
       navigate("/");
     } catch (error) {
       const errorMessage = error?.response?.data?.msg || error.message;

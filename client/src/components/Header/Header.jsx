@@ -2,7 +2,10 @@ import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AppState } from "../../App";
 import logo from "../../assets/EvangadiLogo.jpeg";
+import { IoIosContact } from "react-icons/io";
 import styles from "./header.module.css";
+
+const API_BASE_URL = "http://localhost:5500";
 
 const Header = () => {
   const { user, setUser } = useContext(AppState);
@@ -39,7 +42,11 @@ const Header = () => {
 
           {/* Links */}
           <div className={`${styles.nav__links} ${isOpen ? styles.open : ""}`}>
-            <Link to="/" className={styles.navLink} onClick={() => setIsOpen(false)}>
+            <Link
+              to="/"
+              className={styles.navLink}
+              onClick={() => setIsOpen(false)}
+            >
               Home
             </Link>
 
@@ -51,13 +58,22 @@ const Header = () => {
               How it works
             </Link>
 
+            {/* Profile Image (replaces Profile text) */}
             {user && (
               <Link
                 to="/profile"
-                className={styles.navLink}
+                className={styles.profileAvatar}
                 onClick={() => setIsOpen(false)}
+                title="Profile"
               >
-                Profile
+                {user.profile_picture ? (
+                  <img
+                    src={`${API_BASE_URL}${user.profile_picture}`}
+                    alt="Profile"
+                  />
+                ) : (
+                  <IoIosContact size={28} />
+                )}
               </Link>
             )}
 
