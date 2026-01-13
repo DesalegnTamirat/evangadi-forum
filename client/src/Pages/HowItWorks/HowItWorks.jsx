@@ -47,8 +47,7 @@ const HowItWorks = () => {
           <p>
             To join the Evangadi community, click the “Sign Up” button located
             at the top right of the page. Enter your email address, choose a
-            username, and create a password. A confirmation email will be sent
-            to activate your account.
+            username, and create a password. and then hit the "agree and join" button. 
           </p>
         </section>
 
@@ -188,7 +187,8 @@ const HowItWorks = () => {
         <p className={classes.closingMessage}>
           We’re excited to have you as part of the Evangadi community! Ask
           questions, share knowledge, explore discussions, and enjoy learning
-          together. <strong>Happy posting!</strong>
+          together.
+          <h3>Happy posting !</h3>
         </p>
       </div>
     </section>
