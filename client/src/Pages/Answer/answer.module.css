@@ -86,13 +86,19 @@
 
 .answer_card {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;   /* stack rows */
   padding: 12px 15px;
   border-bottom: 1px solid #ddd;
   gap: 10px;
   border-radius: 6px;
 }
+.answer_main {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 15px;
+}
+
 
 .user_info {
   display: flex;
@@ -111,7 +117,7 @@
   font-weight: bold;
 }
 .content {
-  font-size: 16px;
+  font-size: 18px;
   color: #333;
   text-align: justify;
   line-height: 1.5;
@@ -133,8 +139,10 @@
   justify-content: flex-end;
   align-items: center;
   width: 100%;
+  margin-top: 6px;
   gap: 10px;
 }
+
 
 /* ----------------------- Action Icons ----------------------- */
 .action_icons > * {
@@ -264,16 +272,47 @@
   box-shadow: 0 2px 8px rgba(108, 117, 125, 0.3);
 }
 .timestamp {
-  font-size: 15px;
+  font-size: 17px;
   color: #6c757d;
   font-style: italic;
 }
 
+
 .form_actions {
   display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-  width: 25%;
+  gap: 1rem;
+  justify-content: flex-start;
+  flex-wrap: nowrap; /* allows buttons to stack on smaller screens */
+  margin-top: 1.5rem;
+}
+
+.form_actions button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Primary button */
+.form_actions button[type="submit"] {
+  background-color: #0078d4;
+  color: #fff;
+}
+
+.form_actions button[type="submit"]:hover:enabled {
+  background-color: #005a9e;
+}
+
+/* Cancel button */
+.form_actions .cancel {
+  background-color: #f3f3f3;
+  color: #333;
+}
+
+.form_actions .cancel:hover {
+  background-color: #e0e0e0;
 }
 
 
@@ -290,6 +329,12 @@
     width: 30%;
     gap: 20px;
   }
+  .answer_main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
   
 }
 @media screen and (max-width: 768px) {
@@ -300,11 +345,23 @@
     margin-top: 20px;
     gap: 15px;
   }
-
-}
-@media screen and (max-width: 1100px) {
+  .answer_main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
   .form_actions {
-    width: 50%;
+    flex-direction: column;
+  }
+
+  .form_actions button {
+    width: 100%; /* full width on small screens */
+  }
+}
+@media screen and (max-width: 1400px) {
+  .form_actions {
+    width: 30%;
     display: flex;
     justify-content: space-between;
     margin-top: 20px;
