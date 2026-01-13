@@ -5,8 +5,7 @@ import styles from "./answer.module.css";
 import { toast } from "react-toastify";
 import { AppState } from "../../App";
 import { MdEdit, MdDelete } from "react-icons/md";
-
-const API_BASE_URL = "http://localhost:5500";
+import { API_BASE_URL } from "../../Data/data";
 
 function Answer() {
   const { question_id } = useParams();
@@ -25,7 +24,7 @@ function Answer() {
   const [posting, setPosting] = useState(false);
   const [confirmDeleteAnswerId, setConfirmDeleteAnswerId] = useState(null);
   const [error, setError] = useState(null);
-// ----------------------conditionality-------------------
+  // ----------------------conditionality-------------------
   const MAX_LENGTH = 150;
   const ANSWER_LIMIT = 220;
 
@@ -229,9 +228,9 @@ function Answer() {
             <div className={styles.answer_main}>
               <div className={styles.user_info}>
                 <div className={styles.avatar}>
-                  {user?.userid === ans.userid && user?.profile_picture ? (
+                  {ans?.profile_picture ? (
                     <img
-                      src={`${API_BASE_URL}${user.profile_picture}`}
+                      src={`${API_BASE_URL}${ans?.profile_picture}`}
                       alt="Profile"
                       className={styles.profile_image}
                     />

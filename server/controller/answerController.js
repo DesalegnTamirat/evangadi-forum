@@ -35,7 +35,8 @@ const getAnswers = async (req, res) => {
         a.answer AS content,
         u.username AS user_name,
         a.created_at,
-        a.userid
+        a.userid,
+        u.profile_picture
     FROM answers a
     JOIN users u ON a.userid = u.userid
     WHERE a.questionid = ?`,
