@@ -17,7 +17,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // CORS configuration
-const allowedOrigins = ["https://evangadi-forum-desalegn.vercel.app/"];
+const allowedOrigins = ["https://evangadi-forum-desalegn.vercel.app"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -27,7 +27,7 @@ const corsOptions = {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  credentials: true
+  credentials: true,
 };
 
 // Enable CORS with the specified options
@@ -36,7 +36,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Serve static files for uploaded images
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 const PORT = process.env.PORT || 5500;
 
