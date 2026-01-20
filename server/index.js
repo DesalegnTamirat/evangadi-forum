@@ -17,7 +17,21 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // CORS configuration
-app.use(cors());
+const allowedOrigins = ["https://evangadi-forum-desalegn.vercel.app/"];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true
+};
+
+// Enable CORS with the specified options
+app.use(cors(corsOptions));
 
 app.use(express.json());
 
