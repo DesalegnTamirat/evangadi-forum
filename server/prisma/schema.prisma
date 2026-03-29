@@ -26,19 +26,43 @@ model User {
   question_votes       QuestionVote[]
   answer_votes         AnswerVote[]
   bookmarks            Bookmark[]
+  notifications        Notification[]
 
   @@map("users")
+}
+
+model Notification {
+  notificationid Int      @id @default(autoincrement())
+  userid         Int
+  message        String   @db.VarChar(200)
+  type           String   @db.VarChar(20) // 'like', 'answer', 'badge'
+  is_read        Boolean  @default(false)
+  created_at     DateTime @default(now())
+  user           User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model Category {
+  categoryid  Int        @id @default(autoincrement())
+  name        String     @db.VarChar(50)
+  description String     @db.VarChar(200)
+  questions   Question[]
+
+  @@map("categories")
 }
 
 model Question {
   questionid  Int            @id @default(autoincrement())
   userid      Int
+  categoryid  Int?
   title       String         @db.VarChar(50)
   description String         @db.VarChar(200)
   tag         String?        @db.VarChar(20)
   views       Int            @default(0)
   created_at  DateTime       @default(now())
   user        User           @relation(fields: [userid], references: [userid], onDelete: Cascade)
+  category    Category?      @relation(fields: [categoryid], references: [categoryid])
   answers     Answer[]
   votes       QuestionVote[]
   bookmarks   Bookmark[]

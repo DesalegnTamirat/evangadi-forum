@@ -25,8 +25,9 @@
 }
 
 .textarea:focus {
-  outline-color: #4b6bfb;
-  background-color: #ffffff;
+  outline: none;
+  border-color: var(--neon-blue);
+  background-color: var(--glass-bg-hover);
   box-shadow: 0 0 0 3px rgba(75, 107, 251, 0.1);
 }
 

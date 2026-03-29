@@ -1,0 +1,91 @@
+.header {
+  margin-bottom: 40px;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.header p {
+  color: var(--text-dim);
+  font-size: 1.1rem;
+}
+
+.categoryGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 30px;
+}
+
+.categoryCard {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  transition: var(--transition);
+  cursor: pointer;
+}
+
+.categoryCard:hover {
+  transform: translateY(-5px);
+  border-color: var(--neon-blue);
+  box-shadow: 0 10px 30px rgba(72, 149, 239, 0.1);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconBox {
+  width: 45px;
+  height: 45px;
+  background: rgba(72, 149, 239, 0.1);
+  color: var(--neon-blue);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+}
+
+.stats {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  font-weight: 600;
+}
+
+.categoryCard h3 {
+  font-size: 1.4rem;
+  color: var(--text-main);
+}
+
+.categoryCard p {
+  color: var(--text-dim);
+  line-height: 1.6;
+  font-size: 0.95rem;
+  flex: 1;
+}
+
+.cardFooter {
+  margin-top: 10px;
+}
+
+.enterBtn {
+  background: transparent;
+  border: none;
+  color: var(--neon-blue);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.enterBtn:hover {
+  gap: 10px;
+}

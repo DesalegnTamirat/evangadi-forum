@@ -10,6 +10,8 @@ import questionRoutes from "./routes/questionRoute.js";
 import chatRoutes from "./routes/chatRoutes.js";
 import voteRoutes from "./routes/voteRoute.js";
 import bookmarkRoutes from "./routes/bookmarkRoutes.js";
+import categoryRoutes from "./routes/categoryRoute.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
 import dbconnection from "./DB/dbconfig.js";
 import authMiddleware from "./middleware/authMiddleware.js";
 import helmet from "helmet";
@@ -82,6 +84,12 @@ app.use("/api/vote", authMiddleware, voteRoutes);
 
 // bookmarkRoutes middleware
 app.use("/api/bookmark", authMiddleware, bookmarkRoutes);
+
+// categoryRoutes middleware
+app.use("/api/category", authMiddleware, categoryRoutes);
+
+// notificationRoutes middleware
+app.use("/api/notification", authMiddleware, notificationRoutes);
 
 async function startServer() {
   try {

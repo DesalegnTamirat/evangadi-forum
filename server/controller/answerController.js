@@ -1,8 +1,10 @@
 import { StatusCodes } from "http-status-codes";
+import { createNotification } from "./notificationController.js";
 import dbConnection from "../DB/dbconfig.js";
 import OpenAI from "openai";
 import dotenv from "dotenv";
 import xss from "xss";
+import { createNotification } from "./notificationController.js";
 
 const getAnswers = async (req, res) => {
   const { question_id } = req.params;
@@ -195,6 +197,21 @@ const postAnswer = async (req, res) => {
         answer: answer,
       }
     });
+
+    // Create Notification for question author
+    const questionAuthor = await dbConnection.question.findUnique({
+      where: { questionid: questionIdNum },
+      select: { userid: true, title: true }
+    });
+
+    if (questionAuthor && questionAuthor.userid !== userId) {
+      const shortTitle = questionAuthor.title.substring(0, 30) + "...";
+      await createNotification(
+        questionAuthor.userid,
+        `New answer on your question: "${shortTitle}"`,
+        "answer"
+      );
+    }
 
     return res.status(StatusCodes.CREATED).json({
       message: "Answer posted successfully",

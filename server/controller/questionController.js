@@ -3,9 +3,32 @@ import { StatusCodes } from "http-status-codes";
 import xss from "xss";
 
 async function getAllQuestions(req, res) {
-  console.log("getAllQuestions called"); // Debug log
+  const { search, category, tag, sort } = req.query;
+  
+  let where = {};
+  if (search) {
+    where.OR = [
+      { title: { contains: search, mode: 'insensitive' } },
+      { description: { contains: search, mode: 'insensitive' } }
+    ];
+  }
+  if (category && category !== 'all') {
+    where.categoryid = parseInt(category);
+  }
+  if (tag) {
+    where.tag = { contains: tag, mode: 'insensitive' };
+  }
+
+  let orderBy = { created_at: 'desc' };
+  if (sort === 'oldest') {
+    orderBy = { created_at: 'asc' };
+  } else if (sort === 'views') {
+    orderBy = { views: 'desc' };
+  }
+
   try {
     const questions = await dbConnection.question.findMany({
+      where,
       include: {
         user: {
           select: {
@@ -25,9 +48,7 @@ async function getAllQuestions(req, res) {
           select: { answers: true }
         }
       },
-      orderBy: {
-        questionid: 'desc',
-      },
+      orderBy,
     });
 
     console.log("Questions found:", questions.length); // Debug log
@@ -305,10 +326,37 @@ const deleteQuestion = async (req, res) => {
   }
 };
 
+// Get Community Stats
+const getStats = async (req, res) => {
+  try {
+    const [questionCount, userCount, answerCount, votes] = await Promise.all([
+      dbConnection.question.count(),
+      dbConnection.user.count(),
+      dbConnection.answer.count(),
+      dbConnection.questionVote.aggregate({
+        _sum: { vote_type: true }
+      })
+    ]);
+
+    res.status(StatusCodes.OK).json({
+      questions: questionCount,
+      users: userCount,
+      answers: answerCount,
+      likes: votes._sum.vote_type || 0
+    });
+  } catch (error) {
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+      message: "Error fetching stats",
+      error: error.message
+    });
+  }
+};
+
 export {
   getAllQuestions,
   getSingleQuestion,
   postQuestion,
   editQuestion,
   deleteQuestion,
+  getStats,
 };

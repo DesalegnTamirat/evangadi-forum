@@ -15,7 +15,7 @@
 
 .steps_toFollow:hover {
     border-color: var(--neon-blue);
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--glass-bg-hover);
 }
 
 .steps_toFollow h2 {
@@ -79,7 +79,7 @@
 }
 
 .form_group input, .form_group textarea {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--input-bg);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 15px;
@@ -92,8 +92,8 @@
 
 .form_group input:focus, .form_group textarea:focus {
   border-color: var(--neon-blue);
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 0 15px rgba(0, 180, 216, 0.1);
+  background: var(--glass-bg-hover);
+  box-shadow: 0 0 15px rgba(72, 149, 239, 0.1);
 }
 
 .error_input {

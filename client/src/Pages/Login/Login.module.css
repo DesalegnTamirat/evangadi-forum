@@ -34,17 +34,17 @@
   padding: 14px 18px;
   border-radius: 12px;
   border: 1px solid var(--glass-border);
-  background: rgba(128, 128, 128, 0.05);
-  color: var(--text-primary);
+  background: var(--input-bg);
+  color: var(--text-main);
   font-size: 1rem;
   transition: var(--transition);
 }
 
 .input_field:focus {
   outline: none;
-  background: var(--bg-secondary);
+  background: var(--glass-bg-hover);
   border-color: var(--accent-color);
-  box-shadow: 0 0 0 4px rgba(254, 132, 2, 0.1);
+  box-shadow: 0 0 0 4px rgba(72, 149, 239, 0.1);
 }
 
 .password_group {

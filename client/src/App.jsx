@@ -73,10 +73,8 @@ function App() {
 
   return (
     <AppState.Provider value={{ user, setUser, theme, toggleTheme }}>
-      <div className={theme === "dark" ? "dark-mode" : ""}>
-        <AppRouter />
-        <ToastContainer position="top-right" autoClose={3000} theme={theme} />
-      </div>
+      <AppRouter />
+      <ToastContainer position="top-right" autoClose={3000} theme={theme} />
     </AppState.Provider>
   );
 }

@@ -30,7 +30,7 @@
 
 .headerSearch {
   width: 100%;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--input-bg);
   border: 1px solid var(--glass-border);
   border-radius: 12px;
   padding: 10px 15px 10px 45px;
@@ -40,7 +40,7 @@
 }
 
 .headerSearch:focus {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--glass-bg-hover);
   border-color: var(--neon-blue);
 }
 
@@ -51,7 +51,7 @@
 }
 
 .iconBtn {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--input-bg);
   border: 1px solid var(--glass-border);
   color: var(--text-main);
   width: 40px;
@@ -67,7 +67,7 @@
 }
 
 .iconBtn:hover {
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--glass-bg-hover);
 }
 
 .notifyBadge {
@@ -93,7 +93,7 @@
 }
 
 .userProfile:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--glass-bg-hover);
 }
 
 .avatar {
@@ -150,8 +150,18 @@
     display: none;
     flex-direction: column;
     gap: 10px;
-    margin-top: 10px;
+    margin-top: 0;
+    transform: translateY(10px);
     box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.userProfile::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    height: 15px;
 }
 
 .userProfile:hover .profileDropdown {
@@ -181,4 +191,99 @@
     .header {
         margin: 10px;
     }
+}
+
+.notificationDropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 320px;
+    background: var(--secondary-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    z-index: 1000;
+    cursor: default;
+}
+
+.notifyHeader {
+    font-weight: 700;
+    color: var(--neon-blue);
+    border-bottom: 1px solid var(--glass-border);
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+}
+
+.notifyList {
+    max-height: 350px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.notifyItem {
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    position: relative;
+    transition: var(--transition);
+    border: 1px solid transparent;
+}
+
+.notifyItem:hover {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--glass-border);
+}
+
+.unread {
+    border-left: 4px solid var(--neon-pink);
+    background: rgba(247, 37, 133, 0.05);
+}
+
+.notifyItem p {
+    font-size: 0.85rem;
+    margin-bottom: 6px;
+    line-height: 1.4;
+    padding-right: 25px;
+}
+
+.notifyItem small {
+    color: var(--text-dim);
+    font-size: 0.72rem;
+    display: block;
+}
+
+.notifyItem button {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--neon-blue);
+    cursor: pointer;
+    font-size: 1.25rem;
+    display: flex;
+    padding: 0;
+    opacity: 0.7;
+    transition: var(--transition);
+}
+
+.notifyItem button:hover {
+    opacity: 1;
+    transform: translateY(-50%) scale(1.1);
+}
+
+.emptyNotify {
+    text-align: center;
+    color: var(--text-dim);
+    padding: 30px 10px;
+    font-size: 0.9rem;
 }

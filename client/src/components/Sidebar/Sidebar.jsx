@@ -15,20 +15,15 @@ const Sidebar = () => {
   const menuItems = [
     { name: 'Dashboard', icon: <MdDashboard />, path: '/' },
     { name: 'Forums', icon: <MdForum />, path: '/forums' },
-    { name: 'Questions', icon: <MdQuestionAnswer />, path: '/questions' },
     { name: 'Members', icon: <MdPeople />, path: '/members' },
     { name: 'Badges', icon: <MdStars />, path: '/badges' },
     { name: 'Settings', icon: <MdSettings />, path: '/settings' },
   ];
 
   return (
-    <aside className="sidebar-container glass-panel">
-      <div className="sidebar-logo">
-        <div className="logo-icon">Q</div>
-        <div className="logo-text">
-          <span>QUANTUM</span>
-          <span>DISCUSS</span>
-        </div>
+    <aside className="sidebar">
+      <div className="logo-section">
+        <h1>Quantum <br/> Discuss</h1>
       </div>
 
       <nav className="sidebar-nav">
@@ -48,9 +43,9 @@ const Sidebar = () => {
       </nav>
 
       <div className="sidebar-footer">
-        <NavLink to="/support" className="nav-item support-link">
+        <NavLink to="/howitworks" className="nav-item">
           <span className="nav-icon"><MdHelp /></span>
-          <span className="nav-text">Support</span>
+          <span className="nav-text">How it works</span>
         </NavLink>
       </div>
     </aside>

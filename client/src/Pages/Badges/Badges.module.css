@@ -1,0 +1,91 @@
+.hero {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.hero h1 {
+  font-size: 3rem;
+  margin-bottom: 15px;
+}
+
+.hero p {
+  color: var(--text-dim);
+  font-size: 1.2rem;
+}
+
+.tierGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+  margin-bottom: 60px;
+}
+
+.tierCard {
+  padding: 40px 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  transition: var(--transition);
+}
+
+.tierCard:hover {
+  transform: translateY(-10px);
+}
+
+.iconWrapper {
+  font-size: 4rem;
+  margin-bottom: 10px;
+}
+
+.pointBadge {
+  background: var(--input-bg);
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.platinum .iconWrapper { color: #e5e4e2; filter: drop-shadow(0 0 10px rgba(229, 228, 226, 0.5)); }
+.gold .iconWrapper { color: #ffd700; filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5)); }
+.silver .iconWrapper { color: #c0c0c0; filter: drop-shadow(0 0 10px rgba(192, 192, 192, 0.5)); }
+.bronze .iconWrapper { color: #cd7f32; filter: drop-shadow(0 0 10px rgba(205, 127, 50, 0.5)); }
+
+.howToEarn {
+  padding: 40px;
+}
+
+.howToEarn h2 {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.methods {
+  display: flex;
+  justify-content: space-around;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.method {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+  min-width: 250px;
+}
+
+.plus {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #2ecc71;
+}
+
+.minus {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #e74c3c;
+}

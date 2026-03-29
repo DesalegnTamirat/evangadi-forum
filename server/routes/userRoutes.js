@@ -10,8 +10,8 @@ import {
   forgotPassword,
   resetPassword,
   getProfilePicture,
+  getAllUsers,
 } from "../controller/userController.js";
-import {} from "../controller/userController.js";
 
 const router = express.Router();
 
@@ -26,6 +26,7 @@ router.post(
 );
 router.get("/profile-picture", authMiddleware, getProfilePicture)
 router.delete("/remove-profile-picture", authMiddleware, removeProfilePicture);
+router.get("/all", authMiddleware, getAllUsers);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);
 

@@ -1,13 +1,13 @@
 .container {
   padding: 24px;
-  background-color: var(--bg-primary);
+  background-color: var(--primary-bg);
   min-height: 100vh;
 }
 
 .content {
   max-width: 800px;
   margin: 0 auto;
-  background-color: var(--bg-secondary);
+  background-color: var(--secondary-bg);
   padding: 50px 28px;
   border-radius: 10px;
   border: 1px solid var(--glass-border);
@@ -51,7 +51,7 @@
 .subHeading {
   font-size: 22px;
   font-weight: 600;
-  color: #0066ff;
+  color: var(--neon-blue);
   line-height: 1;
   margin: 0;
 }

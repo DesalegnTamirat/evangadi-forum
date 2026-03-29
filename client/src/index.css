@@ -4,8 +4,10 @@
   --primary-bg: #0b0e14;
   --secondary-bg: #151921;
   --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.08);
   --glass-border: rgba(255, 255, 255, 0.08);
   --glass-shadow: rgba(0, 0, 0, 0.5);
+  --input-bg: rgba(255, 255, 255, 0.05);
   --neon-purple: #9d4edd;
   --neon-blue: #4895ef;
   --neon-pink: #f72585;
@@ -15,6 +17,31 @@
   --accent-glow: radial-gradient(circle at 50% 50%, rgba(157, 78, 221, 0.1), transparent 70%);
   --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --card-radius: 20px;
+  --sidebar-width: 300px;
+  
+  /* Aliases for legacy component support */
+  --bg-primary: var(--primary-bg);
+  --bg-secondary: var(--secondary-bg);
+  --text-primary: var(--text-main);
+  --text-secondary: var(--text-dim);
+  --accent-color: var(--neon-blue);
+  --accent-hover: var(--neon-blue);
+  --glass-blur: blur(16px);
+}
+
+[data-theme='light'] {
+  --primary-bg: #f1f5f9;
+  --secondary-bg: #ffffff;
+  --glass-bg: rgba(255, 255, 255, 0.95);
+  --glass-bg-hover: rgba(0, 0, 0, 0.04);
+  --glass-border: rgba(0, 0, 0, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.08);
+  --input-bg: #e2e8f0;
+  --text-main: #0f172a;
+  --text-dim: #475569;
+  --neon-purple: #7b2cbf;
+  --neon-blue: #3f37c9;
+  --accent-glow: radial-gradient(circle at 50% 50%, rgba(123, 44, 191, 0.08), transparent 70%);
 }
 
 * {
@@ -67,7 +94,7 @@ body {
 
 .main-content-wrapper {
   flex: 1;
-  margin-left: 280px; /* Sidebar width + gap */
+  margin-left: var(--sidebar-width); /* Sidebar width */
   display: flex;
   flex-direction: column;
   min-width: 0;
@@ -76,6 +103,10 @@ body {
 .main-content {
   padding-top: 80px; /* Header height */
   flex: 1;
+}
+
+.guest-layout .main-content-wrapper {
+  margin-left: 0;
 }
 
 @media (max-width: 1024px) {

@@ -40,7 +40,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--input-bg);
   font-size: 1.2rem;
 }
 
@@ -75,7 +75,7 @@
 }
 
 .badge-item {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--input-bg);
     border: 1px solid var(--glass-border);
     padding: 8px 16px;
     border-radius: 10px;
@@ -87,7 +87,7 @@
 }
 
 .badge-item:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--glass-bg-hover);
     border-color: var(--neon-blue);
 }
 
@@ -134,7 +134,7 @@
 
 .dashboard-search:focus {
     border-color: var(--neon-blue);
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--glass-bg-hover);
 }
 
 .questions-list {

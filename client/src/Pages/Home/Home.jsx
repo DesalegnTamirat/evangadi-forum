@@ -35,6 +35,7 @@ const Home = () => {
   const [questions, setQuestions] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  const [stats, setStats] = useState({ questions: 0, users: 0, answers: 0, likes: 0 });
   const [loading, setLoading] = useState(true);
 
   const token = localStorage.getItem("token");
@@ -43,16 +44,22 @@ const Home = () => {
     if (!token) return;
     setLoading(true);
     try {
-      const { data } = await axios.get("/question", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setQuestions(data?.questions || []);
+      const [questionsRes, statsRes] = await Promise.all([
+        axios.get(`/question?search=${debouncedSearchQuery}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        }),
+        axios.get("/question/stats", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+      ]);
+      setQuestions(questionsRes.data?.questions || []);
+      setStats(statsRes.data || { questions: 0, users: 0, answers: 0, likes: 0 });
     } catch (error) {
-      console.error("Error fetching questions:", error);
+      console.error("Error fetching data:", error);
     } finally {
       setLoading(false);
     }
-  }, [token]);
+  }, [token, debouncedSearchQuery]);
 
   useEffect(() => {
     fetchData();
@@ -90,34 +97,34 @@ const Home = () => {
             <span className="stat-icon"><MdQuestionMark /></span>
             <span>Total Questions</span>
           </div>
-          <div className="stat-value">{questions.length}</div>
+          <div className="stat-value">{stats.questions}</div>
           <div className="stat-label">Community discussions</div>
         </div>
         
         <div className="stat-card glass-panel">
           <div className="stat-header">
             <span className="stat-icon"><MdQuestionAnswer /></span>
-            <span>Your Answers</span>
+            <span>Total Answers</span>
           </div>
-          <div className="stat-value">{user?._count?.answers || 0}</div>
+          <div className="stat-value">{stats.answers}</div>
           <div className="stat-label">Contributions made</div>
         </div>
 
         <div className="stat-card glass-panel">
           <div className="stat-header">
             <span className="stat-icon"><MdThumbUp /></span>
-            <span>Helpful Votes</span>
+            <span>Total Likes</span>
           </div>
-          <div className="stat-value">{user?.reputation || 0}</div>
+          <div className="stat-value">{stats.likes}</div>
           <div className="stat-label">From the community</div>
         </div>
 
         <div className="stat-card glass-panel">
           <div className="stat-header">
             <span className="stat-icon"><MdStars /></span>
-            <span>Reputation Score</span>
+            <span>Total Members</span>
           </div>
-          <div className="stat-value neon-text">{user?.reputation?.toLocaleString() || 0}</div>
+          <div className="stat-value neon-text">{stats.users.toLocaleString()}</div>
           <div className="stat-label">Global standing</div>
         </div>
       </div>

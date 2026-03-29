@@ -387,6 +387,34 @@ const resetPassword = async (req, res) => {
   res.json({ message: "Password reset successful" });
 };
 
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await dbConnection.user.findMany({
+      select: {
+        userid: true,
+        username: true,
+        firstname: true,
+        lastname: true,
+        profile_picture: true,
+        reputation: true,
+        badges: true,
+        created_at: true,
+        _count: {
+          select: {
+            questions: true,
+            answers: true,
+          }
+        }
+      },
+      orderBy: { reputation: 'desc' }
+    });
+    res.status(StatusCodes.OK).json(users);
+  } catch (error) {
+    console.error("GetAllUsers error:", error);
+    res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
+  }
+};
+
 export {
   login,
   checkUser,
@@ -397,4 +425,5 @@ export {
   getProfilePicture,
   removeProfilePicture,
   upload,
+  getAllUsers,
 };

@@ -1,0 +1,103 @@
+.landingContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.hero {
+  padding: 80px 40px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.hero h1 {
+  font-size: 4rem;
+  margin: 0;
+}
+
+.tagline {
+  font-size: 1.5rem;
+  color: var(--text-dim);
+  max-width: 600px;
+}
+
+.statsGrid {
+  display: flex;
+  gap: 60px;
+  margin: 40px 0;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--text-main);
+}
+
+.statLabel {
+  color: var(--neon-blue);
+  text-transform: uppercase;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+}
+
+.ctaGroup {
+  display: flex;
+  gap: 20px;
+}
+
+.outlineBtn {
+  background: transparent !important;
+  border: 1px solid var(--neon-blue) !important;
+}
+
+.outlineBtn:hover {
+    background: var(--glass-bg-hover) !important;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+}
+
+.featureCard {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.featureCard h3 {
+  color: var(--neon-purple);
+  font-size: 1.3rem;
+}
+
+.featureCard p {
+  color: var(--text-dim);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .hero h1 {
+    font-size: 2.5rem;
+  }
+  .features {
+    grid-template-columns: 1fr;
+  }
+  .statsGrid {
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}

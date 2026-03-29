@@ -7,8 +7,13 @@ import {
   postQuestion,
   editQuestion,
   deleteQuestion,
+  deleteQuestion,
+  getStats,
 } from "../controller/questionController.js";
 const router = Router();
+
+// GET community stats
+router.get("/stats", getStats);
 
 // GET all questions
 router.get("/", authMiddleware, getAllQuestions);
