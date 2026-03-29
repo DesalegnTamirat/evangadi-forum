@@ -1,5 +1,3 @@
-// const API_BASE_URL = "https://evangadiforum.be.birhann.com";
-// const API_BASE_URL = "http://localhost:5500";
-const API_BASE_URL = "https://evangadi-forum-desalegn.onrender.com"
+const API_BASE_URL = import.meta.env.VITE_IMAGE_BASE_URL || "http://localhost:5501";
 
 export { API_BASE_URL };

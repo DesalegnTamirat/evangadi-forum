@@ -12,14 +12,33 @@ import voteRoutes from "./routes/voteRoute.js";
 import bookmarkRoutes from "./routes/bookmarkRoutes.js";
 import dbconnection from "./DB/dbconfig.js";
 import authMiddleware from "./middleware/authMiddleware.js";
+import helmet from "helmet";
+import { rateLimit } from "express-rate-limit";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
+// Security Headers
+app.use(helmet({
+    crossOriginResourcePolicy: false, // Allow local images to be loaded
+}));
+
+// Rate Limiting
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+	standardHeaders: 'draft-7', // set `RateLimit` and `RateLimit-Policy` headers
+	legacyHeaders: false, // Disable the `X-RateLimit-*` headers.
+    message: "Too many requests from this IP, please try again after 15 minutes"
+});
+
+// Apply the rate limiting middleware to all requests.
+app.use("/api/", limiter);
+
 // CORS configuration
-const allowedOrigins = ["https://evangadi-forum-desalegn.vercel.app", "http://localhost:5173"];
+const allowedOrigins = process.env.ALLOWED_ORIGINS ? process.env.ALLOWED_ORIGINS.split(",") : ["http://localhost:5173"];
 
 const corsOptions = {
   origin: function (origin, callback) {

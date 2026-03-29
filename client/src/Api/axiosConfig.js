@@ -1,9 +1,7 @@
 import axios from "axios";
 
 const axiosBase = axios.create({
-  baseURL: "http://localhost:5501/api",
-  // baseURL: "https://evangadiforum.be.birhann.com/api",
-  // baseURL: "https://evangadi-forum-desalegn.onrender.com/api",
+  baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:5501/api",
 });
 
 export default axiosBase;
