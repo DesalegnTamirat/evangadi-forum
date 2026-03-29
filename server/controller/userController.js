@@ -109,6 +109,7 @@ const checkUser = async (req, res) => {
         email: true,
         profile_picture: true,
         reputation: true,
+        badges: true,
         created_at: true,
         _count: {
           select: {

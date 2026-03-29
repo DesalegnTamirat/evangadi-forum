@@ -173,7 +173,7 @@ const Askquestion = () => {
       <div
         className={`${styles.steps_toFollow} ${
           stepsCollapsed ? styles.collapsed : ""
-        }`}
+        } glass-panel`}
         onClick={toggleSteps}
       >
         <h2>Steps for Writing a Good Question</h2>
@@ -185,7 +185,7 @@ const Askquestion = () => {
         </ul>
       </div>
 
-      <div className={styles.question_form}>
+      <div className={`${styles.question_form} glass-panel`}>
         <h2>Post Your Question</h2>
 
         {error && <div className={styles.error_message}>{error}</div>}
@@ -196,10 +196,11 @@ const Askquestion = () => {
         <form onSubmit={handleSubmit}>
           {/* Title */}
           <div className={styles.form_group}>
+            <label htmlFor="title">Question Title</label>
             <input
               id="title"
               type="text"
-              placeholder="Question Title"
+              placeholder="e.g. How to center a div using CSS Flexbox?"
               value={title}
               onChange={handleTitleChange}
               className={formErrors.title ? styles.error_input : ""}
@@ -219,9 +220,10 @@ const Askquestion = () => {
 
           {/* Description */}
           <div className={styles.form_group}>
+            <label htmlFor="description">Detailed Description</label>
             <textarea
               id="description"
-              placeholder="Question detail..."
+              placeholder="Provide all the details someone would need to answer your question..."
               value={description}
               onChange={handleDescriptionChange}
               className={formErrors.description ? styles.error_input : ""}
@@ -252,12 +254,12 @@ const Askquestion = () => {
                 onChange={(e) => setTag(e.target.value)}
                 className={styles.tag_input}
                 disabled={loading}
-                placeholder="e.g. react, node"
+                placeholder="e.g. react, node, css"
               />
-              {tag && <span className={styles.tag_preview_pill}>{tag}</span>}
+              {tag && <span className={styles.tag_preview_pill}>#{tag}</span>}
             </div>
             <div className={styles.input_help}>
-              The tag is auto-suggested from your title but you can change it.
+              Auto-suggested based on your title.
             </div>
           </div>
 
@@ -266,15 +268,15 @@ const Askquestion = () => {
             <button
               type="submit"
               disabled={loading}
-              className={loading ? styles.loading_button : ""}
+              className={`neon-btn ${loading ? styles.loading_button : ""}`}
             >
-              {loading ? "Posting..." : "Post"}
+              {loading ? "Posting..." : "Post Question"}
             </button>
             <button
               type="button"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/")}
               disabled={loading}
-              className={styles.cancel_button}
+              className="neon-btn cancel_button"
             >
               Cancel
             </button>
@@ -283,6 +285,6 @@ const Askquestion = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Askquestion;

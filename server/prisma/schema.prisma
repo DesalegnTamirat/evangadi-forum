@@ -17,6 +17,7 @@ model User {
   reset_token          String?       @db.VarChar(255)
   profile_picture      String?       @db.VarChar(250)
   reputation           Int           @default(0)
+  badges               String[]      @default([])
   reset_token_expires  DateTime?
   created_at           DateTime      @default(now())
   questions            Question[]
@@ -35,6 +36,7 @@ model Question {
   title       String         @db.VarChar(50)
   description String         @db.VarChar(200)
   tag         String?        @db.VarChar(20)
+  views       Int            @default(0)
   created_at  DateTime       @default(now())
   user        User           @relation(fields: [userid], references: [userid], onDelete: Cascade)
   answers     Answer[]

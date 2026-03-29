@@ -1,95 +1,61 @@
-import React, { useContext, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { AppState } from "../../App";
-import logo from "../../assets/EvangadiLogo.jpeg";
-import { IoIosContact } from "react-icons/io";
-import { BsSun, BsMoon } from "react-icons/bs";
+import { MdNotificationsNone, MdSearch, MdKeyboardArrowDown } from "react-icons/md";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import styles from "./header.module.css";
-import { API_BASE_URL } from "../../Data/data.js";
 
 const Header = () => {
-  const { user, setUser, theme, toggleTheme } = useContext(AppState);
+  const { user, setUser } = useContext(AppState);
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setUser(null);
-    navigate("/");
-    setIsOpen(false);
+    navigate("/signin");
   };
 
   return (
-    <header className={styles.nav__bar}>
-      <nav className={styles.navigation}>
-        <div className={styles.container}>
-          {/* Logo */}
-          <div className={styles.evLogo__continer}>
-            <Link to="/">
-              <img src={logo} alt="Evangadi Logo" />
-            </Link>
-          </div>
+    <header className={`${styles.header} glass-panel`}>
+      <div className={styles.headerLeft}>
+        <div className={styles.searchWrapper}>
+          <MdSearch className={styles.searchIcon} />
+          <input 
+            type="text" 
+            placeholder="Search Community..." 
+            className={styles.headerSearch}
+          />
+        </div>
+      </div>
 
-          {/* Hamburger */}
-          <div className={styles.hamburger} onClick={() => setIsOpen(!isOpen)}>
-            <div className={styles.bar}></div>
-            <div className={styles.bar}></div>
-            <div className={styles.bar}></div>
-          </div>
+      <div className={styles.headerRight}>
+        <button className={styles.iconBtn}>
+          <MdNotificationsNone />
+          <span className={styles.notifyBadge}></span>
+        </button>
 
-          {/* Links */}
-          <div className={`${styles.nav__links} ${isOpen ? styles.open : ""}`}>
-            <Link
-              to="/"
-              className={styles.navLink}
-              onClick={() => setIsOpen(false)}
-            >
-              Home
-            </Link>
-
-            <Link
-              to="/howitworks"
-              className={styles.navLink}
-              onClick={() => setIsOpen(false)}
-            >
-              How it works
-            </Link>
-
-            {/* Profile Image (replaces Profile text) */}
-            {user && (
-              <Link
-                to="/profile"
-                className={styles.profileAvatar}
-                onClick={() => setIsOpen(false)}
-                title="Profile"
-              >
-                {user.profile_picture ? (
-                  <img
-                    src={`${API_BASE_URL}${user.profile_picture}`}
-                    alt="Profile"
-                  />
-                ) : (
-                  <IoIosContact size={28} />
-                )}
-              </Link>
-            )}
-
-            <button className={styles.theme_toggle} onClick={toggleTheme}>
-              {theme === "light" ? <BsMoon size={22} /> : <BsSun size={22} />}
-            </button>
-
-            {user ? (
-              <button className={styles.nav_butn} onClick={handleLogout}>
-                LOG OUT
-              </button>
+        <div className={styles.userProfile}>
+          <div className={styles.avatar}>
+            {user?.profile_picture ? (
+              <img src={user.profile_picture} alt={user.username} />
             ) : (
-              <Link to="/signin" onClick={() => setIsOpen(false)}>
-                <button className={styles.nav_butn}>SIGN IN</button>
-              </Link>
+              <AccountCircleIcon />
             )}
+          </div>
+          <div className={styles.userInfo}>
+            <span className={styles.userName}>{user ? `${user.firstname} ${user.lastname?.charAt(0)}.` : 'Guest'}</span>
+            <span className={styles.userRank}>
+                {user?.badges?.[user.badges.length - 1] || 'New Contributor'}
+            </span>
+          </div>
+          <MdKeyboardArrowDown className={styles.dropdownIcon} />
+          
+          <div className={styles.profileDropdown}>
+            <Link to="/profile">Profile</Link>
+            <button onClick={handleLogout}>Logout</button>
           </div>
         </div>
-      </nav>
+      </div>
     </header>
   );
 };

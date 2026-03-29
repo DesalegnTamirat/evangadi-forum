@@ -221,17 +221,17 @@ function Answer() {
   return (
     <div className={styles.container}>
       {question && (
-        <div className={styles.question_summary_wrapper}>
+        <div className={`${styles.question_summary_wrapper} glass-panel`}>
           <div className={styles.question_section}>
             <div className={styles.question_header_with_vote}>
               <div className={styles.vote_controls}>
                 <button 
-                  className={`${styles.like_btn} ${question.user_vote === 1 ? styles.active_like : ''}`}
+                  className={`${styles.ans_like_btn} ${question.user_vote === 1 ? styles.active_like : ''}`}
                   onClick={() => handleQuestionVote(1)}
                   title={question.user_vote === 1 ? "Unlike" : "Like"}
                 >
                   <span className={styles.heart_icon}>{question.user_vote === 1 ? "❤️" : "🤍"}</span>
-                  <span className={styles.vote_count}>{question.vote_count || 0}</span>
+                  <span className={styles.ans_vote_count}>{question.vote_count || 0}</span>
                 </button>
               </div>
               <div className={styles.question_content_main}>
@@ -241,8 +241,10 @@ function Answer() {
                   <span className={styles.text}>{question.title}</span>
                 </h2>
                 <div className={styles.author_rep_badge}>
-                  <span className={styles.rep_score}>{question.reputation || 0} pts</span>
-                  {question.reputation >= 10 && <span className={styles.mini_badge} title="Badge earned">●</span>}
+                    <span className="reputation-badge gold">{question.reputation || 0} pts</span>
+                    {question.badges?.map(b => (
+                        <span key={b} className="reputation-badge silver" style={{ marginLeft: '5px' }}>{b}</span>
+                    ))}
                 </div>
               </div>
             </div>
@@ -251,7 +253,7 @@ function Answer() {
 
           {summary && (
             <div className={styles.summary_section}>
-              <h3>Answer Summary</h3>
+              <h3>Answer Summary (AI)</h3>
               <p className={styles.summaryText}>{getSummaryText()}</p>
               {shouldShowReadMore() && (
                 <span
@@ -267,34 +269,14 @@ function Answer() {
       )}
 
       <div className={styles.answers_section}>
-        <h3 className={styles.big_title}>Answers from the Community</h3>
+        <h3 className={styles.big_title}>Community Answers</h3>
 
         {answersLoading && <p>Loading answers...</p>}
         {error && <p className={styles.error}>{error}</p>}
         {!answersLoading && answers.length === 0 && <p>No answers yet!</p>}
 
-        {confirmDeleteAnswerId !== null && (
-          <div className={styles.confirmation_overlay}>
-            <div className={styles.confirmation_prompt}>
-              <p>Are you sure you want to delete this answer?</p>
-              <button
-                className={`${styles.confirmation_btn} ${styles.confirmation_btn_danger}`}
-                onClick={handleConfirmDeleteAnswer}
-              >
-                Yes, Delete
-              </button>
-              <button
-                className={`${styles.confirmation_btn} ${styles.confirmation_btn_secondary}`}
-                onClick={() => setConfirmDeleteAnswerId(null)}
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
-
         {answers.map((ans) => (
-          <div key={ans.answer_id} className={styles.answer_card}>
+          <div key={ans.answer_id} className={`${styles.answer_card} glass-panel`}>
             <div className={styles.answer_main}>
               <div className={styles.user_info}>
                 <div className={styles.avatar}>
@@ -305,17 +287,12 @@ function Answer() {
                       className={styles.profile_image}
                     />
                   ) : (
-                    ans.user_name
-                      ?.split(" ")
-                      .map((n) => n[0])
-                      .join("")
-                      .toUpperCase()
+                    ans.user_name?.[0]?.toUpperCase() || 'U'
                   )}
                 </div>
-                <span>{ans.user_name}</span>
+                <span className={styles.user_name}>{ans.user_name}</span>
                 <div className={styles.ans_author_rep}>
-                  <span className={styles.ans_rep_score}>{ans.reputation || 0} pts</span>
-                  {ans.reputation >= 10 && <span className={styles.mini_badge}>●</span>}
+                  <span className="reputation-badge bronze">{ans.reputation || 0} pts</span>
                 </div>
                 <div className={styles.answer_votes}>
                   <button 
@@ -325,15 +302,6 @@ function Answer() {
                     <span className={styles.heart_icon}>{ans.user_vote === 1 ? "❤️" : "🤍"}</span>
                     <span className={styles.ans_vote_count}>{ans.vote_count || 0}</span>
                   </button>
-                  <button 
-                    className={styles.reply_btn}
-                    onClick={() => {
-                        const form = document.querySelector(`.${styles.answer_form}`);
-                        form?.scrollIntoView({ behavior: 'smooth' });
-                    }}
-                  >
-                    Reply
-                  </button>
                 </div>
               </div>
 
@@ -341,7 +309,7 @@ function Answer() {
                 {getAnswerText(ans.content, ans.answer_id)}
                 {shouldShowAnswerReadMore(ans.content) && (
                   <span
-                    className={styles.readMores}
+                    className={styles.readMore}
                     onClick={() =>
                       setExpandedAnswerId(
                         expandedAnswerId === ans.answer_id
@@ -360,31 +328,20 @@ function Answer() {
 
             <div className={styles.answer_footer}>
               <span className={styles.timestamp}>
-                {new Date(ans.created_at).toLocaleDateString("en-US", {
-                  weekday: "short",
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}{" "}
-                at{" "}
-                {new Date(ans.created_at).toLocaleTimeString("en-US", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  hour12: true,
-                })}
+                {new Date(ans.created_at).toLocaleDateString()} at {new Date(ans.created_at).toLocaleTimeString()}
               </span>
 
               {user?.userid === ans.userid && (
                 <div className={styles.action_icons}>
                   <MdEdit
                     size={22}
-                    color="blue"
+                    color="var(--neon-blue)"
                     title="Edit"
                     onClick={() => navigate(`/edit-answer/${ans.answer_id}`)}
                   />
                   <MdDelete
                     size={22}
-                    color="red"
+                    color="var(--neon-pink)"
                     title="Delete"
                     onClick={() => setConfirmDeleteAnswerId(ans.answer_id)}
                   />
@@ -395,9 +352,10 @@ function Answer() {
         ))}
       </div>
 
-      <form onSubmit={handleSubmit} className={styles.answer_form}>
+      <form onSubmit={handleSubmit} className={`${styles.answer_form} glass-panel`}>
+        <h3 className={styles.big_title}>Post Your Answer</h3>
         <textarea
-          placeholder="Your answer..."
+          placeholder="Your professional answer..."
           rows={6}
           value={answerText}
           onChange={(e) => {
@@ -407,14 +365,14 @@ function Answer() {
           disabled={posting}
         />
         <div className={styles.form_actions}>
-          <button type="submit" disabled={posting}>
+          <button type="submit" className="neon-btn" disabled={posting}>
             {posting ? "Posting..." : "Post Answer"}
           </button>
 
           <button
             type="button"
-            onClick={() => navigate(-1)}
-            className={styles.cancel}
+            onClick={() => navigate("/")}
+            className="neon-btn cancel"
           >
             Back to Home
           </button>

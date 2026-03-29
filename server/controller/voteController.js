@@ -2,14 +2,42 @@ import dbConnection from "../DB/dbconfig.js";
 import { StatusCodes } from "http-status-codes";
 
 // Helper to update user reputation
+// Helper to update user reputation and awarded badges
 const updateReputation = async (userid, points) => {
   try {
+    const user = await dbConnection.user.findUnique({
+      where: { userid },
+      select: { reputation: true, badges: true }
+    });
+
+    if (!user) return;
+
+    const newReputation = Math.max(0, user.reputation + points);
+    
+    // Define badge milestones
+    const milestones = [
+      { threshold: 10, label: "Bronze Contributor" },
+      { threshold: 50, label: "Silver Contributor" },
+      { threshold: 100, label: "Gold Contributor" },
+      { threshold: 500, label: "Platinum Contributor" },
+      { threshold: 1000, label: "Top Innovator" },
+      { threshold: 5000, label: "Community Leader" },
+      { threshold: 10000, label: "Expert Answerer" }
+    ];
+
+    const newBadges = milestones
+      .filter(m => newReputation >= m.threshold)
+      .map(m => m.label);
+
     await dbConnection.user.update({
       where: { userid },
-      data: { reputation: { increment: points } },
+      data: { 
+        reputation: newReputation,
+        badges: newBadges
+      },
     });
   } catch (error) {
-    console.error("Failed to update reputation:", error);
+    console.error("Failed to update reputation and badges:", error);
   }
 };
 

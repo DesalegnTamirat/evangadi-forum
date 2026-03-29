@@ -14,12 +14,16 @@ async function getAllQuestions(req, res) {
             lastname: true,
             profile_picture: true,
             reputation: true,
+            badges: true,
           },
         },
         bookmarks: {
           where: { userid: req.user?.userid || 0 },
         },
         votes: true,
+        _count: {
+          select: { answers: true }
+        }
       },
       orderBy: {
         questionid: 'desc',
@@ -44,11 +48,14 @@ async function getAllQuestions(req, res) {
         lastname: q.user.lastname,
         profile_picture: q.user.profile_picture,
         reputation: q.user.reputation,
+        badges: q.user.badges,
         vote_count: voteCount,
+        answer_count: q._count.answers,
         is_bookmarked: q.bookmarks.length > 0,
         user: undefined,
         votes: undefined,
-        bookmarks: undefined
+        bookmarks: undefined,
+        _count: undefined
       };
     });
 
@@ -78,12 +85,16 @@ async function getSingleQuestion(req, res) {
             firstname: true,
             lastname: true,
             reputation: true,
+            badges: true,
           },
         },
         bookmarks: {
           where: { userid: req.user?.userid || 0 },
         },
         votes: true,
+        _count: {
+          select: { answers: true }
+        }
       },
     });
 
@@ -93,6 +104,12 @@ async function getSingleQuestion(req, res) {
         message: "Question not found.",
       });
     }
+
+    // Increment views
+    await dbConnection.question.update({
+      where: { questionid: parseInt(questionid, 10) },
+      data: { views: { increment: 1 } }
+    });
 
     const userId = req.user?.userid;
     const voteCount = question.votes.reduce((acc, v) => acc + v.vote_type, 0);
@@ -104,12 +121,15 @@ async function getSingleQuestion(req, res) {
       firstname: question.user.firstname,
       lastname: question.user.lastname,
       reputation: question.user.reputation,
+      badges: question.user.badges,
       vote_count: voteCount,
       user_vote: userVote,
+      answer_count: question._count.answers,
       is_bookmarked: question.bookmarks.length > 0,
       user: undefined,
       votes: undefined,
-      bookmarks: undefined
+      bookmarks: undefined,
+      _count: undefined
     };
 
     return res.status(StatusCodes.OK).json({

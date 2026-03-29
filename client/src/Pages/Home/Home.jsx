@@ -18,267 +18,154 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { API_BASE_URL } from "../../Data/data";
 
+import "./Dashboard.css";
+import { 
+  MdSearch, 
+  MdAdd, 
+  MdQuestionAnswer, 
+  MdQuestionMark,
+  MdThumbUp,
+  MdStars
+} from "react-icons/md";
+
 const Home = () => {
   const { user } = useContext(AppState);
   const navigate = useNavigate();
 
   const [questions, setQuestions] = useState([]);
-  const [sortedQuestions, setSortedQuestions] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState(""); // Debounced for performance
-  const [sortOption, setSortOption] = useState("Most Recent");
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [fetchError, setFetchError] = useState("");
-  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
-  const [selectedTag, setSelectedTag] = useState("All");
 
   const token = localStorage.getItem("token");
 
-  // Fetch questions from backend API (memoized)
   const fetchData = useCallback(async () => {
-    if (!token) {
-      setFetchError("No authentication token found. Please log in.");
-      setLoading(false);
-      return;
-    }
+    if (!token) return;
     setLoading(true);
-    setFetchError("");
     try {
       const { data } = await axios.get("/question", {
         headers: { Authorization: `Bearer ${token}` },
       });
-
-      const fetchedQuestions = data?.questions || data || []; // Fallback if direct array
-      setQuestions(fetchedQuestions);
-      setSortedQuestions(fetchedQuestions);
+      setQuestions(data?.questions || []);
     } catch (error) {
       console.error("Error fetching questions:", error);
-      console.error("Error response:", error.response); // Debug log
-      if (error.response?.status === 401) {
-        localStorage.removeItem("token"); // Clear invalid token
-        navigate("/login");
-        return;
-      }
-      setFetchError("Failed to fetch questions. Please try again.");
     } finally {
       setLoading(false);
     }
-  }, [token, navigate]);
+  }, [token]);
 
-  // Fetch data on component mount
   useEffect(() => {
     fetchData();
   }, [fetchData]);
 
-  // Debounce search input to reduce re-filters (300ms delay)
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearchQuery(searchQuery), 300);
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  // ===================== SORTING =====================
-  // Re-sort questions whenever `questions` or `sortOption` changes
-  useEffect(() => {
-    let sortedData = [...questions];
-    switch (sortOption) {
-      case "Most Recent":
-        sortedData.sort(
-          (a, b) => new Date(b.created_at) - new Date(a.created_at)
-        );
-        break;
-      case "By Questions":
-        sortedData.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case "By Tag":
-        sortedData.sort((a, b) => {
-          const tagA = (a.tag || "").toLowerCase();
-          const tagB = (b.tag || "").toLowerCase();
-          return tagA.localeCompare(tagB);
-        });
-        break;
-      default:
-        break;
-    }
-    setSortedQuestions(sortedData);
-  }, [questions, sortOption]);
-
-  // ===================== SEARCH FILTER =====================
-  // Filter questions by title, username, description, or tag
   const filteredQuestions = useMemo(() => {
-    return sortedQuestions.filter((q) => {
+    return questions.filter((q) => {
       const searchText = debouncedSearchQuery.toLowerCase();
-      const matchesSearch = (
+      return (
         q.title.toLowerCase().includes(searchText) ||
         q.username.toLowerCase().includes(searchText) ||
-        (q.description || "").toLowerCase().includes(searchText) ||
         (q.tag || "").toLowerCase().includes(searchText)
       );
-
-      const matchesTag = selectedTag === "All" || q.tag === selectedTag;
-
-      return matchesSearch && matchesTag;
     });
-  }, [sortedQuestions, debouncedSearchQuery, selectedTag]);
+  }, [questions, debouncedSearchQuery]);
 
-  // Extract unique tags for the filter cloud
-  const uniqueTags = useMemo(() => {
-    const tags = questions.map((q) => q.tag).filter(Boolean);
-    return ["All", ...new Set(tags)];
-  }, [questions]);
-
-  // ===================== DELETE LOGIC =====================
-  // Open delete confirmation dialog
-  const handleDelete = (id) => setConfirmDeleteId(id);
-
-  // Confirm deletion of question (optimistic: remove first, rollback on error)
-  const handleConfirmDelete = async () => {
-    const deletedId = confirmDeleteId;
-    // Optimistic update
-    setQuestions((prev) => prev.filter((q) => q.questionid !== deletedId));
-    try {
-      await axios.delete(`/question/${deletedId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      // setSuccessMessage("");
-      toast.success("Question deleted successfully!");
-    } catch (error) {
-      // Rollback on error
-      fetchData(); // Refetch to restore
-      setErrorMessage("Error deleting question");
-      console.error("Delete error:", error);
-    } finally {
-      setConfirmDeleteId(null);
-      // Auto-clear messages
-      setTimeout(() => {
-        setSuccessMessage("");
-        setErrorMessage("");
-      }, 3000);
-    }
-  };
-
-  // ===================== UI =====================
   return (
     <section className="primary_container">
-      <div className={`${classes["main-container"]} glass-panel`}>
-        {/* Header section with Ask Question button and Welcome message */}
-        <div className={classes["welcome-section"]}>
-          <Link to="/askquestion" className={classes["ask-question-btn"]}>
-            Ask Question
-          </Link>
-          <div className={classes["welcome-message"]}>
-            Welcome:{" "}
-            <span className={classes["username"]}>
-              {user?.username.toUpperCase()}
-            </span>
+      <div className="dashboard-header">
+        <h1 className="dashboard-title">Dashboard</h1>
+        <Link to="/askquestion" className="neon-btn">
+          <MdAdd style={{ marginRight: '8px', verticalAlign: 'middle' }} />
+          Post Question
+        </Link>
+      </div>
+
+      <div className="stats-grid">
+        <div className="stat-card glass-panel">
+          <div className="stat-header">
+            <span className="stat-icon"><MdQuestionMark /></span>
+            <span>Total Questions</span>
           </div>
+          <div className="stat-value">{questions.length}</div>
+          <div className="stat-label">Community discussions</div>
         </div>
-
-        {/* Search input */}
-        <div className={classes["search-bar"]}>
-          <input
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            className={classes["search-input"]}
-            placeholder="Search questions by title, description or tag..."
-            type="search"
-            aria-label="Search questions"
-          />
-        </div>
-
-        {/* Tag Cloud */}
-        <div className={classes["tag-cloud"]}>
-          {uniqueTags.map((tag) => (
-            <button
-              key={tag}
-              onClick={() => setSelectedTag(tag)}
-              className={`${classes["tag-btn"]} ${
-                selectedTag === tag ? classes["active-tag"] : ""
-              }`}
-            >
-              {tag}
-            </button>
-          ))}
-        </div>
-
-        {/* Sorting dropdown */}
-        <div className={classes["sort-dropdown"]}>
-          <select
-            value={sortOption}
-            onChange={(e) => setSortOption(e.target.value)}
-            className={classes["sort-select"]}
-            aria-label="Sort questions by"
-          >
-            <option value="Most Recent">Most Recent</option>
-            <option value="By Questions">By Questions</option>
-            <option value="By Tag">By Tag</option>
-          </select>
-        </div>
-
-        {/* Fetch Error with Retry */}
-        {fetchError && (
-          <div className={classes["error-message"]}>
-            {fetchError}{" "}
-            <button
-              type="button"
-              onClick={fetchData}
-              className={classes["retry-btn"]}
-            >
-              Retry
-            </button>
+        
+        <div className="stat-card glass-panel">
+          <div className="stat-header">
+            <span className="stat-icon"><MdQuestionAnswer /></span>
+            <span>Your Answers</span>
           </div>
-        )}
+          <div className="stat-value">{user?._count?.answers || 0}</div>
+          <div className="stat-label">Contributions made</div>
+        </div>
 
-        {/* Alerts */}
-        {successMessage && (
-          <div className={classes["success-message"]}>{successMessage}</div>
-        )}
-        {errorMessage && (
-          <div className={classes["error-message"]}>{errorMessage}</div>
-        )}
+        <div className="stat-card glass-panel">
+          <div className="stat-header">
+            <span className="stat-icon"><MdThumbUp /></span>
+            <span>Helpful Votes</span>
+          </div>
+          <div className="stat-value">{user?.reputation || 0}</div>
+          <div className="stat-label">From the community</div>
+        </div>
 
-        {/* Delete confirmation prompt */}
-        {confirmDeleteId !== null && (
-          <div className={classes["confirmation_overlay"]}>
-            <div
-              className={classes["confirmation-prompt"]}
-              role="dialog"
-              aria-modal="true"
-              aria-labelledby="confirm-delete-label"
-            >
-              <p id="confirm-delete-label">
-                Are you sure you want to delete this question?
-              </p>
-              <button
-                type="button"
-                className={`${classes["confirmation-btn"]} ${classes["confirmation-btn-danger"]}`}
-                onClick={handleConfirmDelete}
-              >
-                Yes, Delete
-              </button>
-              <button
-                type="button"
-                className={`${classes["confirmation-btn"]} ${classes["confirmation-btn-secondary"]}`}
-                onClick={() => setConfirmDeleteId(null)}
-              >
-                Cancel
-              </button>
+        <div className="stat-card glass-panel">
+          <div className="stat-header">
+            <span className="stat-icon"><MdStars /></span>
+            <span>Reputation Score</span>
+          </div>
+          <div className="stat-value neon-text">{user?.reputation?.toLocaleString() || 0}</div>
+          <div className="stat-label">Global standing</div>
+        </div>
+      </div>
+
+      <div className="reputation-section glass-panel">
+        <h3 className="reputation-title">User Reputation</h3>
+        <div className="badges-container">
+          {user?.badges?.length > 0 ? (
+            user.badges.map(badge => (
+              <div key={badge} className="badge-item">
+                <MdStars color="var(--neon-blue)" />
+                {badge}
+              </div>
+            ))
+          ) : (
+            <p className="no-badges">Earn reputation to unlock badges!</p>
+          )}
+        </div>
+      </div>
+
+      <div className="recent-questions-container">
+        <div className="recent-questions-header">
+          <h2 className="recent-questions-title">Recent Questions</h2>
+          <div className="filter-controls">
+            <div className="search-input-wrapper">
+              <MdSearch className="search-icon" />
+              <input
+                type="text"
+                className="dashboard-search"
+                placeholder="Search Community..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
             </div>
           </div>
-        )}
+        </div>
 
-        {/* Questions list */}
         {loading ? (
           <SkeletonLoader type="card" count={3} />
-        ) : filteredQuestions.length > 0 ? (
-          <div className={classes.questions_container}>
+        ) : (
+          <div className="questions-list">
             {filteredQuestions.map((q) => (
               <QuestionCard key={q.questionid} Questions={q} />
             ))}
+            {filteredQuestions.length === 0 && (
+              <p className="empty-message">No questions found matching your search.</p>
+            )}
           </div>
-        ) : (
-          <p className={classes.empty}>No questions found. Be the first to ask!</p>
         )}
       </div>
     </section>
