@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userid               Int           @id @default(autoincrement())
+  username             String        @db.VarChar(20)
+  firstname            String        @db.VarChar(20)
+  lastname             String        @db.VarChar(20)
+  email                String        @unique @db.VarChar(40)
+  password             String        @db.VarChar(250)
+  reset_token          String?       @db.VarChar(255)
+  profile_picture      String?       @db.VarChar(250)
+  reset_token_expires  DateTime?
+  questions            Question[]
+  answers              Answer[]
+  chat_history         ChatHistory[]
+
+  @@map("users")
+}
+
+model Question {
+  questionid  Int      @id @default(autoincrement())
+  userid      Int
+  title       String   @db.VarChar(50)
+  description String   @db.VarChar(200)
+  tag         String?  @db.VarChar(20)
+  created_at  DateTime @default(now())
+  user        User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
+  answers     Answer[]
+
+  @@map("questions")
+}
+
+model Answer {
+  answerid   Int      @id @default(autoincrement())
+  userid     Int
+  questionid Int
+  answer     String   @db.Text
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
+  question   Question @relation(fields: [questionid], references: [questionid], onDelete: Cascade)
+
+  @@map("answers")
+}
+
+enum ChatRole {
+  system
+  user
+  assistant
+}
+
+model ChatHistory {
+  chatid     Int      @id @default(autoincrement())
+  userid     Int
+  role       ChatRole
+  content    String   @db.Text
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
+
+  @@map("chat_history")
+}

@@ -16,34 +16,40 @@ const getAnswers = async (req, res) => {
   }
 
   try {
-    // check if question exists
-    const [question] = await dbConnection.query(
-      "SELECT questionid FROM questions WHERE questionid = ?",
-      [questionIdNum]
-    );
+    const question = await dbConnection.question.findUnique({
+      where: { questionid: questionIdNum },
+      select: { questionid: true }
+    });
 
-    if (question.length === 0) {
+    if (!question) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: "Question not found",
       });
     }
 
     // get answers
-    const [answers] = await dbConnection.query(
-      `SELECT 
-        a.answerid AS answer_id,
-        a.answer AS content,
-        u.username AS user_name,
-        a.created_at,
-        a.userid,
-        u.profile_picture
-    FROM answers a
-    JOIN users u ON a.userid = u.userid
-    WHERE a.questionid = ?`,
-      [questionIdNum]
-    );
+    const answers = await dbConnection.answer.findMany({
+      where: { questionid: questionIdNum },
+      include: {
+        user: {
+          select: {
+            username: true,
+            profile_picture: true,
+          },
+        },
+      },
+    });
 
-    return res.status(StatusCodes.OK).json({ answers });
+    const formattedAnswers = answers.map(a => ({
+      answer_id: a.answerid,
+      content: a.answer,
+      user_name: a.user.username,
+      created_at: a.created_at,
+      userid: a.userid,
+      profile_picture: a.user.profile_picture,
+    }));
+
+    return res.status(StatusCodes.OK).json({ answers: formattedAnswers });
   } catch (error) {
     console.error("Error getting answers:", error);
     return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -64,23 +70,24 @@ const getAnswerSummary = async (req, res) => {
   const { question_id } = req.params;
 
   try {
-    // Fetch Question details and its Answers from question asked by question id
-    const [question] = await dbConnection.query(
-      "SELECT title, description FROM questions WHERE questionid = ?",
-      [question_id]
-    );
-    // Fetch answer from answers
-    const [answers] = await dbConnection.query(
-      "SELECT answer FROM answers WHERE questionid = ?",
-      [question_id]
-    );
-    //   insert error response if question not found
+    const question = await dbConnection.question.findUnique({
+      where: { questionid: parseInt(question_id, 10) },
+      select: { 
+        title: true, 
+        description: true,
+        answers: {
+          select: { answer: true }
+        }
+      }
+    });
 
-    if (question.length === 0) {
+    if (!question) {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ message: "Question not found" });
     }
+
+    const answers = question.answers;
     //   insert error response if there is no answer
     if (answers.length === 0) {
       return res
@@ -108,8 +115,8 @@ const getAnswerSummary = async (req, res) => {
       },
       {
         role: "user",
-        content: `Question Title: ${question[0].title}
-        Description: ${question[0].description}
+        content: `Question Title: ${question.title}
+        Description: ${question.description}
         
         Answers to summarize:
         ${allAnswersText}`,
@@ -157,13 +164,12 @@ const postAnswer = async (req, res) => {
   }
 
   try {
-    // check if question exists
-    const [question] = await dbConnection.query(
-      "SELECT questionid FROM questions WHERE questionid = ?",
-      [questionIdNum]
-    );
+    const question = await dbConnection.question.findUnique({
+      where: { questionid: questionIdNum },
+      select: { questionid: true }
+    });
 
-    if (question.length === 0) {
+    if (!question) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: "Question not found",
       });
@@ -172,11 +178,13 @@ const postAnswer = async (req, res) => {
     // get logged-in user
     const userId = req.user.userid;
 
-    // insert answer
-    await dbConnection.query(
-      "INSERT INTO answers (questionid, userid, answer) VALUES (?, ?, ?)",
-      [questionIdNum, userId, answer]
-    );
+    await dbConnection.answer.create({
+      data: {
+        questionid: questionIdNum,
+        userid: userId,
+        answer: answer,
+      }
+    });
 
     return res.status(StatusCodes.CREATED).json({
       message: "Answer posted successfully",
@@ -211,19 +219,18 @@ const editAnswer = async (req, res) => {
   }
 
   try {
-    // Check if answer exists and belongs to user
-    const [existingAnswer] = await dbConnection.query(
-      "SELECT userid FROM answers WHERE answerid = ?",
-      [answerIdNum]
-    );
+    const existingAnswer = await dbConnection.answer.findUnique({
+      where: { answerid: answerIdNum },
+      select: { userid: true }
+    });
 
-    if (existingAnswer.length === 0) {
+    if (!existingAnswer) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: "Answer not found",
       });
     }
 
-    if (existingAnswer[0].userid !== userId) {
+    if (existingAnswer.userid !== userId) {
       return res.status(StatusCodes.FORBIDDEN).json({
         message: "You can only edit your own answers",
       });
@@ -232,11 +239,13 @@ const editAnswer = async (req, res) => {
     // Sanitize answer
     const sanitizedAnswer = xss(answer);
 
-    // Update answer
-    await dbConnection.query(
-      "UPDATE answers SET answer = ? WHERE answerid = ? AND userid = ?",
-      [sanitizedAnswer, answerIdNum, userId]
-    );
+    await dbConnection.answer.update({
+      where: { 
+        answerid: answerIdNum,
+        userid: userId 
+      },
+      data: { answer: sanitizedAnswer }
+    });
 
     return res.status(StatusCodes.OK).json({
       message: "Answer updated successfully",
@@ -263,29 +272,29 @@ const deleteAnswer = async (req, res) => {
   }
 
   try {
-    // Check if answer exists and belongs to user
-    const [existingAnswer] = await dbConnection.query(
-      "SELECT userid FROM answers WHERE answerid = ?",
-      [answerIdNum]
-    );
+    const existingAnswer = await dbConnection.answer.findUnique({
+      where: { answerid: answerIdNum },
+      select: { userid: true }
+    });
 
-    if (existingAnswer.length === 0) {
+    if (!existingAnswer) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: "Answer not found",
       });
     }
 
-    if (existingAnswer[0].userid !== userId) {
+    if (existingAnswer.userid !== userId) {
       return res.status(StatusCodes.FORBIDDEN).json({
         message: "You can only delete your own answers",
       });
     }
 
-    // Delete answer
-    await dbConnection.query(
-      "DELETE FROM answers WHERE answerid = ? AND userid = ?",
-      [answerIdNum, userId]
-    );
+    await dbConnection.answer.delete({
+      where: { 
+        answerid: answerIdNum,
+        userid: userId 
+      }
+    });
 
     return res.status(StatusCodes.OK).json({
       message: "Answer deleted successfully",
@@ -309,30 +318,29 @@ const getSingleAnswer = async (req, res) => {
   }
 
   try {
-    const [answer] = await dbConnection.query(
-      `
-      SELECT 
-        a.answerid,
-        a.answer,
-        a.questionid,
-        a.userid,
-        a.created_at,
-        u.username
-      FROM answers a
-      JOIN users u ON a.userid = u.userid
-      WHERE a.answerid = ?
-      `,
-      [answerIdNum]
-    );
+    const answer = await dbConnection.answer.findUnique({
+      where: { answerid: answerIdNum },
+      include: {
+        user: {
+          select: { username: true }
+        }
+      }
+    });
 
-    if (answer.length === 0) {
+    if (!answer) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: "Answer not found",
       });
     }
 
+    const formattedAnswer = {
+      ...answer,
+      username: answer.user.username,
+      user: undefined
+    };
+
     return res.status(StatusCodes.OK).json({
-      answer: answer[0],
+      answer: formattedAnswer,
     });
   } catch (error) {
     console.error("Error fetching single answer:", error);

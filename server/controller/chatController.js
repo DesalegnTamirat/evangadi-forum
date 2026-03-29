@@ -18,12 +18,12 @@ export const getChatResponse = async (req, res) => {
   const { userid } = req.user;
 
   try {
-    const [history] = await db.execute(
-      `SELECT role, content FROM chat_history 
-       WHERE userid = ? 
-       ORDER BY chatid DESC LIMIT 30`,
-      [userid]
-    );
+    const history = await db.chatHistory.findMany({
+      where: { userid: userid },
+      select: { role: true, content: true },
+      orderBy: { chatid: 'desc' },
+      take: 30
+    });
 
     const conversationContext = history.reverse();
 
@@ -47,8 +47,12 @@ export const getChatResponse = async (req, res) => {
 
     const aiResponse = completion.choices[0].message.content;
 
-    const insertQuery = `INSERT INTO chat_history (userid, role, content) VALUES (?, 'user', ?), (?, 'assistant', ?)`;
-    await db.execute(insertQuery, [userid, prompt, userid, aiResponse]);
+    await db.chatHistory.createMany({
+      data: [
+        { userid, role: 'user', content: prompt },
+        { userid, role: 'assistant', content: aiResponse }
+      ]
+    });
 
     res.json({ answer: aiResponse });
   } catch (error) {
@@ -60,10 +64,12 @@ export const getChatResponse = async (req, res) => {
 export const getChatHistory = async (req, res) => {
   const { userid } = req.user;
   try {
-    const [rows] = await db.execute(
-      "SELECT role, content FROM chat_history WHERE userid = ? ORDER BY chatid DESC LIMIT 20",
-      [userid]
-    );
+    const rows = await db.chatHistory.findMany({
+      where: { userid: userid },
+      select: { role: true, content: true },
+      orderBy: { chatid: 'desc' },
+      take: 20
+    });
     rows.reverse();
 
     const formattedHistory = [];
@@ -88,7 +94,9 @@ export const deleteChatHistory = async (req, res) => {
   const { userid } = req.user;
 
   try {
-    await db.execute("DELETE FROM chat_history WHERE userid = ?", [userid]);
+    await db.chatHistory.deleteMany({
+      where: { userid: userid }
+    });
 
     res.status(200).json({
       message: "Chat history cleared successfully",

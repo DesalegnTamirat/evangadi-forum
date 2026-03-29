@@ -5,23 +5,21 @@ import xss from "xss";
 async function getAllQuestions(req, res) {
   console.log("getAllQuestions called"); // Debug log
   try {
-    // Get all questions from the database (updated to handle missing created_at column)
-    const [questions] = await dbConnection.execute(
-      `SELECT 
-        q.questionid,
-        q.title,
-        q.description,
-        q.tag,
-        q.userid,
-        u.username,
-        u.firstname,
-        u.lastname,
-        created_at,
-        u.profile_picture
-      FROM questions q 
-      JOIN users u ON q.userid = u.userid 
-      ORDER BY q.questionid DESC`
-    );
+    const questions = await dbConnection.question.findMany({
+      include: {
+        user: {
+          select: {
+            username: true,
+            firstname: true,
+            lastname: true,
+            profile_picture: true,
+          },
+        },
+      },
+      orderBy: {
+        questionid: 'desc',
+      },
+    });
 
     console.log("Questions found:", questions.length); // Debug log
 
@@ -32,9 +30,19 @@ async function getAllQuestions(req, res) {
       });
     }
 
+    // Flatten the result to match the expected format if necessary
+    const formattedQuestions = questions.map(q => ({
+      ...q,
+      username: q.user.username,
+      firstname: q.user.firstname,
+      lastname: q.user.lastname,
+      profile_picture: q.user.profile_picture,
+      user: undefined // Omit the nested user object
+    }));
+
     return res.status(StatusCodes.OK).json({
       message: "Questions retrieved successfully",
-      questions: questions,
+      questions: formattedQuestions,
     });
   } catch (error) {
     console.error("Database error:", error); // Debug log
@@ -49,32 +57,37 @@ async function getAllQuestions(req, res) {
 async function getSingleQuestion(req, res) {
   const { questionid } = req.params;
   try {
-    const [question] = await dbConnection.execute(
-      `SELECT 
-        q.questionid,
-        q.title,
-        q.description,
-        q.tag,
-        q.userid,
-        u.username,
-        u.firstname,
-        u.lastname,
-        NOW() as created_at
-      FROM questions q 
-      JOIN users u ON q.userid = u.userid 
-      WHERE q.questionid = ?`,
-      [questionid]
-    );
+    const question = await dbConnection.question.findUnique({
+      where: { questionid: parseInt(questionid, 10) },
+      include: {
+        user: {
+          select: {
+            username: true,
+            firstname: true,
+            lastname: true,
+          },
+        },
+      },
+    });
+
     // if the questioon not found
-    if (question.length === 0) {
+    if (!question) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: "Question not found.",
       });
     }
 
+    const formattedQuestion = {
+      ...question,
+      username: question.user.username,
+      firstname: question.user.firstname,
+      lastname: question.user.lastname,
+      user: undefined
+    };
+
     return res.status(StatusCodes.OK).json({
       message: "Question retrieved successfully",
-      question: question[0],
+      question: formattedQuestion,
     });
   } catch (error) {
     console.log(error);
@@ -106,13 +119,18 @@ const postQuestion = async (req, res) => {
     const sanitizedDescription = xss(description);
     const sanitizedTag = tag ? xss(tag) : null;
 
-    const [result] = await dbConnection.query(
-      "INSERT INTO questions(title, description, tag, userid)  VALUES (? , ? , ? , ?)",
-      [sanitizedTitle, sanitizedDescription, sanitizedTag, userId]
-    );
+    const result = await dbConnection.question.create({
+      data: {
+        title: sanitizedTitle,
+        description: sanitizedDescription,
+        tag: sanitizedTag,
+        userid: userId
+      }
+    });
+
     res.status(StatusCodes.CREATED).json({
       message: "Question Posted Successfully!",
-      questionId: result.insertId,
+      questionId: result.questionid,
     });
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -137,61 +155,48 @@ const editQuestion = async (req, res) => {
     }
 
     // Check if question exists and belongs to the user
-    const [question] = await dbConnection.execute(
-      "SELECT userid FROM questions WHERE questionid = ?",
-      [questionid]
-    );
+    const question = await dbConnection.question.findUnique({
+      where: { questionid: parseInt(questionid, 10) },
+      select: { userid: true }
+    });
 
-    if (question.length === 0) {
+    if (!question) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: "Question not found.",
       });
     }
 
-    if (question[0].userid !== userId) {
+    if (question.userid !== userId) {
       return res.status(StatusCodes.FORBIDDEN).json({
         message: "You can only edit your own questions.",
       });
     }
 
-    // Build dynamic update fields
-    const fields = [];
-    const values = [];
-
-    if (title) {
-      fields.push("title = ?");
-      values.push(xss(title));
-    }
-
-    if (description) {
-      fields.push("description = ?");
-      values.push(xss(description));
-    }
-
+    const updateData = {};
+    if (title) updateData.title = xss(title);
+    if (description) updateData.description = xss(description);
     if (tag) {
       if (tag.length > 20) {
         return res.status(StatusCodes.BAD_REQUEST).json({
           message: "Tag must be less than 20 characters",
         });
       }
-      fields.push("tag = ?");
-      values.push(xss(tag));
+      updateData.tag = xss(tag);
     }
 
-    if (fields.length === 0) {
+    if (Object.keys(updateData).length === 0) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         message: "Nothing to update",
       });
     }
 
-    values.push(questionid, userId);
-
-    await dbConnection.execute(
-      `UPDATE questions 
-       SET ${fields.join(", ")} 
-       WHERE questionid = ? AND userid = ?`,
-      values
-    );
+    await dbConnection.question.update({
+      where: { 
+        questionid: parseInt(questionid, 10),
+        userid: userId 
+      },
+      data: updateData
+    });
 
     return res.status(StatusCodes.OK).json({
       message: "Question updated successfully.",
@@ -218,27 +223,29 @@ const deleteQuestion = async (req, res) => {
     }
 
     // Check if question exists and belongs to the user
-    const [question] = await dbConnection.execute(
-      "SELECT userid FROM questions WHERE questionid = ?",
-      [questionid]
-    );
+    const question = await dbConnection.question.findUnique({
+      where: { questionid: parseInt(questionid, 10) },
+      select: { userid: true }
+    });
 
-    if (question.length === 0) {
+    if (!question) {
       return res.status(StatusCodes.NOT_FOUND).json({
         message: "Question not found.",
       });
     }
 
-    if (question[0].userid !== userId) {
+    if (question.userid !== userId) {
       return res.status(StatusCodes.FORBIDDEN).json({
         message: "You can only delete your own questions.",
       });
     }
 
-    await dbConnection.execute(
-      "DELETE FROM questions WHERE questionid = ? AND userid = ?",
-      [questionid, userId]
-    );
+    await dbConnection.question.delete({
+      where: { 
+        questionid: parseInt(questionid, 10),
+        userid: userId 
+      }
+    });
 
     return res.status(StatusCodes.OK).json({
       message: "Question deleted successfully.",
