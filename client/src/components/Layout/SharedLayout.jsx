@@ -9,7 +9,9 @@ function SharedLayout() {
     <>
       <Header />
       <ChatWidget />
-      <Outlet />
+      <main style={{ paddingTop: "100px", minHeight: "80vh" }}>
+        <Outlet />
+      </main>
       <Footer />
     </>
   );

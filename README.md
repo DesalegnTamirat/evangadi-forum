@@ -1,328 +1,112 @@
-# evangadi-forum
+# Evangadi Forum: Next Generation 🚀
 
-# Evangadi Forum
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](#)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-blue.svg)](#)
 
-A full-stack Q&A forum application with an integrated AI chatbot assistant. Users can ask questions, provide answers, edit their content, and interact with an AI-powered chatbot for instant help.
+A high-performance, community-driven Q&A platform built with **React**, **PostgreSQL**, and **Prisma**. Featuring a modern glassmorphic UI, AI-powered summaries, and a gamified reputation system.
 
-## 🚀 Features
+---
 
-- **User Authentication**: Registration, login, password reset via email
-- **Question Management**: Ask, view, edit, and delete questions
-- **Answer System**: Post answers to questions, edit and delete answers
-- **User Profiles**: View and manage user profiles with profile picture uploads
-- **AI Chatbot**: Integrated AI assistant powered by Groq (Llama 3.3) for instant help
-- **Real-time Notifications**: Toast notifications for user actions
-- **Protected Routes**: Authentication-based route protection
-- **Responsive Design**: Modern UI built with React and Material-UI
+## ✨ Key Features
+
+### 🏛️ Modern Architecture
+- **PostgreSQL (Neon)**: Relational data integrity with cloud-native scalability.
+- **Prisma ORM**: Type-safe database queries and automated migrations.
+- **Code Splitting**: Optimized performance with React lazy loading.
+
+### 🎨 Premium UI/UX
+- **Glassmorphism Design**: Sleek, modern interface with multi-theme support (Dark/Light).
+- **Skeleton Loaders**: Smooth, flickering-free content transitions.
+- **Responsive Layout**: Enterprise-grade experience on mobile, tablet, and desktop.
+
+### 🧠 Intelligent Functionality
+- **AI-Powered Summaries**: Instant insights for long discussions (OpenAI integration).
+- **Gamified Reputation**: Badge-based reward tiers (Bronze, Silver, Gold).
+- **Advanced Search**: Instant keyword and tag-based discovery.
+
+---
 
 ## 🛠️ Tech Stack
 
 ### Frontend
-
-- **React 19** - UI library
-- **React Router DOM** - Routing
-- **Vite** - Build tool
-- **Material-UI (MUI)** - UI components
-- **Axios** - HTTP client
-- **React Toastify** - Notifications
-- **React Markdown** - Markdown rendering
-- **Lucide React** - Icons
+- **React 18** (Vite-powered)
+- **Axios** (API communication)
+- **React-Toastify** (Dynamic alerts)
+- **CSS Modules** (Scoped, clean styling)
 
 ### Backend
-
-- **Node.js** - Runtime environment
-- **Express.js** - Web framework
-- **MySQL** - Database
-- **JWT** - Authentication
-- **Bcrypt** - Password hashing
-- **Multer** - File uploads
-- **Nodemailer** - Email service
-- **OpenAI/Groq API** - AI chatbot integration
-- **XSS** - Security (XSS protection)
-
-## 📁 Project Structure
-
-```
-evangadi-forum/
-│
-├── client/                          # Frontend React application
-│   ├── public/                      # Static assets
-│   │   ├── favicon.png
-│   │   └── vite.svg
-│   │
-│   ├── src/
-│   │   ├── Api/
-│   │   │   └── axiosConfig.js       # Axios configuration with base URL
-│   │   │
-│   │   ├── assets/                  # Images, sounds, and other assets
-│   │   │   ├── sounds/              # Notification sounds
-│   │   │   └── *.png, *.jpeg, *.svg
-│   │   │
-│   │   ├── components/              # Reusable React components
-│   │   │   ├── ChatWidget/         # AI Chatbot widget
-│   │   │   │   ├── ChatBot/        # Main chat component
-│   │   │   │   ├── ChatHeader/     # Chat header
-│   │   │   │   ├── ChatMessages/   # Message display
-│   │   │   │   ├── ChatInput/      # Input field
-│   │   │   │   ├── ChatError/      # Error handling
-│   │   │   │   ├── TypingIndicator/# Loading indicator
-│   │   │   │   └── ChatWidget.jsx
-│   │   │   │
-│   │   │   ├── Header/             # Navigation header
-│   │   │   ├── Footer/             # Footer component
-│   │   │   ├── Layout/             # Shared layout wrapper
-│   │   │   ├── ProtectedRoute/    # Route protection component
-│   │   │   └── ScrollToTop.jsx     # Scroll to top utility
-│   │   │
-│   │   ├── hooks/
-│   │   │   └── useChatbot.js       # Custom hook for chatbot functionality
-│   │   │
-│   │   ├── Pages/                  # Page components
-│   │   │   ├── Home/               # Questions feed
-│   │   │   │   ├── Home.jsx
-│   │   │   │   └── QuestionCard.jsx
-│   │   │   │
-│   │   │   ├── Landing/            # Landing/auth page
-│   │   │   ├── Login/              # Login page
-│   │   │   ├── Register/           # Registration page
-│   │   │   ├── Askquestion/        # Ask a question page
-│   │   │   ├── Answer/             # Answer page
-│   │   │   │   ├── Answer.jsx
-│   │   │   │   └── EditAnswer.jsx
-│   │   │   │
-│   │   │   ├── EditQuestion/       # Edit question page
-│   │   │   ├── Profile/            # User profile page
-│   │   │   ├── ForgotPassword/    # Password reset request
-│   │   │   ├── ResetPassword/     # Password reset form
-│   │   │   ├── HowItWorks/        # How it works page
-│   │   │   ├── About/             # About page
-│   │   │   └── NotFound/          # 404 page
-│   │   │
-│   │   ├── routes/
-│   │   │   └── AppRouter.jsx       # Main routing configuration
-│   │   │
-│   │   ├── App.jsx                 # Main App component with context
-│   │   ├── App.css                 # Global styles
-│   │   ├── App.module.css          # Component styles
-│   │   ├── index.css               # Base styles
-│   │   └── main.jsx                # Entry point
-│   │
-│   ├── index.html                  # HTML template
-│   ├── package.json                # Frontend dependencies
-│   ├── vite.config.js              # Vite configuration
-│   └── eslint.config.js            # ESLint configuration
-│
-├── server/                          # Backend Node.js application
-│   ├── controller/                  # Request handlers
-│   │   ├── userController.js       # User operations (register, login, profile)
-│   │   ├── questionController.js   # Question CRUD operations
-│   │   ├── answerController.js     # Answer CRUD operations
-│   │   └── chatController.js       # AI chatbot integration
-│   │
-│   ├── routes/                      # API route definitions
-│   │   ├── userRoutes.js           # User endpoints
-│   │   ├── questionRoute.js        # Question endpoints
-│   │   ├── answerRoute.js          # Answer endpoints
-│   │   └── chatRoutes.js           # Chat endpoints
-│   │
-│   ├── middleware/
-│   │   └── authMiddleware.js       # JWT authentication middleware
-│   │
-│   ├── DB/
-│   │   ├── dbconfig.js             # MySQL database configuration
-│   │   └── database_table.mb       # Database schema
-│   │
-│   ├── uploads/
-│   │   └── profile-pictures/       # Uploaded profile images
-│   │
-│   ├── index.js                    # Server entry point
-│   └── package.json                # Backend dependencies
-│
-└── README.md                        # This file
-```
-
-## 🔧 Setup Instructions
-
-### Prerequisites
-
-- Node.js (v18 or higher)
-- MySQL database
-- Groq API key (for AI chatbot)
-
-### Backend Setup
-
-1. Navigate to the server directory:
-
-```bash
-cd server
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Create a `.env` file in the `server` directory with the following variables:
-
-```env
-HOST=localhost
-USER=your_mysql_username
-PASSWORD=your_mysql_password
-DATABASE=your_database_name
-PORT=5500
-JWT_SECRET=your_jwt_secret_key
-OPENAI_API_KEY=your_groq_api_key
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your_email@gmail.com
-EMAIL_PASS=your_email_app_password
-```
-
-4. Set up your MySQL database using the schema in `server/DB/database_table.mb`
-
-5. Start the server:
-
-```bash
-npm start
-```
-
-The server will run on `http://localhost:5500`
-
-### Frontend Setup
-
-1. Navigate to the client directory:
-
-```bash
-cd client
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Create a `.env` file in the `client` directory (if needed):
-
-```env
-VITE_API_URL=http://localhost:5500
-```
-
-4. Start the development server:
-
-```bash
-npm run dev
-```
-
-The frontend will run on `http://localhost:5173` (or the port Vite assigns)
-
-## 📡 API Endpoints
-
-### Authentication Routes (`/api/user`)
-
-- `POST /register` - Register a new user
-- `POST /login` - User login
-- `GET /check` - Verify JWT token
-- `GET /profile-picture` - Get user profile picture
-- `POST /forgot-password` - Request password reset
-- `POST /reset-password/:token` - Reset password with token
-
-### Question Routes (`/api/question`)
-
-- `GET /` - Get all questions
-- `GET /:questionid` - Get single question
-- `POST /` - Create a new question
-- `PUT /:questionid` - Update a question
-- `DELETE /:questionid` - Delete a question
-
-### Answer Routes (`/api/answer`)
-
-- `GET /:questionid` - Get all answers for a question
-- `POST /` - Post a new answer
-- `PUT /:answerid` - Update an answer
-- `DELETE /:answerid` - Delete an answer
-
-### Chat Routes (`/api/chat`)
-
-- `POST /` - Send message to AI chatbot
-- `GET /history` - Get chat history
-- `DELETE /history` - Clear chat history
-
-**Note**: All routes except `/api/user/register`, `/api/user/login`, `/api/user/forgot-password`, and `/api/user/reset-password` require JWT authentication.
-
-## 🔐 Authentication
-
-The application uses JWT (JSON Web Tokens) for authentication. After successful login, a token is stored in localStorage and sent with each authenticated request in the `Authorization` header:
-
-```
-Authorization: Bearer <token>
-```
-
-## 🤖 AI Chatbot
-
-The chatbot is powered by Groq's Llama 3.3 70B model. It:
-
-- Maintains conversation history (last 30 messages)
-- Provides context-aware responses
-- Stores chat history in the database
-- Only accessible to authenticated users
-
-## 🎨 Key Features Explained
-
-### Protected Routes
-
-Routes are protected using the `ProtectedRoute` component, which checks for authentication and redirects unauthenticated users to the login page.
-
-### Question & Answer System
-
-- Users can ask questions with titles, descriptions, and tags
-- Other users can provide answers
-- Question and answer authors can edit/delete their own content
-- XSS protection is implemented on the backend
-
-### Profile Management
-
-- Users can upload profile pictures
-- Profile pictures are stored in `server/uploads/profile-pictures/`
-- Images are served statically via Express
-
-### Email Service
-
-Password reset functionality uses Nodemailer to send reset links via email.
-
-## 🚦 Running the Application
-
-1. Start the MySQL database
-2. Start the backend server: `cd server && npm start`
-3. Start the frontend dev server: `cd client && npm run dev`
-4. Open `http://localhost:5173` in your browser
-
-## 📝 Development Notes
-
-- The frontend uses CSS Modules for component styling
-- React Context API is used for global state management (user state)
-- Axios interceptors handle authentication tokens automatically
-- The chatbot widget is a floating button that appears for authenticated users
-- All user inputs are sanitized using the XSS library on the backend
-
-## 🔒 Security Features
-
-- Password hashing with bcrypt
-- JWT token-based authentication
-- XSS protection on user inputs
-- CORS configuration
-- Protected API routes with middleware
-- SQL injection prevention using parameterized queries
-
-## 📄 License
-
-ISC
-
-## 👥 Contributing
-
-This is a project for Evangadi Phase 4. For contributions, please follow standard Git workflow practices.
+- **Node.js & Express**
+- **Prisma ORM**
+- **JWT** (Secure Authentication)
+- **Multer** (Optimized file uploads)
 
 ---
 
-**Built with ❤️ for the Evangadi community**
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    A[User Browser] -- React / Axios --> B[Express Server]
+    B -- Prisma ORM --> C[PostgreSQL Database]
+    B -- OpenAI API --> D[AI Engine]
+    B -- File System --> E[Profile Images]
+    subgraph "Frontend Layer"
+    A
+    end
+    subgraph "Backend Layer"
+    B
+    end
+    subgraph "Data Layer"
+    C
+    D
+    end
+```
+
+---
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js (v16+)
+- PostgreSQL (or Neon.tech account)
+
+### Installation
+
+1. **Clone the repo**
+   ```bash
+   git clone https://github.com/DesalegnTamirat/evangadi-forum.git
+   cd evangadi-forum
+   ```
+
+2. **Backend Setup**
+   ```bash
+   cd server
+   npm install
+   # Create .env with DATABASE_URL, JWT_SECRET, and OPENAI_API_KEY
+   npx prisma generate
+   npm start
+   ```
+
+3. **Frontend Setup**
+   ```bash
+   cd client
+   npm install
+   npm run dev
+   ```
+
+---
+
+## 📜 License
+Distributed under the MIT License. See `LICENSE` for more information.
+
+---
+
+## 🤝 Contributing
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request

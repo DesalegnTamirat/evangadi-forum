@@ -5,6 +5,7 @@ import styles from "./answer.module.css";
 import { toast } from "react-toastify";
 import { AppState } from "../../App";
 import { MdEdit, MdDelete } from "react-icons/md";
+import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { API_BASE_URL } from "../../Data/data";
 
 function Answer() {
@@ -165,17 +166,86 @@ function Answer() {
     }
   };
 
+  /* ---------------- VOTING ---------------- */
+  const handleQuestionVote = async (type) => {
+    const originalQuestion = { ...question };
+    
+    // Optimistic Update
+    const isLiked = question.user_vote === 1;
+    const newVote = isLiked ? 0 : 1;
+    const newCount = isLiked ? question.vote_count - 1 : question.vote_count + 1;
+
+    setQuestion(prev => ({ ...prev, user_vote: newVote, vote_count: newCount }));
+
+    try {
+      await axios.post(
+        `/vote/question/${question_id}`,
+        { vote_type: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.error("Voting error:", error);
+      setQuestion(originalQuestion);
+      toast.error("Failed to vote on question");
+    }
+  };
+
+  const handleAnswerVote = async (answerId, type) => {
+    const originalAnswers = [...answers];
+
+    // Optimistic Update
+    setAnswers(prev => prev.map(ans => {
+      if (ans.answer_id === answerId) {
+        const isLiked = ans.user_vote === 1;
+        const newVote = isLiked ? 0 : 1;
+        const newCount = isLiked ? ans.vote_count - 1 : ans.vote_count + 1;
+        return { ...ans, user_vote: newVote, vote_count: newCount };
+      }
+      return ans;
+    }));
+
+    try {
+      await axios.post(
+        `/vote/answer/${answerId}`,
+        { vote_type: 1 },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+    } catch (error) {
+      console.error("Voting error:", error);
+      setAnswers(originalAnswers);
+      toast.error("Failed to vote on answer");
+    }
+  };
+
   /* ---------------- JSX ---------------- */
   return (
     <div className={styles.container}>
       {question && (
         <div className={styles.question_summary_wrapper}>
           <div className={styles.question_section}>
-            <h3 className={styles.big_title}>QUESTION</h3>
-            <h2 className={styles.question}>
-              <span className={styles.arrow}>➤</span>
-              <span className={styles.text}>{question.title}</span>
-            </h2>
+            <div className={styles.question_header_with_vote}>
+              <div className={styles.vote_controls}>
+                <button 
+                  className={`${styles.like_btn} ${question.user_vote === 1 ? styles.active_like : ''}`}
+                  onClick={() => handleQuestionVote(1)}
+                  title={question.user_vote === 1 ? "Unlike" : "Like"}
+                >
+                  <span className={styles.heart_icon}>{question.user_vote === 1 ? "❤️" : "🤍"}</span>
+                  <span className={styles.vote_count}>{question.vote_count || 0}</span>
+                </button>
+              </div>
+              <div className={styles.question_content_main}>
+                <h3 className={styles.big_title}>QUESTION</h3>
+                <h2 className={styles.question}>
+                  <span className={styles.arrow}>➤</span>
+                  <span className={styles.text}>{question.title}</span>
+                </h2>
+                <div className={styles.author_rep_badge}>
+                  <span className={styles.rep_score}>{question.reputation || 0} pts</span>
+                  {question.reputation >= 10 && <span className={styles.mini_badge} title="Badge earned">●</span>}
+                </div>
+              </div>
+            </div>
             <p className={styles.description}>{question.description}</p>
           </div>
 
@@ -243,6 +313,28 @@ function Answer() {
                   )}
                 </div>
                 <span>{ans.user_name}</span>
+                <div className={styles.ans_author_rep}>
+                  <span className={styles.ans_rep_score}>{ans.reputation || 0} pts</span>
+                  {ans.reputation >= 10 && <span className={styles.mini_badge}>●</span>}
+                </div>
+                <div className={styles.answer_votes}>
+                  <button 
+                    className={`${styles.ans_like_btn} ${ans.user_vote === 1 ? styles.active_like : ''}`}
+                    onClick={() => handleAnswerVote(ans.answer_id, 1)}
+                  >
+                    <span className={styles.heart_icon}>{ans.user_vote === 1 ? "❤️" : "🤍"}</span>
+                    <span className={styles.ans_vote_count}>{ans.vote_count || 0}</span>
+                  </button>
+                  <button 
+                    className={styles.reply_btn}
+                    onClick={() => {
+                        const form = document.querySelector(`.${styles.answer_form}`);
+                        form?.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                  >
+                    Reply
+                  </button>
+                </div>
               </div>
 
               <div className={styles.content}>

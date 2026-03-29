@@ -8,6 +8,8 @@ import answerRoutes from "./routes/answerRoute.js";
 import userRoutes from "./routes/userRoutes.js";
 import questionRoutes from "./routes/questionRoute.js";
 import chatRoutes from "./routes/chatRoutes.js";
+import voteRoutes from "./routes/voteRoute.js";
+import bookmarkRoutes from "./routes/bookmarkRoutes.js";
 import dbconnection from "./DB/dbconfig.js";
 import authMiddleware from "./middleware/authMiddleware.js";
 
@@ -17,7 +19,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 // CORS configuration
-const allowedOrigins = ["https://evangadi-forum-desalegn.vercel.app"];
+const allowedOrigins = ["https://evangadi-forum-desalegn.vercel.app", "http://localhost:5173"];
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -55,6 +57,12 @@ app.use("/api/chat", authMiddleware, chatRoutes);
 
 // answerRoutes middleware
 app.use("/api/answer", authMiddleware, answerRoutes);
+
+// voteRoutes middleware
+app.use("/api/vote", authMiddleware, voteRoutes);
+
+// bookmarkRoutes middleware
+app.use("/api/bookmark", authMiddleware, bookmarkRoutes);
 
 async function startServer() {
   try {

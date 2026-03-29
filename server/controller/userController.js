@@ -96,12 +96,38 @@ const login = async (req, res) => {
   }
 };
 const checkUser = async (req, res) => {
-  const username = req.user.username;
   const userid = req.user.userid;
 
-  return res
-    .status(StatusCodes.OK)
-    .json({ message: "valid user", username, userid });
+  try {
+    const user = await dbConnection.user.findUnique({
+      where: { userid },
+      select: {
+        userid: true,
+        username: true,
+        firstname: true,
+        lastname: true,
+        email: true,
+        profile_picture: true,
+        reputation: true,
+        created_at: true,
+        _count: {
+          select: {
+            questions: true,
+            answers: true,
+          }
+        }
+      },
+    });
+
+    if (!user) {
+      return res.status(StatusCodes.NOT_FOUND).json({ message: "User not found" });
+    }
+
+    return res.status(StatusCodes.OK).json(user);
+  } catch (error) {
+    console.error("CheckUser error:", error);
+    return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ message: "Internal server error" });
+  }
 };
 
 // Configure multer for file uploads

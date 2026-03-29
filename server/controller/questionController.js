@@ -13,8 +13,13 @@ async function getAllQuestions(req, res) {
             firstname: true,
             lastname: true,
             profile_picture: true,
+            reputation: true,
           },
         },
+        bookmarks: {
+          where: { userid: req.user?.userid || 0 },
+        },
+        votes: true,
       },
       orderBy: {
         questionid: 'desc',
@@ -30,15 +35,22 @@ async function getAllQuestions(req, res) {
       });
     }
 
-    // Flatten the result to match the expected format if necessary
-    const formattedQuestions = questions.map(q => ({
-      ...q,
-      username: q.user.username,
-      firstname: q.user.firstname,
-      lastname: q.user.lastname,
-      profile_picture: q.user.profile_picture,
-      user: undefined // Omit the nested user object
-    }));
+    const formattedQuestions = questions.map(q => {
+      const voteCount = q.votes.reduce((acc, v) => acc + v.vote_type, 0);
+      return {
+        ...q,
+        username: q.user.username,
+        firstname: q.user.firstname,
+        lastname: q.user.lastname,
+        profile_picture: q.user.profile_picture,
+        reputation: q.user.reputation,
+        vote_count: voteCount,
+        is_bookmarked: q.bookmarks.length > 0,
+        user: undefined,
+        votes: undefined,
+        bookmarks: undefined
+      };
+    });
 
     return res.status(StatusCodes.OK).json({
       message: "Questions retrieved successfully",
@@ -65,8 +77,13 @@ async function getSingleQuestion(req, res) {
             username: true,
             firstname: true,
             lastname: true,
+            reputation: true,
           },
         },
+        bookmarks: {
+          where: { userid: req.user?.userid || 0 },
+        },
+        votes: true,
       },
     });
 
@@ -77,12 +94,22 @@ async function getSingleQuestion(req, res) {
       });
     }
 
+    const userId = req.user?.userid;
+    const voteCount = question.votes.reduce((acc, v) => acc + v.vote_type, 0);
+    const userVote = question.votes.find(v => v.userid === userId)?.vote_type || 0;
+
     const formattedQuestion = {
       ...question,
       username: question.user.username,
       firstname: question.user.firstname,
       lastname: question.user.lastname,
-      user: undefined
+      reputation: question.user.reputation,
+      vote_count: voteCount,
+      user_vote: userVote,
+      is_bookmarked: question.bookmarks.length > 0,
+      user: undefined,
+      votes: undefined,
+      bookmarks: undefined
     };
 
     return res.status(StatusCodes.OK).json({

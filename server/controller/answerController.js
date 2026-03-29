@@ -35,19 +35,29 @@ const getAnswers = async (req, res) => {
           select: {
             username: true,
             profile_picture: true,
+            reputation: true,
           },
         },
+        votes: true,
       },
     });
 
-    const formattedAnswers = answers.map(a => ({
-      answer_id: a.answerid,
-      content: a.answer,
-      user_name: a.user.username,
-      created_at: a.created_at,
-      userid: a.userid,
-      profile_picture: a.user.profile_picture,
-    }));
+    const userid = req.user?.userid;
+    const formattedAnswers = answers.map(a => {
+      const voteCount = a.votes.reduce((acc, v) => acc + v.vote_type, 0);
+      const userVote = a.votes.find(v => v.userid === userid)?.vote_type || 0;
+      return {
+        answer_id: a.answerid,
+        content: a.answer,
+        user_name: a.user.username,
+        created_at: a.created_at,
+        userid: a.userid,
+        profile_picture: a.user.profile_picture,
+        reputation: a.user.reputation,
+        vote_count: voteCount,
+        user_vote: userVote,
+      };
+    });
 
     return res.status(StatusCodes.OK).json({ answers: formattedAnswers });
   } catch (error) {

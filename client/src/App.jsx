@@ -10,9 +10,20 @@ export const AppState = createContext();
 function App() {
   const [user, setUser] = useState(null);
   const [loadingUser, setLoadingUser] = useState(true);
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "light");
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+
+  const toggleTheme = () => {
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
+    localStorage.setItem("theme", newTheme);
+  };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", theme);
+  }, [theme]);
 
   async function checkUser() {
     if (!token) {
@@ -61,9 +72,11 @@ function App() {
   }
 
   return (
-    <AppState.Provider value={{ user, setUser }}>
-      <AppRouter />
-      <ToastContainer position="top-right" autoClose={2000} />
+    <AppState.Provider value={{ user, setUser, theme, toggleTheme }}>
+      <div className={theme === "dark" ? "dark-mode" : ""}>
+        <AppRouter />
+        <ToastContainer position="top-right" autoClose={3000} theme={theme} />
+      </div>
     </AppState.Provider>
   );
 }

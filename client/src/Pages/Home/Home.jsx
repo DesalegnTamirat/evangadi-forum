@@ -12,6 +12,8 @@ import axios from "../../Api/axiosConfig";
 import classes from "./home.module.css";
 import { MdEdit, MdDelete } from "react-icons/md";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import QuestionCard from "./QuestionCard";
+import SkeletonLoader from "../../components/Skeleton/SkeletonLoader";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { API_BASE_URL } from "../../Data/data";
@@ -30,6 +32,7 @@ const Home = () => {
   const [fetchError, setFetchError] = useState("");
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedTag, setSelectedTag] = useState("All");
 
   const token = localStorage.getItem("token");
 
@@ -102,16 +105,28 @@ const Home = () => {
   }, [questions, sortOption]);
 
   // ===================== SEARCH FILTER =====================
-  // Filter questions by title or username (uses debounced query)
+  // Filter questions by title, username, description, or tag
   const filteredQuestions = useMemo(() => {
     return sortedQuestions.filter((q) => {
       const searchText = debouncedSearchQuery.toLowerCase();
-      return (
+      const matchesSearch = (
         q.title.toLowerCase().includes(searchText) ||
-        q.username.toLowerCase().includes(searchText)
+        q.username.toLowerCase().includes(searchText) ||
+        (q.description || "").toLowerCase().includes(searchText) ||
+        (q.tag || "").toLowerCase().includes(searchText)
       );
+
+      const matchesTag = selectedTag === "All" || q.tag === selectedTag;
+
+      return matchesSearch && matchesTag;
     });
-  }, [sortedQuestions, debouncedSearchQuery]);
+  }, [sortedQuestions, debouncedSearchQuery, selectedTag]);
+
+  // Extract unique tags for the filter cloud
+  const uniqueTags = useMemo(() => {
+    const tags = questions.map((q) => q.tag).filter(Boolean);
+    return ["All", ...new Set(tags)];
+  }, [questions]);
 
   // ===================== DELETE LOGIC =====================
   // Open delete confirmation dialog
@@ -145,8 +160,8 @@ const Home = () => {
 
   // ===================== UI =====================
   return (
-    <section>
-      <div className={classes["main-container"]}>
+    <section className="primary_container">
+      <div className={`${classes["main-container"]} glass-panel`}>
         {/* Header section with Ask Question button and Welcome message */}
         <div className={classes["welcome-section"]}>
           <Link to="/askquestion" className={classes["ask-question-btn"]}>
@@ -166,10 +181,25 @@ const Home = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className={classes["search-input"]}
-            placeholder="Search questions..."
-            type="search" // Semantic input type
-            aria-label="Search questions by title or username"
+            placeholder="Search questions by title, description or tag..."
+            type="search"
+            aria-label="Search questions"
           />
+        </div>
+
+        {/* Tag Cloud */}
+        <div className={classes["tag-cloud"]}>
+          {uniqueTags.map((tag) => (
+            <button
+              key={tag}
+              onClick={() => setSelectedTag(tag)}
+              className={`${classes["tag-btn"]} ${
+                selectedTag === tag ? classes["active-tag"] : ""
+              }`}
+            >
+              {tag}
+            </button>
+          ))}
         </div>
 
         {/* Sorting dropdown */}
@@ -240,107 +270,15 @@ const Home = () => {
 
         {/* Questions list */}
         {loading ? (
-          <p>Loading questions...</p>
+          <SkeletonLoader type="card" count={3} />
         ) : filteredQuestions.length > 0 ? (
-          filteredQuestions.map((q) => (
-            <div className={classes["questions-list"]} key={q.questionid}>
-              <div className={classes["question-item"]}>
-                {/* Link to answer page */}
-                <Link
-                  to={`/answer/${q.questionid}`}
-                  className={classes["question-link"]}
-                >
-                  <div className={classes["user-info"]}>
-                    {/* User avatar + username */}
-                    <div className={classes["user"]}>
-                      {q?.profile_picture ? (
-                        <img
-                          src={`${API_BASE_URL}${q?.profile_picture}`}
-                          alt="Profile"
-                          className={classes.profile_image}
-                        />
-                      ) : (
-                        <div className={classes.avatar}>
-                          {q?.firstname[0].toUpperCase()}
-                          {q?.lastname[0].toUpperCase()}
-                        </div>
-                      )}
-
-                      <p>{q.username}</p>
-                    </div>
-                    {/* Question title */}
-                    <div className={classes["question-text"]}>{q.title}</div>
-                  </div>
-                  {/* Tag and Date/Time - Right Side */}
-                  <div className={classes["timestamp-container"]}>
-                    {/* Question Tag - Top */}
-                    <div className={classes["question-tag"]}>
-                      {q.tag || "General"}
-                    </div>
-
-                    {/* Date and Time - Bottom */}
-                    <span className={classes["timestamp"]}>
-                      {new Date(q.created_at).toLocaleDateString("en-US", {
-                        weekday: "short",
-                        year: "numeric",
-                        month: "short",
-                        day: "numeric",
-                      })}{" "}
-                      at{" "}
-                      {new Date(q.created_at).toLocaleTimeString("en-US", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                      })}
-                    </span>
-                  </div>
-
-                  {/* Edit/Delete Actions - Right Side */}
-                  {user?.username === q.username && (
-                    <div
-                      className={classes["action-icons"]}
-                      onClick={(e) => e.preventDefault()}
-                    >
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          navigate(`/edit-question/${q.questionid}`);
-                        }}
-                        className={classes["icon-btn"]}
-                        aria-label="Edit question"
-                      >
-                        <MdEdit size={20} color="blue" title="Edit" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          handleDelete(q.questionid);
-                        }}
-                        className={classes["icon-btn"]}
-                        aria-label="Delete question"
-                      >
-                        <MdDelete size={20} color="red" title="Delete" />
-                      </button>
-                    </div>
-                  )}
-
-                  {/* Right Arrow */}
-                  <div className={classes["arrow-container"]}>
-                    <ChevronRightIcon className={classes["arrow"]} />
-                  </div>
-                </Link>
-
-                {/* Empty actions container for consistent spacing */}
-                <div className={classes["info-and-actions"]}></div>
-              </div>
-            </div>
-          ))
+          <div className={classes.questions_container}>
+            {filteredQuestions.map((q) => (
+              <QuestionCard key={q.questionid} Questions={q} />
+            ))}
+          </div>
         ) : (
-          <p>No questions found. Be the first to ask!</p>
+          <p className={classes.empty}>No questions found. Be the first to ask!</p>
         )}
       </div>
     </section>

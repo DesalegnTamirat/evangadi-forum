@@ -242,20 +242,22 @@ const Askquestion = () => {
             </div>
           </div>
 
-          {/* Tag */}
           <div className={styles.form_group}>
-            <label htmlFor="tag">Suggested Tag</label>
-            <input
-              id="tag"
-              type="text"
-              value={tag}
-              onChange={(e) => setTag(e.target.value)}
-              className={styles.tag_input}
-              disabled={loading}
-            />
+            <label htmlFor="tag">Question Tag</label>
+            <div className={styles.tag_pill_container}>
+              <input
+                id="tag"
+                type="text"
+                value={tag}
+                onChange={(e) => setTag(e.target.value)}
+                className={styles.tag_input}
+                disabled={loading}
+                placeholder="e.g. react, node"
+              />
+              {tag && <span className={styles.tag_preview_pill}>{tag}</span>}
+            </div>
             <div className={styles.input_help}>
-              This tag is auto-generated from your title. You can edit it if
-              needed.
+              The tag is auto-suggested from your title but you can change it.
             </div>
           </div>
 

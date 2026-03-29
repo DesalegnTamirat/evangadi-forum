@@ -3,11 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { AppState } from "../../App";
 import logo from "../../assets/EvangadiLogo.jpeg";
 import { IoIosContact } from "react-icons/io";
+import { BsSun, BsMoon } from "react-icons/bs";
 import styles from "./header.module.css";
 import { API_BASE_URL } from "../../Data/data.js";
 
 const Header = () => {
-  const { user, setUser } = useContext(AppState);
+  const { user, setUser, theme, toggleTheme } = useContext(AppState);
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -72,6 +73,10 @@ const Header = () => {
                 )}
               </Link>
             )}
+
+            <button className={styles.theme_toggle} onClick={toggleTheme}>
+              {theme === "light" ? <BsMoon size={22} /> : <BsSun size={22} />}
+            </button>
 
             {user ? (
               <button className={styles.nav_butn} onClick={handleLogout}>

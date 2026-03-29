@@ -16,37 +16,67 @@ model User {
   password             String        @db.VarChar(250)
   reset_token          String?       @db.VarChar(255)
   profile_picture      String?       @db.VarChar(250)
+  reputation           Int           @default(0)
   reset_token_expires  DateTime?
+  created_at           DateTime      @default(now())
   questions            Question[]
   answers              Answer[]
   chat_history         ChatHistory[]
+  question_votes       QuestionVote[]
+  answer_votes         AnswerVote[]
+  bookmarks            Bookmark[]
 
   @@map("users")
 }
 
 model Question {
-  questionid  Int      @id @default(autoincrement())
+  questionid  Int            @id @default(autoincrement())
   userid      Int
-  title       String   @db.VarChar(50)
-  description String   @db.VarChar(200)
-  tag         String?  @db.VarChar(20)
-  created_at  DateTime @default(now())
-  user        User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
+  title       String         @db.VarChar(50)
+  description String         @db.VarChar(200)
+  tag         String?        @db.VarChar(20)
+  created_at  DateTime       @default(now())
+  user        User           @relation(fields: [userid], references: [userid], onDelete: Cascade)
   answers     Answer[]
+  votes       QuestionVote[]
+  bookmarks   Bookmark[]
 
   @@map("questions")
 }
 
 model Answer {
-  answerid   Int      @id @default(autoincrement())
+  answerid   Int          @id @default(autoincrement())
   userid     Int
   questionid Int
-  answer     String   @db.Text
-  created_at DateTime @default(now())
+  answer     String       @db.Text
+  created_at DateTime     @default(now())
+  user       User         @relation(fields: [userid], references: [userid], onDelete: Cascade)
+  question   Question     @relation(fields: [questionid], references: [questionid], onDelete: Cascade)
+  votes      AnswerVote[]
+
+  @@map("answers")
+}
+
+model QuestionVote {
+  userid     Int
+  questionid Int
+  vote_type  Int      // 1 for Like, -1 for Dislike
   user       User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
   question   Question @relation(fields: [questionid], references: [questionid], onDelete: Cascade)
 
-  @@map("answers")
+  @@id([userid, questionid])
+  @@map("question_votes")
+}
+
+model AnswerVote {
+  userid    Int
+  answerid  Int
+  vote_type Int      // 1 for Like, -1 for Dislike
+  user      User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
+  answer    Answer   @relation(fields: [answerid], references: [answerid], onDelete: Cascade)
+
+  @@id([userid, answerid])
+  @@map("answer_votes")
 }
 
 enum ChatRole {
@@ -64,4 +94,14 @@ model ChatHistory {
   user       User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
 
   @@map("chat_history")
+}
+model Bookmark {
+  userid     Int
+  questionid Int
+  created_at DateTime @default(now())
+  user       User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
+  question   Question @relation(fields: [questionid], references: [questionid], onDelete: Cascade)
+
+  @@id([userid, questionid])
+  @@map("bookmarks")
 }

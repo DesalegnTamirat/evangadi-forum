@@ -1,66 +1,70 @@
-/* Full page container */
 .container {
   width: 100%;
-  min-height: 80vh;
-  display: grid;
-  place-items: center;
-  background: url("../../assets/bg.jpeg") no-repeat center center fixed;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url("../../assets/bg.jpeg") no-repeat center center fixed;
+  background-size: cover;
+  padding: 20px;
+  transition: var(--transition);
+}
+
+[data-theme='dark'] .container {
+  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("../../assets/bg.jpeg") no-repeat center center fixed;
   background-size: cover;
 }
 
-/* Wrapper for slider + About */
 .containerContent {
-  max-width: 60rem;
+  max-width: 1100px;
+  width: 100%;
   display: grid;
-  place-items: center;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 50px;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  padding: 50px;
+  border-radius: 24px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
-/* Slider container */
+
 .sliderContainer {
   width: 100%;
   overflow: hidden;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
-/* Slider wrapper (SignIn + SignUp) */
+
 .sliderWrapper {
   display: flex;
-  align-items: center;
   width: 200%;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Each panel */
 .formPane {
   width: 50%;
+  padding: 40px;
 }
 
-@media (max-width: 768px) {
-  .container {
-    place-items: start center;
-    padding-top: 1rem;
-  }
+.about {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: var(--text-primary);
+}
+
+@media (max-width: 900px) {
   .containerContent {
     grid-template-columns: 1fr;
-    width: auto;
+    padding: 20px;
   }
-
-  .sliderWrapper {
-    height: 100vh;
-  }
-
-  .formPane {
-    width: 100%;
-  }
-  /*  conditional style for wrapper of the login component */
-  .login {
-    margin: -6rem 0rem;
-  }
-  .formPane:first-child {
-    margin: 3rem 3em 1rem;
-  }
-
-  .formPane:last-child {
-    margin-right: 2rem;
-    margin-top: 1.5rem;
+  
+  .about {
+    order: 2;
   }
 }
