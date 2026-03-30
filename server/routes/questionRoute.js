@@ -7,7 +7,6 @@ import {
   postQuestion,
   editQuestion,
   deleteQuestion,
-  deleteQuestion,
   getStats,
 } from "../controller/questionController.js";
 const router = Router();
@@ -24,12 +23,6 @@ router.post("/", authMiddleware, postQuestion);
 // GET a single question
 router.get("/:questionid", getSingleQuestion);
 router.put("/:questionid", authMiddleware, editQuestion);
-router.delete("/:questionid", authMiddleware, deleteQuestion);
-
-// EDIT a question
-router.put("/:questionid", authMiddleware, editQuestion);
-
-// DELETE a question
 router.delete("/:questionid", authMiddleware, deleteQuestion);
 
 export default router;

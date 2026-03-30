@@ -4,7 +4,6 @@ import dbConnection from "../DB/dbconfig.js";
 import OpenAI from "openai";
 import dotenv from "dotenv";
 import xss from "xss";
-import { createNotification } from "./notificationController.js";
 
 const getAnswers = async (req, res) => {
   const { question_id } = req.params;
@@ -209,7 +208,8 @@ const postAnswer = async (req, res) => {
       await createNotification(
         questionAuthor.userid,
         `New answer on your question: "${shortTitle}"`,
-        "answer"
+        "answer",
+        `/answer/${questionIdNum}`
       );
     }
 

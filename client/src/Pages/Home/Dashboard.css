@@ -137,6 +137,11 @@
     background: var(--glass-bg-hover);
 }
 
+.dashboard-search option {
+    background: var(--bg-secondary);
+    color: var(--text-main);
+}
+
 .questions-list {
     display: flex;
     flex-direction: column;

@@ -13,7 +13,10 @@ const Members = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const { data } = await axios.get('/user/all');
+        const token = localStorage.getItem("token");
+        const { data } = await axios.get('/user/all', {
+          headers: { Authorization: `Bearer ${token}` }
+        });
         setUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);

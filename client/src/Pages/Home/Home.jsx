@@ -7,7 +7,7 @@ import React, {
 } from "react";
 
 import { AppState } from "../../App";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axios from "../../Api/axiosConfig";
 import classes from "./home.module.css";
 import { MdEdit, MdDelete } from "react-icons/md";
@@ -36,50 +36,63 @@ const Home = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const [stats, setStats] = useState({ questions: 0, users: 0, answers: 0, likes: 0 });
+  const [categories, setCategories] = useState([]);
+  const [sortBy, setSortBy] = useState("latest");
   const [loading, setLoading] = useState(true);
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const [categoryParam, setCategoryParam] = useState(queryParams.get("category") || "all");
 
   const token = localStorage.getItem("token");
 
-  const fetchData = useCallback(async () => {
+  const fetchStaticData = useCallback(async () => {
+    if (!token) return;
+    try {
+      const [statsRes, catRes] = await Promise.all([
+        axios.get("/question/stats", { headers: { Authorization: `Bearer ${token}` } }),
+        axios.get("/category/all", { headers: { Authorization: `Bearer ${token}` } })
+      ]);
+      setStats(statsRes.data || { questions: 0, users: 0, answers: 0, likes: 0 });
+      setCategories(catRes.data || []);
+    } catch (error) {
+      console.error("Error fetching static data:", error);
+    }
+  }, [token]);
+
+  const fetchQuestions = useCallback(async () => {
     if (!token) return;
     setLoading(true);
     try {
-      const [questionsRes, statsRes] = await Promise.all([
-        axios.get(`/question?search=${debouncedSearchQuery}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        }),
-        axios.get("/question/stats", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-      ]);
-      setQuestions(questionsRes.data?.questions || []);
-      setStats(statsRes.data || { questions: 0, users: 0, answers: 0, likes: 0 });
+      const res = await axios.get(`/question?search=${debouncedSearchQuery}&category=${categoryParam}&sort=${sortBy}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      setQuestions(res.data?.questions || []);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      if (error.response && error.response.status === 404) {
+        setQuestions([]);
+      } else {
+        console.error("Error fetching questions:", error);
+      }
     } finally {
       setLoading(false);
     }
-  }, [token, debouncedSearchQuery]);
+  }, [token, debouncedSearchQuery, categoryParam, sortBy]);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    fetchStaticData();
+  }, [fetchStaticData]);
+
+  useEffect(() => {
+    fetchQuestions();
+  }, [fetchQuestions]);
 
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearchQuery(searchQuery), 300);
     return () => clearTimeout(timer);
   }, [searchQuery]);
 
-  const filteredQuestions = useMemo(() => {
-    return questions.filter((q) => {
-      const searchText = debouncedSearchQuery.toLowerCase();
-      return (
-        q.title.toLowerCase().includes(searchText) ||
-        q.username.toLowerCase().includes(searchText) ||
-        (q.tag || "").toLowerCase().includes(searchText)
-      );
-    });
-  }, [questions, debouncedSearchQuery]);
+  // Backend handles search, filtering, and sorting
 
   return (
     <section className="primary_container">
@@ -148,8 +161,8 @@ const Home = () => {
       <div className="recent-questions-container">
         <div className="recent-questions-header">
           <h2 className="recent-questions-title">Recent Questions</h2>
-          <div className="filter-controls">
-            <div className="search-input-wrapper">
+          <div className="filter-controls" style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
+            <div className="search-input-wrapper" style={{ flex: 1 }}>
               <MdSearch className="search-icon" />
               <input
                 type="text"
@@ -159,6 +172,25 @@ const Home = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
+            <select 
+              className="dashboard-search" 
+              style={{ padding: '10px 15px', width: 'auto', borderRadius: '12px' }}
+              value={categoryParam}
+              onChange={(e) => setCategoryParam(e.target.value)}
+            >
+              <option value="all">All Forums</option>
+              {categories.map(c => <option key={c.categoryid} value={c.categoryid}>{c.name}</option>)}
+            </select>
+            <select 
+              className="dashboard-search" 
+              style={{ padding: '10px 15px', width: 'auto', borderRadius: '12px' }}
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="latest">Latest</option>
+              <option value="oldest">Oldest</option>
+              <option value="views">Most Viewed</option>
+            </select>
           </div>
         </div>
 
@@ -166,10 +198,10 @@ const Home = () => {
           <SkeletonLoader type="card" count={3} />
         ) : (
           <div className="questions-list">
-            {filteredQuestions.map((q) => (
+            {questions.map((q) => (
               <QuestionCard key={q.questionid} Questions={q} />
             ))}
-            {filteredQuestions.length === 0 && (
+            {questions.length === 0 && (
               <p className="empty-message">No questions found matching your search.</p>
             )}
           </div>

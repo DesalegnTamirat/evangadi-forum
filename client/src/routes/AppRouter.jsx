@@ -16,6 +16,7 @@ const GuestLanding = lazy(() => import("../Pages/Landing/GuestLanding"));
 const HowItWorks = lazy(() => import("../Pages/HowItWorks/HowItWorks"));
 const ForgotPassword = lazy(() => import("../Pages/ForgotPassword/ForgotPassword"));
 const Forums = lazy(() => import("../Pages/Forums/Forums"));
+const ForumDashboard = lazy(() => import("../Pages/ForumDashboard/ForumDashboard"));
 const Members = lazy(() => import("../Pages/Members/Members"));
 const Badges = lazy(() => import("../Pages/Badges/Badges"));
 const ResetPassword = lazy(() => import("../Pages/ResetPassword/ResetPassword"));
@@ -47,6 +48,7 @@ function AppRouter() {
 
           {/* Functional App Sections */}
           <Route path="forums" element={<ProtectedRoute><Forums /></ProtectedRoute>} />
+          <Route path="forum/:id" element={<ProtectedRoute><ForumDashboard /></ProtectedRoute>} />
           <Route path="questions" element={<ProtectedRoute><Home /></ProtectedRoute>} />
           <Route path="members" element={<ProtectedRoute><Members /></ProtectedRoute>} />
           <Route path="badges" element={<ProtectedRoute><Badges /></ProtectedRoute>} />

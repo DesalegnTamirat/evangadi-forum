@@ -14,6 +14,8 @@ const Askquestion = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tag, setTag] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [categories, setCategories] = useState([]);
   const [formErrors, setFormErrors] = useState({});
   const [error, setError] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
@@ -26,6 +28,19 @@ const Askquestion = () => {
       navigate("/login", { state: { from: "/askquestion" } });
     }
   }, [token, navigate]);
+
+  // ===================== FETCH CATEGORIES =====================
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get("/category/all");
+        setCategories(data);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   // ===================== TOGGLE STEPS =====================
   const toggleSteps = () => {
@@ -107,6 +122,7 @@ const Askquestion = () => {
           title: title.trim(),
           description: description.trim(),
           tag: tag || "general",
+          categoryid: categoryId || null,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -262,6 +278,26 @@ const Askquestion = () => {
               Auto-suggested based on your title.
             </div>
           </div>
+
+          <div className={styles.form_group}>
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
+              className={styles.input_field}
+              value={categoryId}
+              onChange={(e) => setCategoryId(e.target.value)}
+              disabled={loading}
+              style={{ padding: '14px 18px', width: '100%', borderRadius: '12px', background: 'var(--input-bg)', color: 'var(--text-main)', border: '1px solid var(--glass-border)', outline: 'none', marginBottom: '15px' }}
+            >
+              <option value="">Select a Category (Optional)</option>
+              {categories.map((cat) => (
+                <option key={cat.categoryid} value={cat.categoryid}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
 
           {/* Actions */}
           <div className={styles.form_actions}>

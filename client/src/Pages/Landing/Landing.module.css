@@ -11,8 +11,14 @@
 }
 
 [data-theme='dark'] .container {
-  background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("../../assets/bg.jpeg") no-repeat center center fixed;
+  background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url("../../assets/bg.jpeg") no-repeat center center fixed;
   background-size: cover;
+}
+
+[data-theme='dark'] .containerContent,
+[data-theme='dark'] .sliderContainer {
+  background: rgba(15, 19, 23, 0.7) !important;
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .containerContent {

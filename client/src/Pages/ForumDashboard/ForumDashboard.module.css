@@ -1,0 +1,45 @@
+.forumHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 40px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 30px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px var(--shadow-color);
+}
+
+.forumInfo h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.forumInfo p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+  max-width: 600px;
+}
+
+.stats {
+  display: flex;
+  gap: 20px;
+  color: var(--text-dim);
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.stats span {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+@media (max-width: 768px) {
+  .forumHeader {
+    flex-direction: column;
+    gap: 20px;
+  }
+}

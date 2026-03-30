@@ -168,7 +168,7 @@ async function getSingleQuestion(req, res) {
 
 const postQuestion = async (req, res) => {
   try {
-    const { title, description, tag } = req.body;
+    const { title, description, tag, categoryid } = req.body;
     const userId = req.user?.userid;
 
     if (!title || !description || !userId) {
@@ -192,6 +192,7 @@ const postQuestion = async (req, res) => {
         title: sanitizedTitle,
         description: sanitizedDescription,
         tag: sanitizedTag,
+        categoryid: categoryid ? parseInt(categoryid, 10) : null,
         userid: userId
       }
     });

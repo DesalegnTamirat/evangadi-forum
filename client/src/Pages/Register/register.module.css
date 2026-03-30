@@ -24,10 +24,30 @@
   cursor: pointer;
 }
 
+.form_link {
+  color: var(--accent-color);
+  font-weight: 600;
+  transition: var(--transition);
+}
+
+.form_link:hover {
+  filter: brightness(1.2);
+}
+
 .row {
   display: flex;
   gap: 15px;
   margin-bottom: 20px;
+}
+
+.first_last {
+  display: flex;
+  gap: 15px;
+  width: 100%;
+}
+
+.first_last_item {
+  flex: 1;
 }
 
 .input_group {

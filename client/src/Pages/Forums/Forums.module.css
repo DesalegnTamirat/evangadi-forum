@@ -1,5 +1,10 @@
 .header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 40px;
+  gap: 20px;
 }
 
 .header h1 {
@@ -71,6 +76,29 @@
 
 .cardFooter {
   margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.joinBtn {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid var(--neon-blue);
+  background: transparent;
+  color: var(--neon-blue);
+  cursor: pointer;
+  transition: var(--transition);
+  font-size: 0.85rem;
+}
+
+.joinBtn:hover {
+  background: rgba(72, 149, 239, 0.1);
+}
+
+.joinBtn.joined {
+  background: var(--neon-blue);
+  color: white;
 }
 
 .enterBtn {
@@ -88,4 +116,66 @@
 
 .enterBtn:hover {
   gap: 10px;
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  width: 90%;
+  max-width: 500px;
+  padding: 30px;
+  border-radius: 16px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(10px);
+  color: var(--text-main);
+  box-shadow: 0 8px 32px var(--shadow-color);
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.inputGroup {
+  margin-bottom: 15px;
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--text-secondary);
+}
+
+.inputGroup input, .inputGroup textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-main);
+}
+
+.inputGroup textarea {
+  min-height: 100px;
+  resize: vertical;
 }

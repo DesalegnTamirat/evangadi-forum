@@ -1,5 +1,6 @@
 import dbConnection from "../DB/dbconfig.js";
 import { StatusCodes } from "http-status-codes";
+import { createNotification } from "./notificationController.js";
 
 // Helper to update user reputation
 // Helper to update user reputation and awarded badges
@@ -101,6 +102,14 @@ const voteQuestion = async (req, res) => {
 
       if (!isSelfVote) {
         await updateReputation(authorId, vote_type);
+        if (vote_type === 1) {
+          await createNotification(
+            authorId, 
+            `Your question received an upvote!`, 
+            "like", 
+            `/answer/${questionid}`
+          );
+        }
       }
 
       return res.status(StatusCodes.CREATED).json({ message: "Vote added" });
@@ -171,6 +180,14 @@ const voteAnswer = async (req, res) => {
 
       if (!isSelfVote) {
         await updateReputation(authorId, vote_type * pointValue);
+        if (vote_type === 1) {
+          await createNotification(
+            authorId, 
+            `Your answer received an upvote!`, 
+            "like", 
+            `/answer/${answer.questionid}`
+          );
+        }
       }
 
       return res.status(StatusCodes.CREATED).json({ message: "Vote added" });

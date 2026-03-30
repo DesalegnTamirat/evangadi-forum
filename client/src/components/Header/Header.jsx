@@ -85,8 +85,14 @@ const Header = () => {
                 ) : (
                   notifications.map(n => (
                     <div key={n.notificationid} className={`${styles.notifyItem} ${n.is_read ? styles.read : styles.unread}`}>
-                      <p>{n.message}</p>
-                      <small>{new Date(n.created_at).toLocaleDateString()}</small>
+                      <div 
+                        onClick={() => { if(n.link) { navigate(n.link); setShowNotifications(false); } }} 
+                        className={styles.notifyContent} 
+                        style={{cursor: n.link ? 'pointer' : 'default', flex: 1}}
+                      >
+                        <p>{n.message}</p>
+                        <small>{new Date(n.created_at).toLocaleDateString()}</small>
+                      </div>
                       {!n.is_read && (
                         <button onClick={() => markAsRead(n.notificationid)} title="Mark as read">
                           <MdCheckCircle />

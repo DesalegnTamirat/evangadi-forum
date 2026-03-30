@@ -27,6 +27,7 @@ model User {
   answer_votes         AnswerVote[]
   bookmarks            Bookmark[]
   notifications        Notification[]
+  forum_memberships    ForumMembership[]
 
   @@map("users")
 }
@@ -36,6 +37,7 @@ model Notification {
   userid         Int
   message        String   @db.VarChar(200)
   type           String   @db.VarChar(20) // 'like', 'answer', 'badge'
+  link           String?  @db.VarChar(100)
   is_read        Boolean  @default(false)
   created_at     DateTime @default(now())
   user           User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
@@ -47,9 +49,22 @@ model Category {
   categoryid  Int        @id @default(autoincrement())
   name        String     @db.VarChar(50)
   description String     @db.VarChar(200)
+  creatorId   Int?       // ID of the user who created it
   questions   Question[]
+  members     ForumMembership[]
 
   @@map("categories")
+}
+
+model ForumMembership {
+  userid     Int
+  categoryid Int
+  joined_at  DateTime @default(now())
+  user       User     @relation(fields: [userid], references: [userid], onDelete: Cascade)
+  category   Category @relation(fields: [categoryid], references: [categoryid], onDelete: Cascade)
+
+  @@id([userid, categoryid])
+  @@map("forum_memberships")
 }
 
 model Question {

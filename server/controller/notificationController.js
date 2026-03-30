@@ -1,4 +1,4 @@
-import prisma from "../prisma/client.js";
+import prisma from "../DB/dbconfig.js";
 
 export const getNotifications = async (req, res) => {
   const { userid } = req.user;
@@ -28,13 +28,14 @@ export const markAsRead = async (req, res) => {
 };
 
 // Helper to create notifications internally
-export const createNotification = async (userid, message, type) => {
+export const createNotification = async (userid, message, type, link = null) => {
   try {
     await prisma.notification.create({
       data: {
         userid,
         message,
         type,
+        link,
       },
     });
   } catch (error) {
